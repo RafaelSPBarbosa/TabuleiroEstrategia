@@ -55,33 +55,42 @@ public class TileManager : NetworkBehaviour {
     void Update()
     {
 
-        Debug.Log(GameObject.FindGameObjectWithTag("GameManager").name);
-
-        //Aqui carrego a variável com todos os objetos da cena que possuem o Tag "Unit"
-        GameObject[] AllFriendlyUnits = GameObject.FindGameObjectsWithTag("Unit");
-
-        //Este For loop, é para identificar qual das unidades do jogador que está atualmente selecionado e salvá-lo na variável "SelectedUnit"
-        for (int i = 0; i < AllFriendlyUnits.Length; i++)
+        if (gameManager != null && playerManager != null)
         {
-            if (gameManager.curTurn == playerManager.MyTurn && AllFriendlyUnits[i].GetComponent<UnitManager>().enabled == true && AllFriendlyUnits[i].GetComponent<UnitManager>().Selected == true)
-            {
-                SelectedUnit = AllFriendlyUnits[i].gameObject;
-            }
-        }
+            //Aqui carrego a variável com todos os objetos da cena que possuem o Tag "Unit"
+            GameObject[] AllFriendlyUnits = GameObject.FindGameObjectsWithTag("Unit");
 
-        if (SelectedUnit != null) //TODO: Ainda é preciso pedir a quantidade de ações que uma unidade pode executar
-        {
-            //Esta parte serve para mostrar melhor os tiles para os quais o player pode se movimentar
-            if (Vector3.Distance(this.transform.position, SelectedUnit.transform.position) <= 1.5f)
+            //Este For loop, é para identificar qual das unidades do jogador que está atualmente selecionado e salvá-lo na variável "SelectedUnit"
+            for (int i = 0; i < AllFriendlyUnits.Length; i++)
             {
-                if (GetComponent<MeshRenderer>().material.color == Idle)
+                if (gameManager.curTurn == playerManager.MyTurn && AllFriendlyUnits[i].GetComponent<UnitManager>().enabled == true && AllFriendlyUnits[i].GetComponent<UnitManager>().Selected == true)
                 {
-                    GetComponent<MeshRenderer>().material.color = Moveable;
-                    this.transform.position = new Vector3(NormalPosition.x, TargetYPos, NormalPosition.z);
+                    SelectedUnit = AllFriendlyUnits[i].gameObject;
                 }
             }
-            else //Este Else des-seleciona as tiles que estão longe demais da unidade selecionada.
 
+            if (SelectedUnit != null) //TODO: Ainda é preciso pedir a quantidade de ações que uma unidade pode executar
+            {
+                //Esta parte serve para mostrar melhor os tiles para os quais o player pode se movimentar
+                if (Vector3.Distance(this.transform.position, SelectedUnit.transform.position) <= 1.5f)
+                {
+                    if (GetComponent<MeshRenderer>().material.color == Idle)
+                    {
+                        GetComponent<MeshRenderer>().material.color = Moveable;
+                        this.transform.position = new Vector3(NormalPosition.x, TargetYPos, NormalPosition.z);
+                    }
+                }
+                else //Este Else des-seleciona as tiles que estão longe demais da unidade selecionada.
+
+                {
+                    if (GetComponent<MeshRenderer>().material.color == Moveable)
+                    {
+                        GetComponent<MeshRenderer>().material.color = Idle;
+                        this.transform.position = NormalPosition;
+                    }
+                }
+            }
+            else //Este Else serve para des-selecionar as tiles quando o player for des-selecionado.
             {
                 if (GetComponent<MeshRenderer>().material.color == Moveable)
                 {
@@ -90,14 +99,13 @@ public class TileManager : NetworkBehaviour {
                 }
             }
         }
-        else //Este Else serve para des-selecionar as tiles quando o player for des-selecionado.
+        else
         {
-            if (GetComponent<MeshRenderer>().material.color == Moveable)
-            {
-                GetComponent<MeshRenderer>().material.color = Idle;
-                this.transform.position = NormalPosition;
-            }
+                playerManager = GameObject.Find("_PlayerManager").GetComponent<PlayerManager>();
+                gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
         }
+
+      
     }
 
     void OnMouseDown()

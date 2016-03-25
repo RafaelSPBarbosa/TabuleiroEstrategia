@@ -8,6 +8,7 @@ public class GameManager : NetworkBehaviour {
     public int curTurn = 1;
     public int MaxTurns = 4;
 
+    
 
     public void PassTurn()
     {
