@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 using System.Collections;
 
-public class UnitManager : MonoBehaviour {
+public class UnitManager : NetworkBehaviour {
 
     //Definição de Variáveis
     public int MaxActions, curActions;
     public bool Selected;
-    public GameObject UnitSelectedIndicator, PlayerManager, GameManager;
+    public GameObject UnitSelectedIndicator;
+    public PlayerManager playerManager;
+    public GameManager gameManager;
     //Definição de Variáveis
 
     public void ReloadActions()
@@ -17,8 +20,8 @@ public class UnitManager : MonoBehaviour {
 
     void Start()
     {
-        PlayerManager = GameObject.Find("_PlayerManager");
-        GameManager = GameObject.Find("_GameManager");
+        playerManager = GameObject.Find("_PlayerManager").GetComponent<PlayerManager>();
+        gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
     }
 
     void OnMouseDown()
@@ -30,7 +33,7 @@ public class UnitManager : MonoBehaviour {
         else
         {
             //O player só pode selecionar a unidade caso ela tenha mais de uma ação, caso contrário, não poderá nem sequer selecionar, quanto menos mover.
-            if (curActions >= 1 && GameManager.GetComponent<GameManager>().curTurn == PlayerManager.GetComponent<PlayerManager>().MyTurn)
+            if (curActions >= 1 && gameManager.curTurn == playerManager.MyTurn)
                 {
                 // Aqui como uma outra unidade pode estar selecionada, eu procuro todas as unidades da mesma forma que eu fiz ali em cima, e então des-seleciono elas
                 GameObject[] AllFriendlyUnits = GameObject.FindGameObjectsWithTag("Unit");
@@ -64,7 +67,7 @@ public class UnitManager : MonoBehaviour {
     void Update()
     {
         //Aqui estou apenas ligando e desligando o efeito de uma unidade selecionada
-        if(Selected == true)
+        if (Selected == true)
         {
             UnitSelectedIndicator.SetActive(true);
         }
@@ -74,7 +77,7 @@ public class UnitManager : MonoBehaviour {
         }
 
         //Caso as ações do jogador acabem, a unidade é desselecionada
-        if( curActions <= 0 && Selected == true)
+        if (curActions <= 0 && Selected == true)
         {
             DeSelectUnit();
         }

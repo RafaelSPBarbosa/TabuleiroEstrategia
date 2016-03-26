@@ -1,7 +1,9 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.Collections;
+
 
 public class GameManager : NetworkBehaviour {
 
@@ -9,22 +11,25 @@ public class GameManager : NetworkBehaviour {
     public int curTurn = 1;
     public int MaxTurns = 4;
 
+    public Text TurnText;
 
+    void Update()
+    {
+        TurnText.text = "Turn : " + curTurn;
+    }
 
-    public void PassTurn()
+    [Command]
+    public void Cmd_PassTurn()
     {
         curTurn++;
-
         if (curTurn > MaxTurns)
             curTurn = 1;
     }
 
-    void Update()
+    [Command]
+    public void Cmd_SpawnObject(GameObject ObjToSpawn, Vector3 Pos)
     {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            curTurn++;
-        }
-
+        GameObject go = (GameObject)Instantiate(ObjToSpawn, Pos, Quaternion.identity);
+        NetworkServer.Spawn(go);
     }
 }

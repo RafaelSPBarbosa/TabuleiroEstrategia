@@ -4,7 +4,6 @@ using System.Collections;
 
 public class TurnOnOnlyOnOwnersTurn : MonoBehaviour {
 
-
     GameManager gameManager;
     PlayerManager playerManager;
     void Awake()

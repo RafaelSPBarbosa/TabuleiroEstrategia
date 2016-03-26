@@ -6,11 +6,6 @@ using UnityEngine.Networking;
 public class NetManager : NetworkManager {
 
 
-    void Start()
-    {
-        
-    }
-
     public void StartServerButton()
     {
        StartHost();
@@ -36,8 +31,4 @@ public class NetManager : NetworkManager {
         Debug.Log("Hosting!");
     }
 
-    public void OnMessage()
-    {
-        
-    }
 }

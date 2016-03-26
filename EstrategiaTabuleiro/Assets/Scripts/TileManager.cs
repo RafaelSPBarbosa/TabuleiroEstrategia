@@ -14,18 +14,14 @@ public class TileManager : NetworkBehaviour {
     public PlayerManager playerManager;
     //Definição de variáveis
 
-    void Awake()
+    void Start()
     {
         //Aqui estou pegando os valores iniciais de posição e escala do tile para poder resetar depois quando estiver alterado.
         NormalScale = this.transform.localScale;
-
         NormalPosition = this.transform.position;
 
         //Como o código é baseado na cor atual do material, estou colocando todas as tiles no inicio do jogo na cor Idle para depois poder verificar se esta é a cor atual sem ter conflitos
         GetComponent<MeshRenderer>().material.color = Idle;
-
-        playerManager = GameObject.Find("_PlayerManager").GetComponent<PlayerManager>();
-        gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
         
     }
 
@@ -34,7 +30,7 @@ public class TileManager : NetworkBehaviour {
         //Quando o mouse passa sobre este objeto, o objeto muda de cor , também fica maior e um pouco acima dos outros tiles
 
         //Neste pedaço estou Mudando a cor para Hovering
-       GetComponent<MeshRenderer>().material.color = Hovering;
+        GetComponent<MeshRenderer>().material.color = Hovering;
 
         // Aqui aumento e coloco este tile acima do resto para que se sobresaia
         this.transform.localScale = TargetScale;
@@ -54,7 +50,6 @@ public class TileManager : NetworkBehaviour {
 
     void Update()
     {
-
         if (gameManager != null && playerManager != null)
         {
             //Aqui carrego a variável com todos os objetos da cena que possuem o Tag "Unit"
@@ -101,11 +96,14 @@ public class TileManager : NetworkBehaviour {
         }
         else
         {
-                playerManager = GameObject.Find("_PlayerManager").GetComponent<PlayerManager>();
+            try{
                 gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
+                playerManager = GameObject.Find("_PlayerManager").GetComponent<PlayerManager>();
+            }catch
+            {
+                print("Retrying to find managers...");
+            }
         }
-
-      
     }
 
     void OnMouseDown()
