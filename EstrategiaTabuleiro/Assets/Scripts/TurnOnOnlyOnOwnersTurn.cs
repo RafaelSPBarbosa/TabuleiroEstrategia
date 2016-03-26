@@ -4,11 +4,19 @@ using System.Collections;
 
 public class TurnOnOnlyOnOwnersTurn : MonoBehaviour {
 
-    public GameObject GameManager, PlayerManager;
+
+    GameManager gameManager;
+    PlayerManager playerManager;
+    void Awake()
+    {
+        playerManager = GameObject.Find("_PlayerManager").GetComponent<PlayerManager>();
+        gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
+    }
+
 
     void Update()
     {
-        if (GameManager.GetComponent<GameManager>().curTurn != PlayerManager.GetComponent<PlayerManager>().MyTurn)
+        if (gameManager.curTurn != playerManager.MyTurn)
         {
             GetComponent<Button>().interactable = false;
         }

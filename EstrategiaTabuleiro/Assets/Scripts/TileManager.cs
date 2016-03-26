@@ -14,7 +14,7 @@ public class TileManager : NetworkBehaviour {
     public PlayerManager playerManager;
     //Definição de variáveis
 
-    void Start()
+    void Awake()
     {
         //Aqui estou pegando os valores iniciais de posição e escala do tile para poder resetar depois quando estiver alterado.
         NormalScale = this.transform.localScale;
