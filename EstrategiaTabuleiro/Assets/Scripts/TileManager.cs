@@ -112,8 +112,9 @@ public class TileManager : NetworkBehaviour {
         {
             if( Vector3.Distance( this.transform.position , SelectedUnit.transform.position ) <= 1.5f)
             {
-                SelectedUnit.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + 0.15f, this.transform.position.z ) ;
+                //SelectedUnit.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + 0.15f, this.transform.position.z ) ;
                 SelectedUnit.GetComponent<UnitManager>().curActions--;
+                SelectedUnit.GetComponent<UnitManager>().PlayerOwner.GetComponent<PlayerBase>().Cmd_MoveUnit(SelectedUnit , new Vector3(this.transform.position.x, this.transform.position.y + 0.15f, this.transform.position.z));
             }
         }
     }

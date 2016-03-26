@@ -2,7 +2,7 @@
 using UnityEngine.Networking;
 using System.Collections;
 
-public class networkComponentVerification : NetworkBehaviour {
+public class networkComponentVerificationOffline : NetworkBehaviour {
 
     [SerializeField]
     Behaviour[] ComponentsToDisable;
@@ -11,7 +11,7 @@ public class networkComponentVerification : NetworkBehaviour {
     void Start()
     {
 
-        if(!isLocalPlayer){
+        if(!GetComponent<UnitManager>().PlayerOwner.GetComponent<PlayerBase>().isLocalPlayer){
 
             for(int i = 0; i < ComponentsToDisable.Length; i++)
             {

@@ -25,11 +25,4 @@ public class GameManager : NetworkBehaviour {
         if (curTurn > MaxTurns)
             curTurn = 1;
     }
-
-    [Command]
-    public void Cmd_SpawnObject(GameObject ObjToSpawn, Vector3 Pos)
-    {
-        GameObject go = (GameObject)Instantiate(ObjToSpawn, Pos, Quaternion.identity);
-        NetworkServer.Spawn(go);
-    }
 }

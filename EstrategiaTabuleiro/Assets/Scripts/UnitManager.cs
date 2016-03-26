@@ -10,6 +10,7 @@ public class UnitManager : NetworkBehaviour {
     public GameObject UnitSelectedIndicator;
     public PlayerManager playerManager;
     public GameManager gameManager;
+    public GameObject PlayerOwner;
     //Definição de Variáveis
 
     public void ReloadActions()
@@ -78,6 +79,11 @@ public class UnitManager : NetworkBehaviour {
 
         //Caso as ações do jogador acabem, a unidade é desselecionada
         if (curActions <= 0 && Selected == true)
+        {
+            DeSelectUnit();
+        }
+
+        if(gameManager.curTurn != playerManager.MyTurn)
         {
             DeSelectUnit();
         }
