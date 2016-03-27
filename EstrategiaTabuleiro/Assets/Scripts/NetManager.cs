@@ -28,7 +28,16 @@ public class NetManager : NetworkManager {
 
     public override void OnStartHost()
     {
-        Debug.Log("Hosting!");
+        
     }
 
+    public void SetMaxPlayers(string Temp_NumberOfPlayers)
+    {
+        int NumberOfPlayers = Convert.ToInt32(Temp_NumberOfPlayers); 
+
+        if (NumberOfPlayers > 4)
+            NumberOfPlayers = 4;
+
+        maxConnections = NumberOfPlayers;
+    }
 }

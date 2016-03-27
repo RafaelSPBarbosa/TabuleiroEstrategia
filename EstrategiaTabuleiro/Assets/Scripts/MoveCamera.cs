@@ -7,7 +7,7 @@ public class MoveCamera : MonoBehaviour {
     public Transform CameraRotator;  // O Objeto com nome :"CameraRotator" que está cuidando da rotação da câmera por meio de parentesco
 
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 
         this.transform.Translate(Input.GetAxis("Horizontal") * Speed, -Input.GetAxis("Mouse ScrollWheel") * (Speed * 5) ,Input.GetAxis("Vertical") * Speed);
 	    //                       Movimento Horizontal                     Zoom                                            Movimento Vertical

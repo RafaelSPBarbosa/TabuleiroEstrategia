@@ -11,6 +11,7 @@ public class PlayerBase : NetworkBehaviour {
     Button SpawnExplorerBtn, PassTurnButton;
     [SyncVar]
     public int PlayerBaseID;
+    public bool Occupied;
 
     void Start()
     {
@@ -29,6 +30,41 @@ public class PlayerBase : NetworkBehaviour {
         }
     }
 
+    void Update()
+    {
+        if (gameManager.curTurn == playerManager.MyTurn)
+        {
+            PassTurnButton.interactable = true;
+
+            if(Occupied == false)
+            {
+                SpawnExplorerBtn.interactable = true;
+            }
+            else
+            {
+                SpawnExplorerBtn.interactable = false;
+            }             
+
+        }
+        else
+        {
+            PassTurnButton.interactable = false;
+            SpawnExplorerBtn.interactable = false;
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Unit")
+            Occupied = true;
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Unit")
+            Occupied = false;
+    }
+
     [Command]
     public void Cmd_SpawnExplorer()
     {
@@ -37,8 +73,6 @@ public class PlayerBase : NetworkBehaviour {
         go.GetComponent<UnitManager>().PlayerOwner = this.gameObject;
 
         Rpc_SetObjectOwner(go);
-        //NetworkServer.SpawnWithClientAuthority(go, this.gameObject);
-        //go.GetComponent<networkComponentVerification>().enabled = true;
     }
 
     [ClientRpc]
@@ -69,7 +103,8 @@ public class PlayerBase : NetworkBehaviour {
 
     [ClientRpc]
     public void Rpc_PassTurn()
-    { 
+    {
+
         //Aqui carrego a variável com todos os objetos da cena que possuem o Tag "Unit"
         GameObject[] AllFriendlyUnits = GameObject.FindGameObjectsWithTag("Unit");
 
@@ -81,7 +116,7 @@ public class PlayerBase : NetworkBehaviour {
     }
 
     [Command]
-    public void Cmd_MoveUnit(GameObject Obj , Vector3 pos)
+    public void Cmd_MoveUnit(GameObject Obj, Vector3 pos)
     {
         Obj.transform.position = pos;
         Rpc_MoveUnit(Obj, pos);
@@ -91,5 +126,20 @@ public class PlayerBase : NetworkBehaviour {
     public void Rpc_MoveUnit(GameObject Obj, Vector3 pos)
     {
         Obj.transform.position = pos;
+    }
+
+    [Command]
+    public void Cmd_UpdateSteppingOnTile(GameObject tile , GameObject Obj)
+    {
+        
+        tile.GetComponent<TileManager>().SteppingObject = Obj;
+        Rpc_UpdateSteppingOnTile(tile, Obj);
+    }
+
+    [ClientRpc]
+    public void Rpc_UpdateSteppingOnTile(GameObject tile, GameObject Obj)
+    {
+        
+        tile.GetComponent<TileManager>().SteppingObject = Obj;
     }
 }

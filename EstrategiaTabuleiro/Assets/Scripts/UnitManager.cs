@@ -15,7 +15,6 @@ public class UnitManager : NetworkBehaviour {
 
     public void ReloadActions()
     {
-
         curActions = MaxActions;
     }
 
@@ -86,6 +85,22 @@ public class UnitManager : NetworkBehaviour {
         if(gameManager.curTurn != playerManager.MyTurn)
         {
             DeSelectUnit();
+        }
+    }
+
+    void OnTriggerEnter( Collider other )
+    {
+        if( other.tag == "Tile")
+        {
+            PlayerOwner.GetComponent<PlayerBase>().Cmd_UpdateSteppingOnTile(other.gameObject, this.gameObject);
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Tile")
+        {
+            PlayerOwner.GetComponent<PlayerBase>().Cmd_UpdateSteppingOnTile(other.gameObject, null );
         }
     }
 }
