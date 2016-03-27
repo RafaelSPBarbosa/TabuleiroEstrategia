@@ -30,14 +30,4 @@ public class NetManager : NetworkManager {
     {
         
     }
-
-    public void SetMaxPlayers(string Temp_NumberOfPlayers)
-    {
-        int NumberOfPlayers = Convert.ToInt32(Temp_NumberOfPlayers); 
-
-        if (NumberOfPlayers > 4)
-            NumberOfPlayers = 4;
-
-        maxConnections = NumberOfPlayers;
-    }
 }

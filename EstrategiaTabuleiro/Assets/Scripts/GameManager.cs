@@ -13,11 +13,6 @@ public class GameManager : NetworkBehaviour {
 
     public Text TurnText;
 
-    void Start()
-    {
-        MaxTurns = GameObject.Find("NetManager").GetComponent<NetManager>().maxConnections;
-    }
-
     void Update()
     {
         TurnText.text = "Turn : " + curTurn;
