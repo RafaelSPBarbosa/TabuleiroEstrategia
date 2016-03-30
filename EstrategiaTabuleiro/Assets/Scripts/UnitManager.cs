@@ -11,6 +11,11 @@ public class UnitManager : NetworkBehaviour {
     public PlayerManager playerManager;
     public GameManager gameManager;
     public GameObject PlayerOwner;
+    public int curHealth = 1;
+    public int MaxHealth = 1; 
+    public int Damage = 0;
+    public int SkillPoints = 20;
+    public int UnitType = 0;
     //Definição de Variáveis
 
     public void ReloadActions()

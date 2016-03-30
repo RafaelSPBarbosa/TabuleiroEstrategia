@@ -8,7 +8,9 @@ public class PlayerBase : NetworkBehaviour {
     GameManager gameManager;
     PlayerManager playerManager;
     public GameObject Explorer;
-    Button SpawnExplorerBtn, PassTurnButton;
+    public GameObject Warrior;
+    public GameObject Archer;
+    Button SpawnExplorerBtn, PassTurnButton, SpawnGuerreiroBtn, SpawnArqueiroBtn;
     [SyncVar]
     public int PlayerBaseID;
     public bool Occupied;
@@ -25,6 +27,12 @@ public class PlayerBase : NetworkBehaviour {
             SpawnExplorerBtn = GameObject.Find("SpawnExplorer").GetComponent<Button>();
             SpawnExplorerBtn.onClick.AddListener(() => Cmd_SpawnExplorer());
 
+            SpawnGuerreiroBtn = GameObject.Find("SpawnWarrior").GetComponent<Button>();
+            SpawnGuerreiroBtn.onClick.AddListener(() => Cmd_SpawnGuerreiro());
+
+            SpawnArqueiroBtn = GameObject.Find("SpawnArcher").GetComponent<Button>();
+            SpawnArqueiroBtn.onClick.AddListener(() => Cmd_SpawnArqueiro());
+
             PassTurnButton = GameObject.Find("PassTurnBtn").GetComponent<Button>();
             PassTurnButton.onClick.AddListener(() => Cmd_PassTurn());
         }
@@ -39,10 +47,14 @@ public class PlayerBase : NetworkBehaviour {
             if(Occupied == false)
             {
                 SpawnExplorerBtn.interactable = true;
+                SpawnGuerreiroBtn.interactable = true;
+                SpawnArqueiroBtn.interactable = true;
             }
             else
             {
                 SpawnExplorerBtn.interactable = false;
+                SpawnGuerreiroBtn.interactable = false;
+                SpawnArqueiroBtn.interactable = false;
             }             
 
         }
@@ -50,6 +62,8 @@ public class PlayerBase : NetworkBehaviour {
         {
             PassTurnButton.interactable = false;
             SpawnExplorerBtn.interactable = false;
+            SpawnGuerreiroBtn.interactable = false;
+            SpawnArqueiroBtn.interactable = false;
         }
     }
 
@@ -69,6 +83,26 @@ public class PlayerBase : NetworkBehaviour {
     public void Cmd_SpawnExplorer()
     {
         GameObject go = (GameObject)Instantiate(Explorer, this.transform.position, Quaternion.identity);
+        NetworkServer.Spawn(go);
+        go.GetComponent<UnitManager>().PlayerOwner = this.gameObject;
+
+        Rpc_SetObjectOwner(go);
+    }
+
+    [Command]
+    public void Cmd_SpawnGuerreiro()
+    {
+        GameObject go = (GameObject)Instantiate(Warrior, this.transform.position, Quaternion.identity);
+        NetworkServer.Spawn(go);
+        go.GetComponent<UnitManager>().PlayerOwner = this.gameObject;
+
+        Rpc_SetObjectOwner(go);
+    }
+
+    [Command]
+    public void Cmd_SpawnArqueiro()
+    {
+        GameObject go = (GameObject)Instantiate(Archer, this.transform.position, Quaternion.identity);
         NetworkServer.Spawn(go);
         go.GetComponent<UnitManager>().PlayerOwner = this.gameObject;
 
