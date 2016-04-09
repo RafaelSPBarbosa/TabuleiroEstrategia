@@ -16,7 +16,12 @@ public class UnitManager : NetworkBehaviour {
     public int Damage = 0;
     public int SkillPoints = 20;
     public int UnitType = 0;
+    public GameObject AnimatedMesh;
     //Definição de Variáveis
+    private Vector3 curPos;
+    private Vector3 lastPos;
+
+    public Vector3 GoToPos;
 
     public void ReloadActions()
     {
@@ -25,6 +30,7 @@ public class UnitManager : NetworkBehaviour {
 
     void Start()
     {
+        GoToPos = this.transform.position;
         playerManager = GameObject.Find("_PlayerManager").GetComponent<PlayerManager>();
         gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
     }
@@ -91,6 +97,10 @@ public class UnitManager : NetworkBehaviour {
         {
             DeSelectUnit();
         }
+
+        this.transform.LookAt(GoToPos);
+        this.transform.position = Vector3.MoveTowards(this.transform.position, GoToPos, Time.deltaTime );
+
     }
 
     void OnTriggerEnter( Collider other )
@@ -107,5 +117,11 @@ public class UnitManager : NetworkBehaviour {
         {
             PlayerOwner.GetComponent<PlayerBase>().Cmd_UpdateSteppingOnTile(other.gameObject, null );
         }
+    }
+
+    public void MoveTowardsPoint(Vector3 Pos)
+    {
+
+        GoToPos = Pos;
     }
 }

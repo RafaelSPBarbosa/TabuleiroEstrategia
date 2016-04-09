@@ -11,7 +11,7 @@ public class networkComponentVerificationOffline : NetworkBehaviour {
     void Start()
     {
 
-        if(!GetComponent<UnitManager>().PlayerOwner.GetComponent<PlayerBase>().isLocalPlayer){
+      if(!GetComponent<UnitManager>().PlayerOwner.GetComponent<PlayerBase>().isLocalPlayer){
 
             for(int i = 0; i < ComponentsToDisable.Length; i++)
             {
