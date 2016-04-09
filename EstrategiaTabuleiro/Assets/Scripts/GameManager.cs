@@ -24,5 +24,13 @@ public class GameManager : NetworkBehaviour {
         curTurn++;
         if (curTurn > MaxTurns)
             curTurn = 1;
+
+        Rpc_UpdateTurn(curTurn);
+    }
+
+    [ClientRpc]
+    public void Rpc_UpdateTurn( int Turn )
+    {
+        curTurn = Turn;
     }
 }

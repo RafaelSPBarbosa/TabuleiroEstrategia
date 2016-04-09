@@ -16,12 +16,10 @@ public class UnitManager : NetworkBehaviour {
     public int Damage = 0;
     public int SkillPoints = 20;
     public int UnitType = 0;
-    public GameObject AnimatedMesh;
-    //Definição de Variáveis
-    private Vector3 curPos;
-    private Vector3 lastPos;
-
+    public Animator AnimatedMesh;
     public Vector3 GoToPos;
+    public bool Busy = false;
+    //Definição de Variáveis
 
     public void ReloadActions()
     {
@@ -75,8 +73,16 @@ public class UnitManager : NetworkBehaviour {
         }
     }
 
+    [ClientCallback]
+    public void Rpc_MakeUnitRun( bool state)
+    {
+        if(AnimatedMesh != null)
+            AnimatedMesh.SetBool("Running", state);
+    }
+
     void Update()
     {
+
         //Aqui estou apenas ligando e desligando o efeito de uma unidade selecionada
         if (Selected == true)
         {
@@ -108,7 +114,15 @@ public class UnitManager : NetworkBehaviour {
         if( other.tag == "Tile")
         {
             PlayerOwner.GetComponent<PlayerBase>().Cmd_UpdateSteppingOnTile(other.gameObject, this.gameObject);
+            StartCoroutine(StopRunning());
         }
+    }
+
+    public IEnumerator StopRunning()
+    {
+        yield return new WaitForSeconds(0.5f);
+        Busy = false;
+        Rpc_MakeUnitRun(false);
     }
 
     void OnTriggerExit(Collider other)
@@ -119,9 +133,11 @@ public class UnitManager : NetworkBehaviour {
         }
     }
 
-    public void MoveTowardsPoint(Vector3 Pos)
+    [ClientCallback]
+    public void Rpc_MoveTowardsPoint(Vector3 Pos)
     {
-
         GoToPos = Pos;
+        Rpc_MakeUnitRun(true);
+        Busy = true;
     }
 }

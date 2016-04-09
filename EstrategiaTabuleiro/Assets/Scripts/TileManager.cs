@@ -68,7 +68,8 @@ public class TileManager : NetworkBehaviour {
             if (SelectedUnit != null && SteppingObject == null)
             {
                 //Esta parte serve para mostrar melhor os tiles para os quais o player pode se movimentar
-                if (Vector3.Distance(this.transform.position, SelectedUnit.transform.position) <= 1.5f)
+
+                if (Vector3.Distance(this.transform.position, SelectedUnit.transform.position) <= 1.5f && SelectedUnit.GetComponent<UnitManager>().Busy == false)
                 {
                     if (GetComponent<MeshRenderer>().material.color == Idle)
                     {
@@ -109,17 +110,16 @@ public class TileManager : NetworkBehaviour {
 
     void OnMouseDown()
     {
-        if( SelectedUnit != null  && SteppingObject == null) //Ainda é preciso pedir a quantidade de ações que uma unidade pode executar
+        if( SelectedUnit != null  && SteppingObject == null ) //Ainda é preciso pedir a quantidade de ações que uma unidade pode executar
         {
-            if( Vector3.Distance( this.transform.position , SelectedUnit.transform.position ) <= 1.5f)
+            if (SelectedUnit.GetComponent<UnitManager>().Busy == false)
             {
-               // if (Vector3.Distance(SelectedUnit.GetComponent<UnitManager>().GoToPos, SelectedUnit.transform.position) < 0.1f)
-                //{
-                    //SelectedUnit.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + 0.15f, this.transform.position.z ) ;
-                    //SteppingObject = SelectedUnit;
+                if (Vector3.Distance(this.transform.position, SelectedUnit.transform.position) <= 1.5f)
+                {
                     SelectedUnit.GetComponent<UnitManager>().curActions--;
                     SelectedUnit.GetComponent<UnitManager>().PlayerOwner.GetComponent<PlayerBase>().Cmd_MoveUnit(SelectedUnit, this.gameObject);
-                //}
+
+                }
             }
         }
     }

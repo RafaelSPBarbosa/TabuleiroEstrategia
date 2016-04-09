@@ -25,7 +25,7 @@ public class PlayerBase : NetworkBehaviour {
         if (PlayerBaseID == playerManager.PlayerID)
         {
             SpawnExplorerBtn = GameObject.Find("SpawnExplorer").GetComponent<Button>();
-            SpawnExplorerBtn.onClick.AddListener(() => Cmd_SpawnExplorer());
+            SpawnExplorerBtn.onClick.AddListener(() => Cmd_SpawnExplorer(false));
 
             SpawnGuerreiroBtn = GameObject.Find("SpawnWarrior").GetComponent<Button>();
             SpawnGuerreiroBtn.onClick.AddListener(() => Cmd_SpawnGuerreiro());
@@ -35,6 +35,8 @@ public class PlayerBase : NetworkBehaviour {
 
             PassTurnButton = GameObject.Find("PassTurnBtn").GetComponent<Button>();
             PassTurnButton.onClick.AddListener(() => Cmd_PassTurn());
+
+            //Cmd_SpawnExplorer(true);
         }
     }
 
@@ -80,14 +82,14 @@ public class PlayerBase : NetworkBehaviour {
     }
 
     [Command]
-    public void Cmd_SpawnExplorer()
+    public void Cmd_SpawnExplorer( bool isFirst )
     {
         GameObject go = (GameObject)Instantiate(Explorer, this.transform.position, Quaternion.identity);
         NetworkServer.SpawnWithClientAuthority(go, connectionToClient);
-        //NetworkServer.Spawn(go);
         go.GetComponent<UnitManager>().PlayerOwner = this.gameObject;
+        if (isFirst == true)
+            go.GetComponent<UnitManager>().curActions = 3;
         
-
         Rpc_SetObjectOwner(go);
     }
 
@@ -95,17 +97,18 @@ public class PlayerBase : NetworkBehaviour {
     public void Cmd_SpawnGuerreiro()
     {
         GameObject go = (GameObject)Instantiate(Warrior, this.transform.position, Quaternion.identity);
-        NetworkServer.Spawn(go);
+        NetworkServer.SpawnWithClientAuthority(go, this.gameObject);
         go.GetComponent<UnitManager>().PlayerOwner = this.gameObject;
 
         Rpc_SetObjectOwner(go);
     }
 
+
     [Command]
     public void Cmd_SpawnArqueiro()
     {
         GameObject go = (GameObject)Instantiate(Archer, this.transform.position, Quaternion.identity);
-        NetworkServer.Spawn(go);
+        NetworkServer.SpawnWithClientAuthority(go, this.gameObject);
         go.GetComponent<UnitManager>().PlayerOwner = this.gameObject;
 
         Rpc_SetObjectOwner(go);
@@ -154,28 +157,19 @@ public class PlayerBase : NetworkBehaviour {
     [Command]
     public void Cmd_MoveUnit(GameObject Obj, GameObject Tile)
     {
-        //Obj.transform.LookAt(Tile.transform.position);
-        //Obj.transform.position = Vector3.MoveTowards(Obj.transform.position , Tile.transform.position, Time.deltaTime * 2);
 
-        Obj.GetComponent<UnitManager>().MoveTowardsPoint(Tile.transform.position);
+        Obj.GetComponent<UnitManager>().Rpc_MoveTowardsPoint(new Vector3(Tile.transform.position.x , Tile.transform.position.y + 0.15f , Tile.transform.position.z ));
+        
 
         Rpc_MoveUnit(Obj, Tile);
 
-        
     }
 
     [ClientRpc]
     public void Rpc_MoveUnit(GameObject Obj, GameObject Tile)
     {
-        //Obj.transform.position = pos;
 
-        //Obj.transform.LookAt(Tile.transform.position);
-        //Obj.transform.position = Vector3.MoveTowards(Obj.transform.position, Tile.transform.position, Time.deltaTime * 2);
-
-        Obj.GetComponent<UnitManager>().MoveTowardsPoint(Tile.transform.position);
-
-       // Obj.transform.LookAt(Tile.transform.position);
-        //Obj.transform.position = Vector3.MoveTowards(this.transform.position, Tile.transform.position, Time.deltaTime);
+        Obj.GetComponent<UnitManager>().Rpc_MoveTowardsPoint(new Vector3(Tile.transform.position.x, Tile.transform.position.y + 0.15f, Tile.transform.position.z));
         
     }
 
@@ -193,12 +187,4 @@ public class PlayerBase : NetworkBehaviour {
         
         tile.GetComponent<TileManager>().SteppingObject = Obj;
     }
-
-   // [Command]
-   // public void Cmd_UpdateUnitPosition(GameObject Unit , Vector3 Pos)
-  //  {
-
-       // Unit.transform.position = Pos;
-       // Unit.transform.LookAt(Pos);
-  //  }
 }
