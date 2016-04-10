@@ -16,11 +16,33 @@ public class PlayerBase : NetworkBehaviour {
     public bool Occupied;
 
     void Start()
-    {
+    { 
+
         gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
         playerManager = GameObject.Find("_PlayerManager").GetComponent<PlayerManager>();
 
-        PlayerBaseID = GameObject.FindGameObjectsWithTag("PlayerBase").Length;
+        if(isLocalPlayer)
+            PlayerBaseID = GameObject.FindGameObjectsWithTag("PlayerBase").Length;
+
+        if (PlayerBaseID == playerManager.PlayerID)
+        {
+            if (PlayerBaseID == 1)
+            {
+                GameObject.Find("CameraRotator").transform.Rotate(0, 30, 0);
+            }
+            if (PlayerBaseID == 0)
+            {
+                GameObject.Find("CameraRotator").transform.Rotate(0, 135, 0);
+            }
+            if (PlayerBaseID == 2)
+            {
+                GameObject.Find("CameraRotator").transform.Rotate(0, 210, 0);
+            }
+            if (PlayerBaseID == 3)
+            {
+                GameObject.Find("CameraRotator").transform.Rotate(0, 330, 0);
+            }
+        }
 
         if (PlayerBaseID == playerManager.PlayerID)
         {
