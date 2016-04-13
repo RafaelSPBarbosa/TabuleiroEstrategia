@@ -23,6 +23,7 @@ public class UnitManager : NetworkBehaviour {
     public bool Busy = false;
     public bool isAttacking = false;
     public bool isAlive = true;
+    public GameObject SteppingTile;
     //Definição de Variáveis
 
     public void ReloadActions()
@@ -97,7 +98,13 @@ public class UnitManager : NetworkBehaviour {
     public void Cmd_KillUnit()
     {
         isAlive = false;
-        AnimatedMesh.SetTrigger("Die");
+
+        if (AnimatedMesh != null)
+            AnimatedMesh.SetTrigger("Die");
+
+        if (SteppingTile != null)
+            SteppingTile.GetComponent<TileManager>().SteppingObject = null; 
+
         GetComponent<BoxCollider>().enabled = false;
         Rpc_KillUnit();
     }
@@ -107,7 +114,12 @@ public class UnitManager : NetworkBehaviour {
     {
         isAlive = false;
         GetComponent<BoxCollider>().enabled = false;
-        AnimatedMesh.SetTrigger("Die");
+
+        if (SteppingTile != null)
+            SteppingTile.GetComponent<TileManager>().SteppingObject = null;
+
+        if (AnimatedMesh != null)
+            AnimatedMesh.SetTrigger("Die");
     }
 
     public IEnumerator HideDeadUnit()
@@ -118,6 +130,26 @@ public class UnitManager : NetworkBehaviour {
             yield return 0;
             this.transform.Translate(0,-0.01f, 0);
         }
+        if (!isServer)
+        {
+            Cmd_DestroyUnit(this.gameObject);
+        }
+        else
+        {
+            Rpc_DestroyUnit(this.gameObject);
+        }
+    }
+
+    [Command]
+    public void Cmd_DestroyUnit ( GameObject Target)
+    {
+        Destroy(this.gameObject);
+    }
+
+    [ClientRpc]
+    public void Rpc_DestroyUnit(GameObject Target)
+    {
+        Destroy(this.gameObject);
     }
 
     void Update()
@@ -132,28 +164,46 @@ public class UnitManager : NetworkBehaviour {
                 StartCoroutine(HideDeadUnit());
             }
 
-            if (Selected == true)
+            if (UnitType != 0)
             {
-                if (Busy == false && isAttacking == false)
+                if (Selected == true)
                 {
-                    if (curActions >= 1)
+                    if (Busy == false && isAttacking == false)
                     {
-                        if (Input.GetMouseButtonDown(0))
+                        if (curActions >= 1)
                         {
-                            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                            RaycastHit hit;
-
-                            if (Physics.Raycast(ray, out hit, 100))
+                            if (Input.GetMouseButtonDown(0))
                             {
-                                if (hit.transform.tag == "Unit")
+                                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                                RaycastHit hit;
+
+                                if (Physics.Raycast(ray, out hit, 100))
                                 {
-                                    if (Vector3.Distance(hit.transform.position, this.transform.position) < 1.5f)
+                                    if (hit.transform.tag == "Unit")
                                     {
-                                        if (hit.transform.gameObject.GetComponent<UnitManager>().PlayerOwner != PlayerOwner)
+                                        if (UnitType == 1)
                                         {
-                                            //Rpc_AttackUnit(this.transform.gameObject);
-                                            StartCoroutine(LocalAttackUnit(hit.transform.gameObject));
-                                            curActions--;
+                                            if (Vector3.Distance(hit.transform.position, this.transform.position) < 1.5f)
+                                            {
+                                                if (hit.transform.gameObject.GetComponent<UnitManager>().PlayerOwner != PlayerOwner)
+                                                {
+
+                                                    StartCoroutine(LocalAttackUnit(hit.transform.gameObject));
+                                                    curActions--;
+                                                }
+                                            }
+                                        }
+                                        if (UnitType == 2)
+                                        {
+                                            if (Vector3.Distance(hit.transform.position, this.transform.position) > 1.5f && Vector3.Distance(hit.transform.position, this.transform.position) < 3.0f) 
+                                            {
+                                                if (hit.transform.gameObject.GetComponent<UnitManager>().PlayerOwner != PlayerOwner)
+                                                {
+
+                                                    StartCoroutine(LocalAttackUnit(hit.transform.gameObject));
+                                                    curActions--;
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -218,8 +268,8 @@ public class UnitManager : NetworkBehaviour {
     public void Cmd_CounterAttack(GameObject Target)
     {
 
-        //Target.GetComponent<UnitManager>().StartCoroutine(CounterAttack(this.gameObject));
         StartCoroutine(CounterAttack(Target));
+        Target.transform.LookAt(this.transform.position);
         Target.GetComponent<UnitManager>().Cmd_UnitAttack(Target);
     }
 
@@ -227,19 +277,15 @@ public class UnitManager : NetworkBehaviour {
     public void Rpc_CounterAttack(GameObject Target)
     {
 
-        //Target.GetComponent<UnitManager>().StartCoroutine(CounterAttack(this.gameObject));
         StartCoroutine(CounterAttack(Target));
+        Target.transform.LookAt(this.transform.position);
         Target.GetComponent<UnitManager>().Cmd_UnitAttack(Target);
     }
 
     public IEnumerator CounterAttack(GameObject Target)
     {
-        
 
         yield return new WaitForSeconds(1.5f);
-
-        //if(isServer)
-        //  Target.GetComponent<UnitManager>().Rpc_TakeDamage(Damage);
 
         Cmd_TakeDamage(this.gameObject, Target.GetComponent<UnitManager>().Damage);
 
@@ -258,9 +304,6 @@ public class UnitManager : NetworkBehaviour {
             Cmd_UnitAttack(Target);
 
             yield return new WaitForSeconds(0.9f);
-
-            //if(isServer)
-              //  Target.GetComponent<UnitManager>().Rpc_TakeDamage(Damage);
             
             if(isServer)
                 Rpc_TakeDamage(Target , Damage);
@@ -269,31 +312,12 @@ public class UnitManager : NetworkBehaviour {
                 Cmd_TakeDamage(Target, Damage);
 
             yield return new WaitForSeconds(1);
-
-            // Guerreiro
-            if (Target.GetComponent<UnitManager>().UnitType == 1 && Vector3.Distance(this.transform.position, Target.transform.position) <= 1.5f)
+            //Contra ataques
+            if (UnitType == 1)
             {
-                if (Target.GetComponent<UnitManager>().curHealth > 0)
-                {
-                    if (isServer)
-                    {
-                        Rpc_CounterAttack(Target);
-                    }
-                    else
-                    {
 
-                        Cmd_CounterAttack(Target);
-                    }
-                }
-
-                yield return new WaitForSeconds(1.25f);
-                isAttacking = false;
-            }
-
-            //Arqueiro
-            if (Target.GetComponent<UnitManager>().UnitType == 2 && Vector3.Distance(this.transform.position, Target.transform.position) >= 2.7f && Vector3.Distance(this.transform.position, Target.transform.position) <= 3.2f)
-            {
-                if (Vector3.Distance(this.transform.position, Target.transform.position) < 3 && Vector3.Distance(this.transform.position, Target.transform.position) > 2.5f)
+                // Guerreiro
+                if (Target.GetComponent<UnitManager>().UnitType == 1)
                 {
                     if (Target.GetComponent<UnitManager>().curHealth > 0)
                     {
@@ -311,13 +335,52 @@ public class UnitManager : NetworkBehaviour {
                     yield return new WaitForSeconds(1.25f);
                     isAttacking = false;
                 }
+
+                //Arqueiro
+                if (Target.GetComponent<UnitManager>().UnitType == 2)
+                {
+                    
+                    isAttacking = false;
+                }
+
+            }
+
+            if (UnitType == 2)
+            {
+
+                // Guerreiro
+                if (Target.GetComponent<UnitManager>().UnitType == 1)
+                {
+                    isAttacking = false;
+                }
+
+                //Arqueiro
+                if (Target.GetComponent<UnitManager>().UnitType == 2)
+                {
+                    if (Target.GetComponent<UnitManager>().curHealth > 0)
+                    {
+                        if (isServer)
+                        {
+                            Rpc_CounterAttack(Target);
+                        }
+                        else
+                        {
+
+                            Cmd_CounterAttack(Target);
+                        }
+                    }
+
+                    yield return new WaitForSeconds(1.25f);
+                    isAttacking = false;
+                }
+
             }
 
             //Explorador
             if (Target.GetComponent<UnitManager>().UnitType == 0)
             {
 
-                //isAttacking = false;
+                isAttacking = false;
             }
         }
     }
@@ -325,15 +388,18 @@ public class UnitManager : NetworkBehaviour {
     [ClientRpc]
     public void Rpc_TakeDamageAnim (GameObject Target)
     {
-        if( !isServer )
-        Target.GetComponent<UnitManager>().AnimatedMesh.SetTrigger("GetHit");
+        if (!isServer)
+        {
+            if (Target.GetComponent<UnitManager>().AnimatedMesh != null)
+                Target.GetComponent<UnitManager>().AnimatedMesh.SetTrigger("GetHit");
+        }
     }
 
     [ClientRpc]
     public void Rpc_TakeDamage(GameObject Target , int Inc_Damage)
     {
-
-        Target.GetComponent<UnitManager>().AnimatedMesh.SetTrigger("GetHit");
+        if (Target.GetComponent<UnitManager>().AnimatedMesh != null)
+            Target.GetComponent<UnitManager>().AnimatedMesh.SetTrigger("GetHit");
 
         Target.GetComponent<UnitManager>().curHealth -= Inc_Damage;
 
@@ -343,7 +409,8 @@ public class UnitManager : NetworkBehaviour {
     public void Cmd_TakeDamage(GameObject Target , int Inc_Damage)
     {
 
-        Target.GetComponent<UnitManager>().AnimatedMesh.SetTrigger("GetHit");
+        if (Target.GetComponent<UnitManager>().AnimatedMesh != null)
+            Target.GetComponent<UnitManager>().AnimatedMesh.SetTrigger("GetHit");
 
         Target.GetComponent<UnitManager>().curHealth -= Inc_Damage;
         
@@ -357,6 +424,7 @@ public class UnitManager : NetworkBehaviour {
     {
         if( other.tag == "Tile")
         {
+            SteppingTile = other.gameObject;
             PlayerOwner.GetComponent<PlayerBase>().Cmd_UpdateSteppingOnTile(other.gameObject, this.gameObject);
             StartCoroutine(StopRunning());
         }
@@ -375,6 +443,7 @@ public class UnitManager : NetworkBehaviour {
         {
             if (other.tag == "Tile")
             {
+               // SteppingTile = null;
                 PlayerOwner.GetComponent<PlayerBase>().Cmd_UpdateSteppingOnTile(other.gameObject, null);
             }
         }
