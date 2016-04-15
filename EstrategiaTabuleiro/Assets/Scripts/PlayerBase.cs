@@ -158,6 +158,7 @@ public class PlayerBase : NetworkBehaviour {
         for (int i = 0; i < AllFriendlyUnits.Length; i++)
         {
             AllFriendlyUnits[i].GetComponent<UnitManager>().curActions = AllFriendlyUnits[i].GetComponent<UnitManager>().MaxActions;
+            AllFriendlyUnits[i].GetComponent<UnitManager>().HasAttacked = false;
         }
 
         Rpc_PassTurn();
@@ -174,6 +175,7 @@ public class PlayerBase : NetworkBehaviour {
         for (int i = 0; i < AllFriendlyUnits.Length; i++)
         {
             AllFriendlyUnits[i].GetComponent<UnitManager>().curActions = AllFriendlyUnits[i].GetComponent<UnitManager>().MaxActions;
+            AllFriendlyUnits[i].GetComponent<UnitManager>().HasAttacked = false;
         }
     }
 

@@ -24,6 +24,7 @@ public class UnitManager : NetworkBehaviour {
     public bool isAttacking = false;
     public bool isAlive = true;
     public GameObject SteppingTile;
+    public bool HasAttacked = false;
     //Definição de Variáveis
 
     public void ReloadActions()
@@ -103,7 +104,10 @@ public class UnitManager : NetworkBehaviour {
             AnimatedMesh.SetTrigger("Die");
 
         if (SteppingTile != null)
-            SteppingTile.GetComponent<TileManager>().SteppingObject = null; 
+        {
+
+            SteppingTile.GetComponent<TileManager>().SteppingObject = null;
+        }
 
         GetComponent<BoxCollider>().enabled = false;
         Rpc_KillUnit();
@@ -116,7 +120,10 @@ public class UnitManager : NetworkBehaviour {
         GetComponent<BoxCollider>().enabled = false;
 
         if (SteppingTile != null)
+        {
+
             SteppingTile.GetComponent<TileManager>().SteppingObject = null;
+        }
 
         if (AnimatedMesh != null)
             AnimatedMesh.SetTrigger("Die");
@@ -124,6 +131,7 @@ public class UnitManager : NetworkBehaviour {
 
     public IEnumerator HideDeadUnit()
     {
+        
         yield return new WaitForSeconds(5);
         for(int i = 0; i < 100; i++)
         {
@@ -151,7 +159,6 @@ public class UnitManager : NetworkBehaviour {
     {
         Destroy(this.gameObject);
     }
-
     void Update()
     {
         if (isAlive == true)
@@ -159,49 +166,57 @@ public class UnitManager : NetworkBehaviour {
 
             if (curHealth <= 0)
             {
+
+                SteppingTile.GetComponent<TileManager>().PlayerBase.GetComponent<PlayerBase>().Occupied = false;
                 Cmd_KillUnit();
                 DeSelectUnit();
                 StartCoroutine(HideDeadUnit());
+
             }
 
-            if (UnitType != 0)
+            if (HasAttacked == false)
             {
-                if (Selected == true)
+                if (UnitType != 0)
                 {
-                    if (Busy == false && isAttacking == false)
+                    if (Selected == true)
                     {
-                        if (curActions >= 1)
+                        if (Busy == false && isAttacking == false)
                         {
-                            if (Input.GetMouseButtonDown(0))
+                            if (curActions >= 1)
                             {
-                                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                                RaycastHit hit;
-
-                                if (Physics.Raycast(ray, out hit, 100))
+                                if (Input.GetMouseButtonDown(0))
                                 {
-                                    if (hit.transform.tag == "Unit")
-                                    {
-                                        if (UnitType == 1)
-                                        {
-                                            if (Vector3.Distance(hit.transform.position, this.transform.position) < 1.5f)
-                                            {
-                                                if (hit.transform.gameObject.GetComponent<UnitManager>().PlayerOwner != PlayerOwner)
-                                                {
+                                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                                    RaycastHit hit;
 
-                                                    StartCoroutine(LocalAttackUnit(hit.transform.gameObject));
-                                                    curActions--;
+                                    if (Physics.Raycast(ray, out hit, 100))
+                                    {
+                                        if (hit.transform.tag == "Unit")
+                                        {
+                                            if (UnitType == 1)
+                                            {
+                                                if (Vector3.Distance(hit.transform.position, this.transform.position) < 1.5f)
+                                                {
+                                                    if (hit.transform.gameObject.GetComponent<UnitManager>().PlayerOwner != PlayerOwner)
+                                                    {
+
+                                                        StartCoroutine(LocalAttackUnit(hit.transform.gameObject));
+                                                        curActions--;
+                                                        HasAttacked = true;
+                                                    }
                                                 }
                                             }
-                                        }
-                                        if (UnitType == 2)
-                                        {
-                                            if (Vector3.Distance(hit.transform.position, this.transform.position) > 1.5f && Vector3.Distance(hit.transform.position, this.transform.position) < 3.0f) 
+                                            if (UnitType == 2)
                                             {
-                                                if (hit.transform.gameObject.GetComponent<UnitManager>().PlayerOwner != PlayerOwner)
+                                                if (Vector3.Distance(hit.transform.position, this.transform.position) > 1.5f && Vector3.Distance(hit.transform.position, this.transform.position) < 3.0f)
                                                 {
+                                                    if (hit.transform.gameObject.GetComponent<UnitManager>().PlayerOwner != PlayerOwner)
+                                                    {
 
-                                                    StartCoroutine(LocalAttackUnit(hit.transform.gameObject));
-                                                    curActions--;
+                                                        StartCoroutine(LocalAttackUnit(hit.transform.gameObject));
+                                                        curActions--;
+                                                        HasAttacked = true;
+                                                    }
                                                 }
                                             }
                                         }

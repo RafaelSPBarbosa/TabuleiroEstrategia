@@ -13,9 +13,11 @@ public class TileManager : NetworkBehaviour {
     public GameManager gameManager;
     public PlayerManager playerManager;
     public GameObject SteppingObject;
+    public GameObject PlayerBase;
+
     //Definição de variáveis
 
-    void Start()
+    void Awake()
     {
         //Aqui estou pegando os valores iniciais de posição e escala do tile para poder resetar depois quando estiver alterado.
         NormalScale = this.transform.localScale;
@@ -112,15 +114,26 @@ public class TileManager : NetworkBehaviour {
     {
         if( SelectedUnit != null  && SteppingObject == null ) //Ainda é preciso pedir a quantidade de ações que uma unidade pode executar
         {
-            if (SelectedUnit.GetComponent<UnitManager>().Busy == false)
+            if (SelectedUnit.GetComponent<UnitManager>().PlayerOwner == PlayerBase || PlayerBase == null)
             {
-                if (Vector3.Distance(this.transform.position, SelectedUnit.transform.position) <= 1.5f)
+                if (SelectedUnit.GetComponent<UnitManager>().Busy == false)
                 {
-                    SelectedUnit.GetComponent<UnitManager>().curActions--;
-                    SelectedUnit.GetComponent<UnitManager>().PlayerOwner.GetComponent<PlayerBase>().Cmd_MoveUnit(SelectedUnit, this.gameObject);
+                    if (Vector3.Distance(this.transform.position, SelectedUnit.transform.position) <= 1.5f)
+                    {
+                        SelectedUnit.GetComponent<UnitManager>().curActions--;
+                        SelectedUnit.GetComponent<UnitManager>().PlayerOwner.GetComponent<PlayerBase>().Cmd_MoveUnit(SelectedUnit, this.gameObject);
 
+                    }
                 }
             }
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if(other.transform.tag == "PlayerBase")
+        {
+            PlayerBase = other.gameObject;
         }
     }
 }
