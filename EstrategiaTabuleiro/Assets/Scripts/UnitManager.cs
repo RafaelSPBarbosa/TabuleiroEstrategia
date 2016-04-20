@@ -167,7 +167,7 @@ public class UnitManager : NetworkBehaviour {
             if (curHealth <= 0)
             {
 
-                SteppingTile.GetComponent<TileManager>().PlayerBase.GetComponent<PlayerBase>().Occupied = false;
+                //SteppingTile.GetComponent<TileManager>().PlayerBase.GetComponent<PlayerBase>().Occupied = false;
                 Cmd_KillUnit();
                 DeSelectUnit();
                 StartCoroutine(HideDeadUnit());
