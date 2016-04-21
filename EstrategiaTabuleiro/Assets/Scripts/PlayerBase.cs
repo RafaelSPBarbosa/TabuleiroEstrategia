@@ -7,9 +7,10 @@ public class PlayerBase : NetworkBehaviour {
 
     GameManager gameManager;
     PlayerManager playerManager;
-    public GameObject Explorer;
-    public GameObject Warrior;
-    public GameObject Archer;
+    public GameObject Aguia_Explorer , Cao_Explorer, Rato_Explorer , Gato_Explorer;
+    public GameObject Aguia_Warrior, Cao_Warrior , Rato_Warrior , Gato_Warrior;
+    public GameObject Aguia_Archer, Cao_Archer , Rato_Archer , Gato_Archer;
+
     Button SpawnExplorerBtn, PassTurnButton, SpawnGuerreiroBtn, SpawnArqueiroBtn;
     [SyncVar]
     public int PlayerBaseID;
@@ -47,13 +48,13 @@ public class PlayerBase : NetworkBehaviour {
         if (PlayerBaseID == playerManager.PlayerID)
         {
             SpawnExplorerBtn = GameObject.Find("SpawnExplorer").GetComponent<Button>();
-            SpawnExplorerBtn.onClick.AddListener(() => Cmd_SpawnExplorer(false));
+            SpawnExplorerBtn.onClick.AddListener(() => Cmd_SpawnExplorer(PlayerBaseID,false));
 
             SpawnGuerreiroBtn = GameObject.Find("SpawnWarrior").GetComponent<Button>();
-            SpawnGuerreiroBtn.onClick.AddListener(() => Cmd_SpawnGuerreiro());
+            SpawnGuerreiroBtn.onClick.AddListener(() => Cmd_SpawnGuerreiro(PlayerBaseID));
 
             SpawnArqueiroBtn = GameObject.Find("SpawnArcher").GetComponent<Button>();
-            SpawnArqueiroBtn.onClick.AddListener(() => Cmd_SpawnArqueiro());
+            SpawnArqueiroBtn.onClick.AddListener(() => Cmd_SpawnArqueiro(PlayerBaseID));
 
             PassTurnButton = GameObject.Find("PassTurnBtn").GetComponent<Button>();
             PassTurnButton.onClick.AddListener(() => Cmd_PassTurn());
@@ -105,9 +106,28 @@ public class PlayerBase : NetworkBehaviour {
     }
 
     [Command]
-    public void Cmd_SpawnExplorer( bool isFirst )
+    public void Cmd_SpawnExplorer( int ExplorerID , bool isFirst )
     {
-        GameObject go = (GameObject)Instantiate(Explorer, this.transform.position, Quaternion.identity);
+        var Explorer = Cao_Explorer;
+
+        if(ExplorerID == 1)
+        {
+            Explorer = Cao_Explorer;
+        }
+        if(ExplorerID == 2)
+        {
+            Explorer = Aguia_Explorer;
+        }
+        if (ExplorerID == 3)
+        {
+            Explorer = Rato_Explorer;
+        }
+        if (ExplorerID == 4)
+        {
+            Explorer = Gato_Explorer;
+        }
+
+        GameObject go = (GameObject)Instantiate( Explorer , this.transform.position, Quaternion.identity);
         NetworkServer.SpawnWithClientAuthority(go, connectionToClient);
         go.GetComponent<UnitManager>().PlayerOwner = this.gameObject;
         if (isFirst == true)
@@ -117,8 +137,27 @@ public class PlayerBase : NetworkBehaviour {
     }
 
     [Command]
-    public void Cmd_SpawnGuerreiro()
+    public void Cmd_SpawnGuerreiro(int WarriorID)
     {
+        var Warrior = Cao_Warrior;
+
+        if (WarriorID == 1)
+        {
+            Warrior = Cao_Warrior;
+        }
+        if (WarriorID == 2)
+        {
+            Warrior = Aguia_Warrior;
+        }
+        if (WarriorID == 3)
+        {
+            Warrior = Rato_Warrior;
+        }
+        if (WarriorID == 4)
+        {
+            Warrior = Gato_Warrior;
+        }
+
         GameObject go = (GameObject)Instantiate(Warrior, this.transform.position, Quaternion.identity);
         NetworkServer.SpawnWithClientAuthority(go, this.gameObject);
         go.GetComponent<UnitManager>().PlayerOwner = this.gameObject;
@@ -128,8 +167,27 @@ public class PlayerBase : NetworkBehaviour {
 
 
     [Command]
-    public void Cmd_SpawnArqueiro()
+    public void Cmd_SpawnArqueiro(int ArcherID)
     {
+        var Archer = Cao_Archer;
+
+        if (ArcherID == 1)
+        {
+            Archer = Cao_Archer;
+        }
+        if (ArcherID == 2)
+        {
+            Archer = Aguia_Archer;
+        }
+        if (ArcherID == 3)
+        {
+            Archer = Rato_Archer;
+        }
+        if (ArcherID == 4)
+        {
+            Archer = Gato_Archer;
+        }
+
         GameObject go = (GameObject)Instantiate(Archer, this.transform.position, Quaternion.identity);
         NetworkServer.SpawnWithClientAuthority(go, this.gameObject);
         go.GetComponent<UnitManager>().PlayerOwner = this.gameObject;
