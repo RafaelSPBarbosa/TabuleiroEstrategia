@@ -115,10 +115,10 @@ public class PlayerBase : NetworkBehaviour {
         }
         else
         {
-            PassTurnButton.interactable = false;
-            SpawnExplorerBtn.interactable = false;
-            SpawnGuerreiroBtn.interactable = false;
-            SpawnArqueiroBtn.interactable = false;
+               PassTurnButton.interactable = false;
+               SpawnExplorerBtn.interactable = false;
+               SpawnGuerreiroBtn.interactable = false;
+               SpawnArqueiroBtn.interactable = false;
         }
 
         if( curHealth <= 0 && Destroyed == false)

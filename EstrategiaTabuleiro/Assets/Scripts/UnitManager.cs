@@ -252,6 +252,18 @@ public class UnitManager : NetworkBehaviour {
                                                 }
                                             }
                                         }
+                                        if( hit.transform.tag == "Monster")
+                                        {
+                                            if (UnitType == 1 || UnitType == 2)
+                                            {
+                                                if (Vector3.Distance(hit.transform.position, this.transform.position) < 1.5f)
+                                                {
+                                                    StartCoroutine(LocalAttackUnit(hit.transform.gameObject));
+                                                    curActions--;
+                                                    HasAttacked = true;
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -317,7 +329,11 @@ public class UnitManager : NetworkBehaviour {
 
         StartCoroutine(CounterAttack(Target));
         Target.transform.LookAt(this.transform.position);
-        Target.GetComponent<UnitManager>().Cmd_UnitAttack(Target);
+        if(Target.transform.tag == "Unit")
+            Target.GetComponent<UnitManager>().Cmd_UnitAttack(Target);
+
+        //if(Target.transform.tag == "Monster")
+           // Target.GetComponent<UnitManager>().Cmd_UnitAttack(Target);
     }
 
     [ClientRpc]
@@ -326,15 +342,19 @@ public class UnitManager : NetworkBehaviour {
 
         StartCoroutine(CounterAttack(Target));
         Target.transform.LookAt(this.transform.position);
-        Target.GetComponent<UnitManager>().Cmd_UnitAttack(Target);
+        if (Target.transform.tag == "Unit")
+            Target.GetComponent<UnitManager>().Cmd_UnitAttack(Target);
     }
 
     public IEnumerator CounterAttack(GameObject Target)
     {
 
         yield return new WaitForSeconds(1.5f);
+        if (Target.transform.tag == "Unit")
+            Cmd_TakeDamage(this.gameObject, Target.GetComponent<UnitManager>().Damage);
 
-        Cmd_TakeDamage(this.gameObject, Target.GetComponent<UnitManager>().Damage);
+        if (Target.transform.tag == "Monster")
+            Cmd_TakeDamage(this.gameObject, Target.GetComponent<MonsterManager>().Damage);
 
         yield return new WaitForSeconds(1);
 
@@ -367,6 +387,19 @@ public class UnitManager : NetworkBehaviour {
 
                 if (isClient && !isServer)
                     Cmd_BaseTakeDamage(Target, Damage);
+            }
+            if (Target.transform.tag == "Monster")
+            {
+                if (Target.GetComponent<MonsterManager>().curHealth - Damage <= 0)
+                    isAttacking = false;
+
+                if (isServer)
+                {
+                    Rpc_MonsterTakeDamage(Target, Damage);
+                }
+                else {
+                    Cmd_MonsterTakeDamage(Target, Damage);
+                }
             }
 
             yield return new WaitForSeconds(1);
@@ -447,6 +480,50 @@ public class UnitManager : NetworkBehaviour {
             {
                 isAttacking = false;
             }
+
+            if( Target.transform.tag == "Monster")
+            {
+                if (UnitType == 1)
+                {
+
+                    // Guerreiro
+                    if (Target.GetComponent<MonsterManager>().curHealth > 0)
+                    {
+                        if (isServer)
+                        {
+                            Rpc_CounterAttack(Target);
+                        }
+                        else
+                        {
+
+                            Cmd_CounterAttack(Target);
+                        }
+
+                        yield return new WaitForSeconds(1.25f);
+                        isAttacking = false;
+                    }
+                }
+
+                if (UnitType == 2)
+                {
+                    if (Target.GetComponent<MonsterManager>().curHealth > 0)
+                    {
+                        if (isServer)
+                        {
+                            Rpc_CounterAttack(Target);
+                        }
+                        else
+                        {
+
+                            Cmd_CounterAttack(Target);
+                        }
+
+                        yield return new WaitForSeconds(1.25f);
+                        isAttacking = false;
+                    }
+
+                }
+            }
         }
     }
 
@@ -498,6 +575,23 @@ public class UnitManager : NetworkBehaviour {
         Target.GetComponent<PlayerBase>().curHealth -= Inc_Damage;
 
     }
+
+    [ClientRpc]
+    public void Rpc_MonsterTakeDamage(GameObject Target, int Inc_Damage)
+    {
+
+        Target.GetComponent<MonsterManager>().curHealth -= Inc_Damage;
+
+    }
+
+    [Command]
+    public void Cmd_MonsterTakeDamage(GameObject Target, int Inc_Damage)
+    {
+
+        Target.GetComponent<MonsterManager>().curHealth -= Inc_Damage;
+
+    }
+
 
 
 

@@ -14,6 +14,8 @@ public class TileManager : NetworkBehaviour {
     public PlayerManager playerManager;
     public GameObject SteppingObject;
     public GameObject PlayerBase;
+    public bool hasMonster;
+    public GameObject[] Monsters;
 
     //Definição de variáveis
 
@@ -25,7 +27,20 @@ public class TileManager : NetworkBehaviour {
 
         //Como o código é baseado na cor atual do material, estou colocando todas as tiles no inicio do jogo na cor Idle para depois poder verificar se esta é a cor atual sem ter conflitos
         GetComponent<MeshRenderer>().material.color = Idle;
+
         
+    }
+
+    void Start()
+    {
+        if (hasMonster == true)
+        {
+            if (isServer)
+            {
+                GameObject go = (GameObject)Instantiate(Monsters[Random.Range(0, Monsters.Length)], new Vector3(this.transform.position.x , this.transform.position.y , this.transform.position.z ), this.transform.rotation);
+                NetworkServer.Spawn(go);
+            }
+        }
     }
 
     void OnMouseEnter()
@@ -75,8 +90,11 @@ public class TileManager : NetworkBehaviour {
                 {
                     if (GetComponent<MeshRenderer>().material.color == Idle)
                     {
-                        GetComponent<MeshRenderer>().material.color = Moveable;
-                        this.transform.position = new Vector3(NormalPosition.x, TargetYPos, NormalPosition.z);
+                        if (hasMonster == false)
+                        {
+                            GetComponent<MeshRenderer>().material.color = Moveable;
+                            this.transform.position = new Vector3(NormalPosition.x, TargetYPos, NormalPosition.z);
+                        }
                     }
                 }
                 else //Este Else des-seleciona as tiles que estão longe demais da unidade selecionada.
@@ -112,17 +130,19 @@ public class TileManager : NetworkBehaviour {
 
     void OnMouseDown()
     {
-        if( SelectedUnit != null  && SteppingObject == null ) //Ainda é preciso pedir a quantidade de ações que uma unidade pode executar
+        if (SelectedUnit != null && SteppingObject == null) //Ainda é preciso pedir a quantidade de ações que uma unidade pode executar
         {
-            if (SelectedUnit.GetComponent<UnitManager>().PlayerOwner == PlayerBase || PlayerBase == null)
-            {
-                if (SelectedUnit.GetComponent<UnitManager>().Busy == false)
+            if (hasMonster == false) { 
+                if (SelectedUnit.GetComponent<UnitManager>().PlayerOwner == PlayerBase || PlayerBase == null)
                 {
-                    if (Vector3.Distance(this.transform.position, SelectedUnit.transform.position) <= 1.5f)
+                    if (SelectedUnit.GetComponent<UnitManager>().Busy == false)
                     {
-                        SelectedUnit.GetComponent<UnitManager>().curActions--;
-                        SelectedUnit.GetComponent<UnitManager>().PlayerOwner.GetComponent<PlayerBase>().Cmd_MoveUnit(SelectedUnit, this.gameObject);
+                        if (Vector3.Distance(this.transform.position, SelectedUnit.transform.position) <= 1.5f)
+                        {
+                            SelectedUnit.GetComponent<UnitManager>().curActions--;
+                            SelectedUnit.GetComponent<UnitManager>().PlayerOwner.GetComponent<PlayerBase>().Cmd_MoveUnit(SelectedUnit, this.gameObject);
 
+                        }
                     }
                 }
             }
