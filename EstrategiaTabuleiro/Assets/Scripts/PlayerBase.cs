@@ -14,7 +14,12 @@ public class PlayerBase : NetworkBehaviour {
     Button SpawnExplorerBtn, PassTurnButton, SpawnGuerreiroBtn, SpawnArqueiroBtn;
     [SyncVar]
     public int PlayerBaseID;
+    [SyncVar]
+    public int curHealth;
     public bool Occupied;
+    [SyncVar]
+    public bool Destroyed;
+
 
     void Start()
     { 
@@ -63,9 +68,34 @@ public class PlayerBase : NetworkBehaviour {
         }
     }
 
+    [Command]
+    public void Cmd_PassDestroyedTurn(int TargetTurn)
+    {
+        gameManager.curTurn = TargetTurn;
+    }
+
+    [ClientRpc]
+    public void Rpc_PassDestroyedTurn(int TargetTurn)
+    {
+        gameManager.curTurn = TargetTurn;
+    }
+
     void Update()
     {
-        if (gameManager.curTurn == playerManager.MyTurn)
+        if(gameManager.curTurn == playerManager.MyTurn && Destroyed == true)
+        {
+            if (isServer)
+            {
+                Rpc_PassDestroyedTurn(playerManager.MyTurn + 1);
+            }
+            else
+            {
+                Cmd_PassDestroyedTurn(playerManager.MyTurn + 1);
+            }
+            
+        }
+
+        if (gameManager.curTurn == playerManager.MyTurn && Destroyed == false)
         {
             PassTurnButton.interactable = true;
 
@@ -89,6 +119,25 @@ public class PlayerBase : NetworkBehaviour {
             SpawnExplorerBtn.interactable = false;
             SpawnGuerreiroBtn.interactable = false;
             SpawnArqueiroBtn.interactable = false;
+        }
+
+        if( curHealth <= 0 && Destroyed == false)
+        {
+            Cmd_DestroyKingdom();
+        }
+    }
+
+    [Command]
+    public void Cmd_DestroyKingdom()
+    {
+        Destroyed = true;
+        var AllUnits = GameObject.FindGameObjectsWithTag("Unit");
+        for(int i = 0; i < AllUnits.Length; i++)
+        {
+            if(AllUnits[i].gameObject.GetComponent<UnitManager>().PlayerOwner == this.gameObject)
+            {
+                AllUnits[i].GetComponent<UnitManager>().curHealth = 0;
+            }
         }
     }
 
@@ -218,7 +267,6 @@ public class PlayerBase : NetworkBehaviour {
             AllFriendlyUnits[i].GetComponent<UnitManager>().curActions = AllFriendlyUnits[i].GetComponent<UnitManager>().MaxActions;
             AllFriendlyUnits[i].GetComponent<UnitManager>().HasAttacked = false;
         }
-
         Rpc_PassTurn();
     }
 
@@ -235,6 +283,7 @@ public class PlayerBase : NetworkBehaviour {
             AllFriendlyUnits[i].GetComponent<UnitManager>().curActions = AllFriendlyUnits[i].GetComponent<UnitManager>().MaxActions;
             AllFriendlyUnits[i].GetComponent<UnitManager>().HasAttacked = false;
         }
+
     }
 
     [Command]

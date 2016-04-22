@@ -220,6 +220,38 @@ public class UnitManager : NetworkBehaviour {
                                                 }
                                             }
                                         }
+
+                                        if (hit.transform.tag == "PlayerBase")
+                                        {
+                                            if (hit.transform.gameObject.GetComponent<PlayerBase>().Destroyed == false)
+                                            {
+                                                if (UnitType == 1)
+                                                {
+                                                    if (Vector3.Distance(hit.transform.position, this.transform.position) < 1.5f)
+                                                    {
+                                                        if (hit.transform.gameObject != PlayerOwner)
+                                                        {
+                                                            StartCoroutine(LocalAttackUnit(hit.transform.gameObject));
+                                                            curActions--;
+                                                            HasAttacked = true;
+                                                        }
+
+                                                    }
+                                                }
+                                                if (UnitType == 2)
+                                                {
+                                                    if (Vector3.Distance(hit.transform.position, this.transform.position) > 1.5f && Vector3.Distance(hit.transform.position, this.transform.position) < 3.0f)
+                                                    {
+                                                        if (hit.transform.gameObject != PlayerOwner)
+                                                        {
+                                                            StartCoroutine(LocalAttackUnit(hit.transform.gameObject));
+                                                            curActions--;
+                                                            HasAttacked = true;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -319,82 +351,100 @@ public class UnitManager : NetworkBehaviour {
             Cmd_UnitAttack(Target);
 
             yield return new WaitForSeconds(0.9f);
-            
-            if(isServer)
-                Rpc_TakeDamage(Target , Damage);
 
-            if(isClient && !isServer)
-                Cmd_TakeDamage(Target, Damage);
+            if (Target.transform.tag == "Unit")
+            {
+                if (isServer)
+                    Rpc_TakeDamage(Target, Damage);
+
+                if (isClient && !isServer)
+                    Cmd_TakeDamage(Target, Damage);
+            }
+            if ( Target.transform.tag == "PlayerBase")
+            {
+                if (isServer)
+                    Rpc_BaseTakeDamage(Target, Damage);
+
+                if (isClient && !isServer)
+                    Cmd_BaseTakeDamage(Target, Damage);
+            }
 
             yield return new WaitForSeconds(1);
             //Contra ataques
-            if (UnitType == 1)
+            if (Target.transform.tag == "Unit")
             {
-
-                // Guerreiro
-                if (Target.GetComponent<UnitManager>().UnitType == 1)
+                if (UnitType == 1)
                 {
-                    if (Target.GetComponent<UnitManager>().curHealth > 0)
-                    {
-                        if (isServer)
-                        {
-                            Rpc_CounterAttack(Target);
-                        }
-                        else
-                        {
 
-                            Cmd_CounterAttack(Target);
+                    // Guerreiro
+                    if (Target.GetComponent<UnitManager>().UnitType == 1)
+                    {
+                        if (Target.GetComponent<UnitManager>().curHealth > 0)
+                        {
+                            if (isServer)
+                            {
+                                Rpc_CounterAttack(Target);
+                            }
+                            else
+                            {
+
+                                Cmd_CounterAttack(Target);
+                            }
                         }
+
+                        yield return new WaitForSeconds(1.25f);
+                        isAttacking = false;
                     }
 
-                    yield return new WaitForSeconds(1.25f);
-                    isAttacking = false;
-                }
-
-                //Arqueiro
-                if (Target.GetComponent<UnitManager>().UnitType == 2)
-                {
-                    
-                    isAttacking = false;
-                }
-
-            }
-
-            if (UnitType == 2)
-            {
-
-                // Guerreiro
-                if (Target.GetComponent<UnitManager>().UnitType == 1)
-                {
-                    isAttacking = false;
-                }
-
-                //Arqueiro
-                if (Target.GetComponent<UnitManager>().UnitType == 2)
-                {
-                    if (Target.GetComponent<UnitManager>().curHealth > 0)
+                    //Arqueiro
+                    if (Target.GetComponent<UnitManager>().UnitType == 2)
                     {
-                        if (isServer)
-                        {
-                            Rpc_CounterAttack(Target);
-                        }
-                        else
-                        {
 
-                            Cmd_CounterAttack(Target);
-                        }
+                        isAttacking = false;
                     }
 
-                    yield return new WaitForSeconds(1.25f);
-                    isAttacking = false;
                 }
 
+                if (UnitType == 2)
+                {
+
+                    // Guerreiro
+                    if (Target.GetComponent<UnitManager>().UnitType == 1)
+                    {
+                        isAttacking = false;
+                    }
+
+                    //Arqueiro
+                    if (Target.GetComponent<UnitManager>().UnitType == 2)
+                    {
+                        if (Target.GetComponent<UnitManager>().curHealth > 0)
+                        {
+                            if (isServer)
+                            {
+                                Rpc_CounterAttack(Target);
+                            }
+                            else
+                            {
+
+                                Cmd_CounterAttack(Target);
+                            }
+                        }
+
+                        yield return new WaitForSeconds(1.25f);
+                        isAttacking = false;
+                    }
+
+                }
+
+                //Explorador
+                if (Target.GetComponent<UnitManager>().UnitType == 0)
+                {
+
+                    isAttacking = false;
+                }
             }
-
-            //Explorador
-            if (Target.GetComponent<UnitManager>().UnitType == 0)
+            if( Target.transform.tag == "PlayerBase")
             {
-
                 isAttacking = false;
             }
         }
@@ -430,6 +480,22 @@ public class UnitManager : NetworkBehaviour {
         Target.GetComponent<UnitManager>().curHealth -= Inc_Damage;
         
         Rpc_TakeDamageAnim(Target);
+
+    }
+
+    [ClientRpc]
+    public void Rpc_BaseTakeDamage(GameObject Target, int Inc_Damage)
+    {
+
+        Target.GetComponent<PlayerBase>().curHealth -= Inc_Damage;
+
+    }
+
+    [Command]
+    public void Cmd_BaseTakeDamage(GameObject Target, int Inc_Damage)
+    {
+
+        Target.GetComponent<PlayerBase>().curHealth -= Inc_Damage;
 
     }
 
