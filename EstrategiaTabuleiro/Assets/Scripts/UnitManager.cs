@@ -105,7 +105,6 @@ public class UnitManager : NetworkBehaviour {
 
         if (SteppingTile != null)
         {
-
             SteppingTile.GetComponent<TileManager>().SteppingObject = null;
         }
 
@@ -166,8 +165,11 @@ public class UnitManager : NetworkBehaviour {
 
             if (curHealth <= 0)
             {
-
-                //SteppingTile.GetComponent<TileManager>().PlayerBase.GetComponent<PlayerBase>().Occupied = false;
+                if (SteppingTile.GetComponent<TileManager>().PlayerBase != null)
+                {
+                    SteppingTile.GetComponent<TileManager>().PlayerBase.GetComponent<PlayerBase>().Cmd_SwitchOccupied();
+                    //SteppingTile.GetComponent<TileManager>().PlayerBase.GetComponent<PlayerBase>().Occupied = false;
+                }
                 Cmd_KillUnit();
                 DeSelectUnit();
                 StartCoroutine(HideDeadUnit());
@@ -223,30 +225,33 @@ public class UnitManager : NetworkBehaviour {
 
                                         if (hit.transform.tag == "PlayerBase")
                                         {
-                                            if (hit.transform.gameObject.GetComponent<PlayerBase>().Destroyed == false)
+                                            if (hit.transform.gameObject.GetComponent<PlayerBase>().Occupied == false)
                                             {
-                                                if (UnitType == 1)
+                                                if (hit.transform.gameObject.GetComponent<PlayerBase>().Destroyed == false)
                                                 {
-                                                    if (Vector3.Distance(hit.transform.position, this.transform.position) < 1.5f)
+                                                    if (UnitType == 1)
                                                     {
-                                                        if (hit.transform.gameObject != PlayerOwner)
+                                                        if (Vector3.Distance(hit.transform.position, this.transform.position) < 1.5f)
                                                         {
-                                                            StartCoroutine(LocalAttackUnit(hit.transform.gameObject));
-                                                            curActions--;
-                                                            HasAttacked = true;
-                                                        }
+                                                            if (hit.transform.gameObject != PlayerOwner)
+                                                            {
+                                                                StartCoroutine(LocalAttackUnit(hit.transform.gameObject));
+                                                                curActions--;
+                                                                HasAttacked = true;
+                                                            }
 
+                                                        }
                                                     }
-                                                }
-                                                if (UnitType == 2)
-                                                {
-                                                    if (Vector3.Distance(hit.transform.position, this.transform.position) > 1.5f && Vector3.Distance(hit.transform.position, this.transform.position) < 3.0f)
+                                                    if (UnitType == 2)
                                                     {
-                                                        if (hit.transform.gameObject != PlayerOwner)
+                                                        if (Vector3.Distance(hit.transform.position, this.transform.position) > 1.5f && Vector3.Distance(hit.transform.position, this.transform.position) < 3.0f)
                                                         {
-                                                            StartCoroutine(LocalAttackUnit(hit.transform.gameObject));
-                                                            curActions--;
-                                                            HasAttacked = true;
+                                                            if (hit.transform.gameObject != PlayerOwner)
+                                                            {
+                                                                StartCoroutine(LocalAttackUnit(hit.transform.gameObject));
+                                                                curActions--;
+                                                                HasAttacked = true;
+                                                            }
                                                         }
                                                     }
                                                 }
@@ -375,18 +380,25 @@ public class UnitManager : NetworkBehaviour {
             if (Target.transform.tag == "Unit")
             {
                 if (isServer)
+                {
                     Rpc_TakeDamage(Target, Damage);
-
-                if (isClient && !isServer)
+                }
+                else
+                {
                     Cmd_TakeDamage(Target, Damage);
+                }
             }
             if ( Target.transform.tag == "PlayerBase")
             {
                 if (isServer)
+                {
                     Rpc_BaseTakeDamage(Target, Damage);
-
-                if (isClient && !isServer)
+                }
+                else
+                {
                     Cmd_BaseTakeDamage(Target, Damage);
+                }
+
             }
             if (Target.transform.tag == "Monster")
             {
@@ -591,9 +603,6 @@ public class UnitManager : NetworkBehaviour {
         Target.GetComponent<MonsterManager>().curHealth -= Inc_Damage;
 
     }
-
-
-
 
     void OnTriggerEnter( Collider other )
     {

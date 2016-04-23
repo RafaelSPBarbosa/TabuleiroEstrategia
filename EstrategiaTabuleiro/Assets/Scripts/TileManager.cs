@@ -14,7 +14,9 @@ public class TileManager : NetworkBehaviour {
     public PlayerManager playerManager;
     public GameObject SteppingObject;
     public GameObject PlayerBase;
-    public bool hasMonster;
+    public bool hasMonster , isMonsterTrigger , CanSpawnMonster = true;
+    public GameObject CurrentMonster;
+    public TileManager MonsterSpawner;
     public GameObject[] Monsters;
 
     //Definição de variáveis
@@ -29,18 +31,6 @@ public class TileManager : NetworkBehaviour {
         GetComponent<MeshRenderer>().material.color = Idle;
 
         
-    }
-
-    void Start()
-    {
-        if (hasMonster == true)
-        {
-            if (isServer)
-            {
-                GameObject go = (GameObject)Instantiate(Monsters[Random.Range(0, Monsters.Length)], new Vector3(this.transform.position.x , this.transform.position.y , this.transform.position.z ), this.transform.rotation);
-                NetworkServer.Spawn(go);
-            }
-        }
     }
 
     void OnMouseEnter()
@@ -66,8 +56,25 @@ public class TileManager : NetworkBehaviour {
         this.transform.position = NormalPosition;
     }
 
+    public void SpawnMonster(GameObject Target)
+    {
+        if (hasMonster == true && CanSpawnMonster == true)
+        {
+            if (isServer)
+            {
+                GameObject go = (GameObject)Instantiate(Monsters[Random.Range(0, Monsters.Length)], new Vector3(this.transform.position.x, this.transform.position.y + 0.25f, this.transform.position.z), this.transform.rotation);
+                NetworkServer.Spawn(go);
+                go.GetComponent<MonsterManager>().Rpc_AttackTarget(Target);
+                go.GetComponent<MonsterManager>().TileSpawner = this;
+                CanSpawnMonster = false;
+            }
+        }
+    }
+
     void Update()
     {
+
+
         if (gameManager != null && playerManager != null)
         {
             //Aqui carrego a variável com todos os objetos da cena que possuem o Tag "Unit"
@@ -154,6 +161,14 @@ public class TileManager : NetworkBehaviour {
         if(other.transform.tag == "PlayerBase")
         {
             PlayerBase = other.gameObject;
+        }
+
+        if (isMonsterTrigger)
+        {
+            if (other.transform.tag == "Unit")
+            {
+                MonsterSpawner.SpawnMonster(other.gameObject);
+            }
         }
     }
 }

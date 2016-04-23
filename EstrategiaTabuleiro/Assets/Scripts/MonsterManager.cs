@@ -9,6 +9,7 @@ public class MonsterManager : NetworkBehaviour {
     [SyncVar]
     public int Damage;
     public bool isAlive = true;
+    public TileManager TileSpawner;
 
     public Animator AnimMesh;
 
@@ -25,8 +26,24 @@ public class MonsterManager : NetworkBehaviour {
     }
 
     [ClientRpc]
+    public void Rpc_AttackTarget(GameObject Target)
+    {
+        if (isServer)
+        {
+            if (AnimMesh != null)
+            {
+                AnimMesh.SetTrigger("Attack");
+            }
+            this.transform.LookAt(Target.transform.position);
+            Target.GetComponent<UnitManager>().Rpc_TakeDamage(Target, Damage);
+        }
+    }
+
+    [ClientRpc]
     public void Rpc_Die()
     {
+        TileSpawner.CanSpawnMonster = true;
+
         if(AnimMesh != null)
             AnimMesh.SetTrigger("Die");
 

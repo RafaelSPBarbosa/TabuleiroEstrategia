@@ -16,10 +16,10 @@ public class PlayerBase : NetworkBehaviour {
     public int PlayerBaseID;
     [SyncVar]
     public int curHealth;
+    [SyncVar]
     public bool Occupied;
     [SyncVar]
     public bool Destroyed;
-
 
     void Start()
     { 
@@ -82,6 +82,7 @@ public class PlayerBase : NetworkBehaviour {
 
     void Update()
     {
+
         if(gameManager.curTurn == playerManager.MyTurn && Destroyed == true)
         {
             if (isServer)
@@ -152,6 +153,12 @@ public class PlayerBase : NetworkBehaviour {
     {
         if (other.tag == "Unit")
             Occupied = false;
+    }
+
+    [Command]
+    public void Cmd_SwitchOccupied()
+    {
+        Occupied = false;
     }
 
     [Command]
