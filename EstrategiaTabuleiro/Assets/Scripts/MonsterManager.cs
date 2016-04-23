@@ -20,7 +20,13 @@ public class MonsterManager : NetworkBehaviour {
             if (curHealth <= 0)
             {
                 if (isServer)
+                {
                     Rpc_Die();
+                }
+                else
+                {
+                    Cmd_Die();
+                }
             }
         }
     }
@@ -28,15 +34,33 @@ public class MonsterManager : NetworkBehaviour {
     [ClientRpc]
     public void Rpc_AttackTarget(GameObject Target)
     {
-        if (isServer)
+        if (AnimMesh != null)
         {
-            if (AnimMesh != null)
-            {
-                AnimMesh.SetTrigger("Attack");
-            }
-            this.transform.LookAt(Target.transform.position);
-            Target.GetComponent<UnitManager>().Rpc_TakeDamage(Target, Damage);
+            AnimMesh.SetTrigger("Attack");
         }
+        this.transform.LookAt(Target.transform.position);
+        Target.GetComponent<UnitManager>().Cmd_TakeDamage(Target, Damage);
+        //Cmd_UpdateAnimation(Target);
+    }
+    [Command]
+    public void Cmd_UpdateAnimation(GameObject Target)
+    {
+        if (AnimMesh != null)
+        {
+            AnimMesh.SetTrigger("Attack");
+        }
+        this.transform.LookAt(Target.transform.position);
+    }
+
+    [Command]
+    public void Cmd_AttackTarget(GameObject Target)
+    {
+        if (AnimMesh != null)
+        {
+            AnimMesh.SetTrigger("Attack");
+        }
+        this.transform.LookAt(Target.transform.position);
+        Target.GetComponent<UnitManager>().Rpc_TakeDamage(Target, Damage);
     }
 
     [ClientRpc]
@@ -52,6 +76,22 @@ public class MonsterManager : NetworkBehaviour {
         print("Morreu");
         print("Dar Relíquia ao jogador");
 
-        GetComponent<MeshRenderer>().enabled = false;
+        NetworkServer.Destroy(this.gameObject);
+    }
+
+    [Command]
+    public void Cmd_Die()
+    {
+        TileSpawner.CanSpawnMonster = true;
+
+        if (AnimMesh != null)
+            AnimMesh.SetTrigger("Die");
+
+        isAlive = false;
+
+        print("Morreu");
+        print("Dar Relíquia ao jogador");
+
+        NetworkServer.Destroy(this.gameObject);
     }
 }

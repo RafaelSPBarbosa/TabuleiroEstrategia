@@ -64,11 +64,46 @@ public class TileManager : NetworkBehaviour {
             {
                 GameObject go = (GameObject)Instantiate(Monsters[Random.Range(0, Monsters.Length)], new Vector3(this.transform.position.x, this.transform.position.y + 0.25f, this.transform.position.z), this.transform.rotation);
                 NetworkServer.Spawn(go);
-                go.GetComponent<MonsterManager>().Rpc_AttackTarget(Target);
-                go.GetComponent<MonsterManager>().TileSpawner = this;
-                CanSpawnMonster = false;
+                if (isServer)
+                {
+                    Rpc_SpawnMonster(go, Target);
+                }
+                else
+                {
+                    Cmd_SpawnMonster(go, Target);
+                }
             }
         }
+    }
+
+    [Command]
+    public void Cmd_SpawnMonster(GameObject go , GameObject Target)
+    {
+        if (isServer)
+        {
+            go.GetComponent<MonsterManager>().Rpc_AttackTarget(Target);
+        }
+        else
+        {
+            go.GetComponent<MonsterManager>().Cmd_AttackTarget(Target);
+        }
+        go.GetComponent<MonsterManager>().TileSpawner = this;
+        CanSpawnMonster = false;
+    }
+
+    [ClientRpc]
+    public void Rpc_SpawnMonster(GameObject go, GameObject Target)
+    {
+        if (isServer)
+        {
+            go.GetComponent<MonsterManager>().Rpc_AttackTarget(Target);
+        }
+        else
+        {
+            go.GetComponent<MonsterManager>().Cmd_AttackTarget(Target);
+        }
+        go.GetComponent<MonsterManager>().TileSpawner = this;
+        CanSpawnMonster = false;
     }
 
     void Update()
