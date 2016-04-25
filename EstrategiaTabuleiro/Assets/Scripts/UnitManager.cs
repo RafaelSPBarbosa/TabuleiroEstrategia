@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.Collections;
 
@@ -25,6 +26,8 @@ public class UnitManager : NetworkBehaviour {
     public bool isAlive = true;
     public GameObject SteppingTile;
     public bool HasAttacked = false;
+    
+
     //Definição de Variáveis
 
     public void ReloadActions()
@@ -162,7 +165,7 @@ public class UnitManager : NetworkBehaviour {
     {
         if (isAlive == true)
         {
-
+           
             if (curHealth <= 0)
             {
                 if (SteppingTile.GetComponent<TileManager>().PlayerBase != null)
@@ -640,4 +643,5 @@ public class UnitManager : NetworkBehaviour {
         Rpc_MakeUnitRun(true);
         Busy = true;
     }
-}
+
+ }
