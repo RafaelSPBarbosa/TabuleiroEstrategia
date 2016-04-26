@@ -10,9 +10,28 @@ public class GameManager : NetworkBehaviour {
     [SyncVar]
     public int curTurn = 1;
     public int MaxTurns = 4;
+    public GameObject MyPlayerBase;
 
     public Text TurnText;
 
+    void Start()
+    {
+        /* PlayerManager = GameObject.Find("_PlayerManager");
+        GameObject[] AllBases = GameObject.FindGameObjectsWithTag("PlayerBase");
+        for (int i = 0; i<AllBases.Length; i++)
+        {
+            print(AllBases[i].transform.name);
+            if (AllBases[i].GetComponent<PlayerBase>().PlayerBaseID == PlayerManager.GetComponent<PlayerManager>().PlayerID)
+            {
+
+                MyPlayerBase = AllBases[i];
+            
+
+            }
+        }*/
+
+    }
+    
     void Update()
     {
         TurnText.text = "Turn : " + curTurn;
@@ -21,11 +40,14 @@ public class GameManager : NetworkBehaviour {
     [Command]
     public void Cmd_PassTurn()
     {
+        
         curTurn++;
         if (curTurn > MaxTurns)
             curTurn = 1;
 
         Rpc_UpdateTurn(curTurn);
+        
+
     }
 
     [ClientRpc]

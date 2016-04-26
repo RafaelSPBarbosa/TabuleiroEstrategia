@@ -12,6 +12,8 @@ public class PlayerBase : NetworkBehaviour {
     public GameObject Aguia_Archer, Cao_Archer , Rato_Archer , Gato_Archer;
 
     Button SpawnExplorerBtn, PassTurnButton, SpawnGuerreiroBtn, SpawnArqueiroBtn;
+    public int Gold;
+    public int Food;
     [SyncVar]
     public int PlayerBaseID;
     [SyncVar]
@@ -27,8 +29,11 @@ public class PlayerBase : NetworkBehaviour {
         gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
         playerManager = GameObject.Find("_PlayerManager").GetComponent<PlayerManager>();
 
-        if(isLocalPlayer)
+        if (isLocalPlayer)
+        {
             PlayerBaseID = GameObject.FindGameObjectsWithTag("PlayerBase").Length;
+            gameManager.MyPlayerBase = this.gameObject;
+        }
 
         if (PlayerBaseID == playerManager.PlayerID)
         {
@@ -262,6 +267,8 @@ public class PlayerBase : NetworkBehaviour {
     {
         gameManager.curTurn++;
 
+        Gold++;
+
         if (gameManager.curTurn > gameManager.MaxTurns)
             gameManager.curTurn = 1;
 
@@ -280,7 +287,7 @@ public class PlayerBase : NetworkBehaviour {
     [ClientRpc]
     public void Rpc_PassTurn()
     {
-
+        Gold++;
         //Aqui carrego a variável com todos os objetos da cena que possuem o Tag "Unit"
         GameObject[] AllFriendlyUnits = GameObject.FindGameObjectsWithTag("Unit");
 
