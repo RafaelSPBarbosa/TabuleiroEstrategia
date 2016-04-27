@@ -24,7 +24,7 @@ public class StatusPersonagem : MonoBehaviour {
             VidaText.text = "Vida : " + unitManager.curHealth;
             DanoText.text = "Dano : " + unitManager.Damage;
         }
-        CanvasStatus.transform.LookAt(Camera.main.transform.position);
+        CanvasStatus.transform.rotation = Camera.main.transform.rotation;
     }
 
     void Start()
