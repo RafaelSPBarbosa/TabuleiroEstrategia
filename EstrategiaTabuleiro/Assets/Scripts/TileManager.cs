@@ -193,9 +193,14 @@ public class TileManager : NetworkBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.transform.tag == "PlayerBase")
+        if (other.transform.tag == "PlayerBase")
         {
             PlayerBase = other.gameObject;
+        }
+
+        if( other.transform.tag == "Farm")
+        {
+            SteppingObject = other.transform.gameObject;
         }
 
         if (isMonsterTrigger)

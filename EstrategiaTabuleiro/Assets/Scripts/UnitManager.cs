@@ -12,6 +12,8 @@ public class UnitManager : NetworkBehaviour {
     public PlayerManager playerManager;
     public GameManager gameManager;
     public GameObject PlayerOwner;
+    public GameObject Farm;
+    public Canvas FarmCanvas;
     [SyncVar]
     public int curHealth = 1;
     public int MaxHealth = 1; 
@@ -161,10 +163,38 @@ public class UnitManager : NetworkBehaviour {
     {
         Destroy(this.gameObject);
     }
+
+    //[Command]
+    public void Cmd_SpawnFarm()
+    {
+        if (SteppingTile.GetComponent<TileManager>().SteppingObject == null || SteppingTile.GetComponent<TileManager>().SteppingObject == this.gameObject )
+        {
+            if (SteppingTile.GetComponent<TileManager>().PlayerBase == null)
+            {
+                curActions--;
+                PlayerOwner.GetComponent<PlayerBase>().Cmd_BuildFarm(this.transform.position);
+            }
+        }
+    }
+
     void Update()
     {
         if (isAlive == true)
         {
+            
+            if(UnitType == 0)
+            {
+                FarmCanvas.transform.rotation = Camera.main.transform.rotation;
+                if(Selected == true)
+                {
+                    FarmCanvas.enabled = true;
+                }
+                else
+                {
+                    FarmCanvas.enabled = false;
+                }
+                    
+            }
            
             if (curHealth <= 0)
             {

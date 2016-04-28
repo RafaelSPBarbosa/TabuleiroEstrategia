@@ -23,6 +23,8 @@ public class PlayerBase : NetworkBehaviour {
     [SyncVar]
     public bool Destroyed;
 
+    public GameObject Farm;
+
     void Start()
     { 
 
@@ -224,6 +226,14 @@ public class PlayerBase : NetworkBehaviour {
         go.GetComponent<UnitManager>().PlayerOwner = this.gameObject;
 
         Rpc_SetObjectOwner(go);
+    }
+
+    [Command]
+    public void Cmd_BuildFarm(Vector3 UnitPos)
+    {
+        GameObject go = (GameObject)Instantiate(Farm, UnitPos, Quaternion.identity);
+        NetworkServer.Spawn(go);
+        go.GetComponent<FarmManager>().Cmd_SetInitialOwner(this.gameObject);
     }
 
 
