@@ -243,7 +243,7 @@ public class UnitManager : NetworkBehaviour {
                                             }
                                             if (UnitType == 2)
                                             {
-                                                if (Vector3.Distance(hit.transform.position, this.transform.position) > 1.5f && Vector3.Distance(hit.transform.position, this.transform.position) < 3.0f)
+                                                if (Vector3.Distance(hit.transform.position, this.transform.position) > 1.5f && Vector3.Distance(hit.transform.position, this.transform.position) < 2.5f)
                                                 {
                                                     if (hit.transform.gameObject.GetComponent<UnitManager>().PlayerOwner != PlayerOwner)
                                                     {
@@ -277,7 +277,7 @@ public class UnitManager : NetworkBehaviour {
                                                     }
                                                     if (UnitType == 2)
                                                     {
-                                                        if (Vector3.Distance(hit.transform.position, this.transform.position) > 1.5f && Vector3.Distance(hit.transform.position, this.transform.position) < 3.0f)
+                                                        if (Vector3.Distance(hit.transform.position, this.transform.position) > 1.5f && Vector3.Distance(hit.transform.position, this.transform.position) < 2.5f)
                                                         {
                                                             if (hit.transform.gameObject != PlayerOwner)
                                                             {
