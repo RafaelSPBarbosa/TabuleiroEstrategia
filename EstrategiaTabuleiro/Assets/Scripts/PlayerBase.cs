@@ -12,7 +12,9 @@ public class PlayerBase : NetworkBehaviour {
     public GameObject Aguia_Archer, Cao_Archer , Rato_Archer , Gato_Archer;
 
     Button SpawnExplorerBtn, PassTurnButton, SpawnGuerreiroBtn, SpawnArqueiroBtn;
+    [SyncVar]
     public int Gold;
+    [SyncVar]
     public int Food;
     [SyncVar]
     public int PlayerBaseID;
@@ -277,7 +279,16 @@ public class PlayerBase : NetworkBehaviour {
     {
         gameManager.curTurn++;
 
-        Gold++;
+        int GoldToGive = 1;
+        GameObject[] AllGoldMines = GameObject.FindGameObjectsWithTag("GoldMine");
+        for(int i =0; i < AllGoldMines.Length; i++)
+        {
+            if(AllGoldMines[i].GetComponent<GoldMineManager>().PlayerOwner == this.gameObject)
+            {
+                GoldToGive++;
+            }
+        }
+        Gold += GoldToGive;
 
         if (gameManager.curTurn > gameManager.MaxTurns)
             gameManager.curTurn = 1;
@@ -297,7 +308,7 @@ public class PlayerBase : NetworkBehaviour {
     [ClientRpc]
     public void Rpc_PassTurn()
     {
-        Gold++;
+        //Gold++;
         //Aqui carrego a variável com todos os objetos da cena que possuem o Tag "Unit"
         GameObject[] AllFriendlyUnits = GameObject.FindGameObjectsWithTag("Unit");
 
