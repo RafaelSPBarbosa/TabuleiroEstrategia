@@ -133,6 +133,7 @@ ModelImporter:
     7400004: Armature|GettingHit
     7400006: Armature|Idle
     7400008: Armature|Running
+    7400010: Cylinder|Idle
     9500000: //RootNode
     13700000: Cylinder
   materials:
@@ -159,7 +160,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 0.35
+    globalScale: 0.3
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1
