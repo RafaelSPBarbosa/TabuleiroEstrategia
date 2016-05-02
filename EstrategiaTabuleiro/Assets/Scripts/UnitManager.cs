@@ -334,7 +334,7 @@ public class UnitManager : NetworkBehaviour {
             if (isAttacking == false)
             {
                 this.transform.LookAt(GoToPos);
-                this.transform.position = Vector3.MoveTowards(this.transform.position, GoToPos, Time.deltaTime);
+                GetComponent<Rigidbody>().position = Vector3.MoveTowards(this.transform.position, GoToPos, Time.deltaTime);
             }
         }
     }

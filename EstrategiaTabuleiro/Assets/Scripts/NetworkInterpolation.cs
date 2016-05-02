@@ -7,10 +7,12 @@ public class NetworkInterpolation : NetworkBehaviour {
     [SyncVar]
     private Vector3 syncPos;
 
-    [SerializeField]
+    //[SerializeField]
     Transform myTransform;
     [SerializeField]
     float lerpRate = 15;
+    [SerializeField]
+    float SnapDistance = 2;
 
     void Start()
     {
@@ -19,15 +21,32 @@ public class NetworkInterpolation : NetworkBehaviour {
 
     void FixedUpdate()
     {
-        TransmitPosition();
+       
+
+        if (isServer)
+        {
+            Rpc_TransmitPosition();
+        }
+        else
+        {
+            Cmd_TransmitPosition();
+        }
+
         LerpPosition();
     }
 
     void LerpPosition()
     {
-        if (!isLocalPlayer)
+        if (!hasAuthority)
         {
-            myTransform.position = Vector3.Lerp(myTransform.position, syncPos, Time.deltaTime * lerpRate);
+            //if (Vector3.Distance(myTransform.position, syncPos) < SnapDistance)
+           // {
+                myTransform.position = Vector3.Lerp(myTransform.position, syncPos, Time.deltaTime * lerpRate);
+           // }
+           // else
+           // {
+            //    myTransform.position = syncPos;
+          // }
         }
     }
 
@@ -38,10 +57,15 @@ public class NetworkInterpolation : NetworkBehaviour {
     }
 
 
-    [ClientCallback]
-    void TransmitPosition()
+    [ClientRpc]
+    void Rpc_TransmitPosition()
     {
+        CmdProvidePositionToServer(this.transform.position);
+    }
 
-        CmdProvidePositionToServer(myTransform.position);
+    [Command]
+    void Cmd_TransmitPosition()
+    {
+        CmdProvidePositionToServer(this.transform.position);
     }
 }
