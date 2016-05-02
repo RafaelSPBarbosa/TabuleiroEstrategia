@@ -25,15 +25,21 @@ public class PlayerBase : NetworkBehaviour {
     [SyncVar]
     public bool Destroyed;
 
-    [SerializeField]
-    MeshFilter MeshObj;
-    [SerializeField]
-    MeshRenderer Mat;
+    //[SerializeField]
+   // MeshFilter MeshObj;
+   // [SerializeField]
+    //MeshRenderer Mat;
 
     //public Mesh MeshBaseCao, MeshBaseAguia, MeshBaseGato, MeshBaseRato;
-    public Material MatBaseCao, MatBaseAguia, MatBaseGato, MatBaseRato;
+    //public Material MatBaseCao, MatBaseAguia, MatBaseGato, MatBaseRato;
 
     public GameObject Farm;
+
+    [Command]
+    void Cmd_UpdatePlayerBaseID(int ID)
+    {
+        PlayerBaseID = ID;
+    }
 
     void Start()
     { 
@@ -44,6 +50,7 @@ public class PlayerBase : NetworkBehaviour {
         if (isLocalPlayer)
         {
             PlayerBaseID = GameObject.FindGameObjectsWithTag("PlayerBase").Length;
+            Cmd_UpdatePlayerBaseID(PlayerBaseID);
             gameManager.MyPlayerBase = this.gameObject;
         }
 
@@ -51,26 +58,26 @@ public class PlayerBase : NetworkBehaviour {
         {
             if (PlayerBaseID == 1)
             {
-                Mat.material = MatBaseCao;
+               // Mat.material = MatBaseCao;
                 GameObject.Find("CameraRotator").transform.Rotate(0, 45, 0);
             }
             if (PlayerBaseID == 2)
             {
-                Mat.material = MatBaseAguia;
+               // Mat.material = MatBaseAguia;
                 GameObject.Find("CameraRotator").transform.Rotate(0, 135, 0);
             }
             if (PlayerBaseID == 3)
             {
-                Mat.material = MatBaseGato;
+               // Mat.material = MatBaseGato;
                 GameObject.Find("CameraRotator").transform.Rotate(0, 330, 0);
             }
             if (PlayerBaseID == 4)
             {
-                Mat.material = MatBaseRato;
+               // Mat.material = MatBaseRato;
                 GameObject.Find("CameraRotator").transform.Rotate(0, 210, 0);
             }
         }
-        else
+       /* else
         {
             if (PlayerBaseID == 1)
             {
@@ -88,7 +95,7 @@ public class PlayerBase : NetworkBehaviour {
             {
                 Mat.material = MatBaseRato;
             }
-        }
+        }*/
 
         if (isLocalPlayer)
         {
