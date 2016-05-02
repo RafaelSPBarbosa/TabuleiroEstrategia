@@ -11,6 +11,7 @@ public class GameManager : NetworkBehaviour {
     public int curTurn = 1;
     public int MaxTurns = 4;
     public GameObject MyPlayerBase;
+    public GameObject NetManager;
 
     public Text TurnText;
 
@@ -29,12 +30,14 @@ public class GameManager : NetworkBehaviour {
 
             }
         }*/
-
+        NetManager = GameObject.Find("NetManager");
     }
     
     void Update()
     {
         TurnText.text = "Turn : " + curTurn;
+
+        MaxTurns = Convert.ToInt32(NetManager.GetComponent<NetManager>().numPlayers);
     }
 
     [Command]
