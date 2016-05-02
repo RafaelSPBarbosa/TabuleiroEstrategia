@@ -25,6 +25,14 @@ public class PlayerBase : NetworkBehaviour {
     [SyncVar]
     public bool Destroyed;
 
+    [SerializeField]
+    MeshFilter MeshObj;
+    [SerializeField]
+    MeshRenderer Mat;
+
+    //public Mesh MeshBaseCao, MeshBaseAguia, MeshBaseGato, MeshBaseRato;
+    public Material MatBaseCao, MatBaseAguia, MatBaseGato, MatBaseRato;
+
     public GameObject Farm;
 
     void Start()
@@ -39,27 +47,50 @@ public class PlayerBase : NetworkBehaviour {
             gameManager.MyPlayerBase = this.gameObject;
         }
 
-        if (PlayerBaseID == playerManager.PlayerID)
+        if (isLocalPlayer)
         {
             if (PlayerBaseID == 1)
             {
+                Mat.material = MatBaseCao;
                 GameObject.Find("CameraRotator").transform.Rotate(0, 45, 0);
             }
             if (PlayerBaseID == 2)
             {
+                Mat.material = MatBaseAguia;
                 GameObject.Find("CameraRotator").transform.Rotate(0, 135, 0);
             }
             if (PlayerBaseID == 3)
             {
+                Mat.material = MatBaseGato;
                 GameObject.Find("CameraRotator").transform.Rotate(0, 330, 0);
             }
             if (PlayerBaseID == 4)
             {
+                Mat.material = MatBaseRato;
                 GameObject.Find("CameraRotator").transform.Rotate(0, 210, 0);
             }
         }
+        else
+        {
+            if (PlayerBaseID == 1)
+            {
+                Mat.material = MatBaseCao;
+            }
+            if (PlayerBaseID == 2)
+            {
+                Mat.material = MatBaseAguia;
+            }
+            if (PlayerBaseID == 3)
+            {
+                Mat.material = MatBaseGato;
+            }
+            if (PlayerBaseID == 4)
+            {
+                Mat.material = MatBaseRato;
+            }
+        }
 
-        if (PlayerBaseID == playerManager.PlayerID)
+        if (isLocalPlayer)
         {
             SpawnExplorerBtn = GameObject.Find("SpawnExplorer").GetComponent<Button>();
             SpawnExplorerBtn.onClick.AddListener(() => Cmd_SpawnExplorer(PlayerBaseID,false));
@@ -327,7 +358,6 @@ public class PlayerBase : NetworkBehaviour {
 
         Obj.GetComponent<UnitManager>().Rpc_MoveTowardsPoint(new Vector3(Tile.transform.position.x , Tile.transform.position.y + 0.15f , Tile.transform.position.z ));
         
-
         Rpc_MoveUnit(Obj, Tile);
 
     }

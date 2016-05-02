@@ -39,14 +39,14 @@ public class NetworkInterpolation : NetworkBehaviour {
     {
         if (!hasAuthority)
         {
-            //if (Vector3.Distance(myTransform.position, syncPos) < SnapDistance)
-           // {
+            if (Vector3.Distance(myTransform.position, syncPos) < SnapDistance)
+            {
                 myTransform.position = Vector3.Lerp(myTransform.position, syncPos, Time.deltaTime * lerpRate);
-           // }
-           // else
-           // {
-            //    myTransform.position = syncPos;
-          // }
+            }
+            else
+            {
+                myTransform.position = syncPos;
+            }
         }
     }
 

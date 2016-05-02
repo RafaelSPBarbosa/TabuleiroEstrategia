@@ -12,23 +12,24 @@ public class UnitManager : NetworkBehaviour {
     public PlayerManager playerManager;
     public GameManager gameManager;
     public GameObject PlayerOwner;
-    public GameObject Farm;
-    public Canvas FarmCanvas;
+    GameObject Farm;
+    [SerializeField]
+    Canvas FarmCanvas;
     [SyncVar]
     public int curHealth = 1;
     public int MaxHealth = 1; 
     [SyncVar]
     public int Damage = 0;
-    public int SkillPoints = 20;
+    int SkillPoints = 20;
     public int UnitType = 0;
     public Animator AnimatedMesh;
-    public Vector3 GoToPos;
+    public Vector3 GoToPos, LookAtPos;
     public bool Busy = false;
     public bool isAttacking = false;
     public bool isAlive = true;
     public GameObject SteppingTile;
     public bool HasAttacked = false;
-    
+    bool hasMoved = false;
 
     //Definição de Variáveis
 
@@ -41,6 +42,7 @@ public class UnitManager : NetworkBehaviour {
     void Start()
     {
         GoToPos = this.transform.position;
+        LookAtPos = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z + 1);
         playerManager = GameObject.Find("_PlayerManager").GetComponent<PlayerManager>();
         gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
     }
@@ -333,7 +335,16 @@ public class UnitManager : NetworkBehaviour {
 
             if (isAttacking == false)
             {
-                this.transform.LookAt(GoToPos);
+                if (hasMoved == false)
+                {
+                    this.transform.LookAt(LookAtPos);
+                }
+                else
+                {
+                    this.transform.LookAt(GoToPos);
+
+                }
+                
                 GetComponent<Rigidbody>().position = Vector3.MoveTowards(this.transform.position, GoToPos, Time.deltaTime);
             }
         }
@@ -670,6 +681,10 @@ public class UnitManager : NetworkBehaviour {
     public void Rpc_MoveTowardsPoint(Vector3 Pos)
     {
         GoToPos = Pos;
+
+        if (hasMoved == false)
+            hasMoved = true;
+
         Rpc_MakeUnitRun(true);
         Busy = true;
     }
