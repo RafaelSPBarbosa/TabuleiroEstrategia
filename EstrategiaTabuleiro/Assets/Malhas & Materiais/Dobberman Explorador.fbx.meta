@@ -163,7 +163,487 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Armature|Dying
+      takeName: Armature|Dying
+      firstFrame: 0
+      lastFrame: 59
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Bone.010
+        weight: 1
+      - path: Armature/Bone.010/Rabo_Comeco
+        weight: 1
+      - path: Armature/Bone.010/Rabo_Comeco/Rabo_Final
+        weight: 1
+      - path: Armature/Bone.010/Rabo_Comeco/Rabo_Final/Rabo_Final_end
+        weight: 1
+      - path: Armature/Bone_L
+        weight: 1
+      - path: Armature/Bone_L/Coxa_L
+        weight: 1
+      - path: Armature/Bone_L/Coxa_L/Bone_L.002
+        weight: 1
+      - path: Armature/Bone_L/Coxa_L/Bone_L.002/Bone_L.003
+        weight: 1
+      - path: Armature/Bone_L/Coxa_L/Bone_L.002/Bone_L.003/Bone_L.004
+        weight: 1
+      - path: Armature/Bone_L/Coxa_L/Bone_L.002/Bone_L.003/Bone_L.004/Bone_L.004_end
+        weight: 1
+      - path: Armature/Bone_R
+        weight: 1
+      - path: Armature/Bone_R/Coxa_R
+        weight: 1
+      - path: Armature/Bone_R/Coxa_R/Bone_R.002
+        weight: 1
+      - path: Armature/Bone_R/Coxa_R/Bone_R.002/Bone_R.003
+        weight: 1
+      - path: Armature/Bone_R/Coxa_R/Bone_R.002/Bone_R.003/Bone_R.004
+        weight: 1
+      - path: Armature/Bone_R/Coxa_R/Bone_R.002/Bone_R.003/Bone_R.004/Bone_R.004_end
+        weight: 1
+      - path: Armature/UnderBelly
+        weight: 1
+      - path: Armature/UnderBelly/Belly
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/BackController
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/BackController/BackController_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L/Shoulder_L
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L/Shoulder_L/Bone.002_L.002
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L/Shoulder_L/Bone.002_L.002/Bone.002_L.003
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L/Shoulder_L/Bone.002_L.002/Bone.002_L.003/Bone.002_L.004
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L/Shoulder_L/Bone.002_L.002/Bone.002_L.003/Bone.002_L.004/Bone.002_L.004_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L/Shoulder_L/Bone.002_L.002/Bone.002_L.005
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L/Shoulder_L/Bone.002_L.002/Bone.002_L.005/Bone.002_L.006
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L/Shoulder_L/Bone.002_L.002/Bone.002_L.005/Bone.002_L.006/Bone.002_L.006_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L/Shoulder_L/Bone.002_L.002/Bone.002_L.007
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L/Shoulder_L/Bone.002_L.002/Bone.002_L.007/Bone.002_L.007_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/Shoulder_R
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/Shoulder_R/Bone.002_R.002
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/Shoulder_R/Bone.002_R.002/Bone.002_R.003
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/Shoulder_R/Bone.002_R.002/Bone.002_R.003/Bone.002_R.004
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/Shoulder_R/Bone.002_R.002/Bone.002_R.003/Bone.002_R.004/Bone.002_R.004_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/Shoulder_R/Bone.002_R.002/Bone.002_R.005
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/Shoulder_R/Bone.002_R.002/Bone.002_R.005/Bone.002_R.006
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/Shoulder_R/Bone.002_R.002/Bone.002_R.005/Bone.002_R.006/Bone.002_R.006_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/Shoulder_R/Bone.002_R.002/Bone.002_R.007
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/Shoulder_R/Bone.002_R.002/Bone.002_R.007/Bone.002_R.007_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/UpperCape
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/UpperCape/LowerCape
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/UpperCape/LowerCape/LowerCape_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Bone.003_L
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Bone.003_L/Bone.003_L.001
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Bone.003_L/Bone.003_L.001/Bone.003_L.002
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Bone.003_L/Bone.003_L.001/Bone.003_L.002/Bone.003_L.002_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Bone.003_R
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Bone.003_R/Bone.003_R.001
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Bone.003_R/Bone.003_R.001/Bone.003_R.002
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Bone.003_R/Bone.003_R.001/Bone.003_R.002/Bone.003_R.002_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Bone.009
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Bone.009/Bone.009_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Head
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Head/Bone.005
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Head/Bone.005/Bone.006
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Head/Bone.005/Bone.006/Bone.006_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Head/Bone.007
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Head/Bone.007/Bone.007_end
+        weight: 1
+      - path: Cylinder.002
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|Idle
+      takeName: Armature|Idle
+      firstFrame: 0
+      lastFrame: 517
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Bone.010
+        weight: 1
+      - path: Armature/Bone.010/Rabo_Comeco
+        weight: 1
+      - path: Armature/Bone.010/Rabo_Comeco/Rabo_Final
+        weight: 1
+      - path: Armature/Bone.010/Rabo_Comeco/Rabo_Final/Rabo_Final_end
+        weight: 1
+      - path: Armature/Bone_L
+        weight: 1
+      - path: Armature/Bone_L/Coxa_L
+        weight: 1
+      - path: Armature/Bone_L/Coxa_L/Bone_L.002
+        weight: 1
+      - path: Armature/Bone_L/Coxa_L/Bone_L.002/Bone_L.003
+        weight: 1
+      - path: Armature/Bone_L/Coxa_L/Bone_L.002/Bone_L.003/Bone_L.004
+        weight: 1
+      - path: Armature/Bone_L/Coxa_L/Bone_L.002/Bone_L.003/Bone_L.004/Bone_L.004_end
+        weight: 1
+      - path: Armature/Bone_R
+        weight: 1
+      - path: Armature/Bone_R/Coxa_R
+        weight: 1
+      - path: Armature/Bone_R/Coxa_R/Bone_R.002
+        weight: 1
+      - path: Armature/Bone_R/Coxa_R/Bone_R.002/Bone_R.003
+        weight: 1
+      - path: Armature/Bone_R/Coxa_R/Bone_R.002/Bone_R.003/Bone_R.004
+        weight: 1
+      - path: Armature/Bone_R/Coxa_R/Bone_R.002/Bone_R.003/Bone_R.004/Bone_R.004_end
+        weight: 1
+      - path: Armature/UnderBelly
+        weight: 1
+      - path: Armature/UnderBelly/Belly
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/BackController
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/BackController/BackController_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L/Shoulder_L
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L/Shoulder_L/Bone.002_L.002
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L/Shoulder_L/Bone.002_L.002/Bone.002_L.003
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L/Shoulder_L/Bone.002_L.002/Bone.002_L.003/Bone.002_L.004
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L/Shoulder_L/Bone.002_L.002/Bone.002_L.003/Bone.002_L.004/Bone.002_L.004_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L/Shoulder_L/Bone.002_L.002/Bone.002_L.005
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L/Shoulder_L/Bone.002_L.002/Bone.002_L.005/Bone.002_L.006
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L/Shoulder_L/Bone.002_L.002/Bone.002_L.005/Bone.002_L.006/Bone.002_L.006_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L/Shoulder_L/Bone.002_L.002/Bone.002_L.007
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L/Shoulder_L/Bone.002_L.002/Bone.002_L.007/Bone.002_L.007_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/Shoulder_R
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/Shoulder_R/Bone.002_R.002
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/Shoulder_R/Bone.002_R.002/Bone.002_R.003
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/Shoulder_R/Bone.002_R.002/Bone.002_R.003/Bone.002_R.004
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/Shoulder_R/Bone.002_R.002/Bone.002_R.003/Bone.002_R.004/Bone.002_R.004_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/Shoulder_R/Bone.002_R.002/Bone.002_R.005
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/Shoulder_R/Bone.002_R.002/Bone.002_R.005/Bone.002_R.006
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/Shoulder_R/Bone.002_R.002/Bone.002_R.005/Bone.002_R.006/Bone.002_R.006_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/Shoulder_R/Bone.002_R.002/Bone.002_R.007
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/Shoulder_R/Bone.002_R.002/Bone.002_R.007/Bone.002_R.007_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/UpperCape
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/UpperCape/LowerCape
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/UpperCape/LowerCape/LowerCape_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Bone.003_L
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Bone.003_L/Bone.003_L.001
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Bone.003_L/Bone.003_L.001/Bone.003_L.002
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Bone.003_L/Bone.003_L.001/Bone.003_L.002/Bone.003_L.002_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Bone.003_R
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Bone.003_R/Bone.003_R.001
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Bone.003_R/Bone.003_R.001/Bone.003_R.002
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Bone.003_R/Bone.003_R.001/Bone.003_R.002/Bone.003_R.002_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Bone.009
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Bone.009/Bone.009_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Head
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Head/Bone.005
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Head/Bone.005/Bone.006
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Head/Bone.005/Bone.006/Bone.006_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Head/Bone.007
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Head/Bone.007/Bone.007_end
+        weight: 1
+      - path: Cylinder.002
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|Walking
+      takeName: Armature|Walking
+      firstFrame: 0
+      lastFrame: 40
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Bone.010
+        weight: 1
+      - path: Armature/Bone.010/Rabo_Comeco
+        weight: 1
+      - path: Armature/Bone.010/Rabo_Comeco/Rabo_Final
+        weight: 1
+      - path: Armature/Bone.010/Rabo_Comeco/Rabo_Final/Rabo_Final_end
+        weight: 1
+      - path: Armature/Bone_L
+        weight: 1
+      - path: Armature/Bone_L/Coxa_L
+        weight: 1
+      - path: Armature/Bone_L/Coxa_L/Bone_L.002
+        weight: 1
+      - path: Armature/Bone_L/Coxa_L/Bone_L.002/Bone_L.003
+        weight: 1
+      - path: Armature/Bone_L/Coxa_L/Bone_L.002/Bone_L.003/Bone_L.004
+        weight: 1
+      - path: Armature/Bone_L/Coxa_L/Bone_L.002/Bone_L.003/Bone_L.004/Bone_L.004_end
+        weight: 1
+      - path: Armature/Bone_R
+        weight: 1
+      - path: Armature/Bone_R/Coxa_R
+        weight: 1
+      - path: Armature/Bone_R/Coxa_R/Bone_R.002
+        weight: 1
+      - path: Armature/Bone_R/Coxa_R/Bone_R.002/Bone_R.003
+        weight: 1
+      - path: Armature/Bone_R/Coxa_R/Bone_R.002/Bone_R.003/Bone_R.004
+        weight: 1
+      - path: Armature/Bone_R/Coxa_R/Bone_R.002/Bone_R.003/Bone_R.004/Bone_R.004_end
+        weight: 1
+      - path: Armature/UnderBelly
+        weight: 1
+      - path: Armature/UnderBelly/Belly
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/BackController
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/BackController/BackController_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L/Shoulder_L
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L/Shoulder_L/Bone.002_L.002
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L/Shoulder_L/Bone.002_L.002/Bone.002_L.003
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L/Shoulder_L/Bone.002_L.002/Bone.002_L.003/Bone.002_L.004
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L/Shoulder_L/Bone.002_L.002/Bone.002_L.003/Bone.002_L.004/Bone.002_L.004_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L/Shoulder_L/Bone.002_L.002/Bone.002_L.005
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L/Shoulder_L/Bone.002_L.002/Bone.002_L.005/Bone.002_L.006
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L/Shoulder_L/Bone.002_L.002/Bone.002_L.005/Bone.002_L.006/Bone.002_L.006_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L/Shoulder_L/Bone.002_L.002/Bone.002_L.007
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_L/Shoulder_L/Bone.002_L.002/Bone.002_L.007/Bone.002_L.007_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/Shoulder_R
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/Shoulder_R/Bone.002_R.002
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/Shoulder_R/Bone.002_R.002/Bone.002_R.003
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/Shoulder_R/Bone.002_R.002/Bone.002_R.003/Bone.002_R.004
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/Shoulder_R/Bone.002_R.002/Bone.002_R.003/Bone.002_R.004/Bone.002_R.004_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/Shoulder_R/Bone.002_R.002/Bone.002_R.005
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/Shoulder_R/Bone.002_R.002/Bone.002_R.005/Bone.002_R.006
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/Shoulder_R/Bone.002_R.002/Bone.002_R.005/Bone.002_R.006/Bone.002_R.006_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/Shoulder_R/Bone.002_R.002/Bone.002_R.007
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/Shoulder_R/Bone.002_R.002/Bone.002_R.007/Bone.002_R.007_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/UpperCape
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/UpperCape/LowerCape
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Bone.002_R/UpperCape/LowerCape/LowerCape_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Bone.003_L
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Bone.003_L/Bone.003_L.001
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Bone.003_L/Bone.003_L.001/Bone.003_L.002
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Bone.003_L/Bone.003_L.001/Bone.003_L.002/Bone.003_L.002_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Bone.003_R
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Bone.003_R/Bone.003_R.001
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Bone.003_R/Bone.003_R.001/Bone.003_R.002
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Bone.003_R/Bone.003_R.001/Bone.003_R.002/Bone.003_R.002_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Bone.009
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Bone.009/Bone.009_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Head
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Head/Bone.005
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Head/Bone.005/Bone.006
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Head/Bone.005/Bone.006/Bone.006_end
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Head/Bone.007
+        weight: 1
+      - path: Armature/UnderBelly/Belly/Chest/Neck/Head/Bone.007/Bone.007_end
+        weight: 1
+      - path: Cylinder.002
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []

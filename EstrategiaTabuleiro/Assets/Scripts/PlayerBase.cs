@@ -24,6 +24,7 @@ public class PlayerBase : NetworkBehaviour {
     public bool Occupied;
     [SyncVar]
     public bool Destroyed;
+    public Text GoldText, FoodText;
 
     //[SerializeField]
    // MeshFilter MeshObj;
@@ -42,7 +43,9 @@ public class PlayerBase : NetworkBehaviour {
     }
 
     void Start()
-    { 
+    {
+        GoldText = GameObject.Find("_Dinheiro").GetComponent<Text>();
+        FoodText = GameObject.Find("_Comida").GetComponent<Text>();
 
         gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
         playerManager = GameObject.Find("_PlayerManager").GetComponent<PlayerManager>();
@@ -129,6 +132,8 @@ public class PlayerBase : NetworkBehaviour {
 
     void Update()
     {
+        GoldText.text = "Gold : " + Gold;
+        FoodText.text = "Food : " + Food;
 
         if(gameManager.curTurn == playerManager.MyTurn && Destroyed == true)
         {
