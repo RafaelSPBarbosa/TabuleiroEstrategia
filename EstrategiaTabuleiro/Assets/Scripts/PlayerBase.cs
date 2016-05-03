@@ -149,9 +149,12 @@ public class PlayerBase : NetworkBehaviour {
 
             if(Occupied == false)
             {
-                SpawnExplorerBtn.interactable = true;
-                SpawnGuerreiroBtn.interactable = true;
-                SpawnArqueiroBtn.interactable = true;
+                if(Gold >= 2)
+                    SpawnExplorerBtn.interactable = true;
+                if (Gold >= 5)
+                    SpawnGuerreiroBtn.interactable = true;
+                if (Gold >= 7)
+                    SpawnArqueiroBtn.interactable = true;
             }
             else
             {
@@ -213,30 +216,35 @@ public class PlayerBase : NetworkBehaviour {
     {
         var Explorer = Cao_Explorer;
 
-        if(ExplorerID == 1)
+        if (Gold >= 2)
         {
-            Explorer = Cao_Explorer;
-        }
-        if(ExplorerID == 2)
-        {
-            Explorer = Aguia_Explorer;
-        }
-        if (ExplorerID == 3)
-        {
-            Explorer = Rato_Explorer;
-        }
-        if (ExplorerID == 4)
-        {
-            Explorer = Gato_Explorer;
-        }
+            Gold -= 2;
 
-        GameObject go = (GameObject)Instantiate( Explorer , this.transform.position, Quaternion.identity);
-        NetworkServer.SpawnWithClientAuthority(go, connectionToClient);
-        go.GetComponent<UnitManager>().PlayerOwner = this.gameObject;
-        if (isFirst == true)
-            go.GetComponent<UnitManager>().curActions = 3;
-        
-        Rpc_SetObjectOwner(go);
+            if (ExplorerID == 1)
+            {
+                Explorer = Cao_Explorer;
+            }
+            if (ExplorerID == 2)
+            {
+                Explorer = Aguia_Explorer;
+            }
+            if (ExplorerID == 3)
+            {
+                Explorer = Rato_Explorer;
+            }
+            if (ExplorerID == 4)
+            {
+                Explorer = Gato_Explorer;
+            }
+
+            GameObject go = (GameObject)Instantiate(Explorer, this.transform.position, Quaternion.identity);
+            NetworkServer.SpawnWithClientAuthority(go, connectionToClient);
+            go.GetComponent<UnitManager>().PlayerOwner = this.gameObject;
+            if (isFirst == true)
+                go.GetComponent<UnitManager>().curActions = 3;
+
+            Rpc_SetObjectOwner(go);
+        }
     }
 
     [Command]
@@ -244,36 +252,54 @@ public class PlayerBase : NetworkBehaviour {
     {
         var Warrior = Cao_Warrior;
 
-        if (WarriorID == 1)
+        if (Gold >= 5)
         {
-            Warrior = Cao_Warrior;
-        }
-        if (WarriorID == 2)
-        {
-            Warrior = Aguia_Warrior;
-        }
-        if (WarriorID == 3)
-        {
-            Warrior = Rato_Warrior;
-        }
-        if (WarriorID == 4)
-        {
-            Warrior = Gato_Warrior;
-        }
+            Gold -= 5;
 
-        GameObject go = (GameObject)Instantiate(Warrior, this.transform.position, Quaternion.identity);
-        NetworkServer.SpawnWithClientAuthority(go, this.gameObject);
-        go.GetComponent<UnitManager>().PlayerOwner = this.gameObject;
+            if (WarriorID == 1)
+            {
+                Warrior = Cao_Warrior;
+            }
+            if (WarriorID == 2)
+            {
+                Warrior = Aguia_Warrior;
+            }
+            if (WarriorID == 3)
+            {
+                Warrior = Rato_Warrior;
+            }
+            if (WarriorID == 4)
+            {
+                Warrior = Gato_Warrior;
+            }
 
-        Rpc_SetObjectOwner(go);
+            GameObject go = (GameObject)Instantiate(Warrior, this.transform.position, Quaternion.identity);
+            NetworkServer.SpawnWithClientAuthority(go, this.gameObject);
+            go.GetComponent<UnitManager>().PlayerOwner = this.gameObject;
+
+            Rpc_SetObjectOwner(go);
+        }
     }
 
     [Command]
     public void Cmd_BuildFarm(Vector3 UnitPos)
     {
-        GameObject go = (GameObject)Instantiate(Farm, UnitPos, Quaternion.identity);
-        NetworkServer.Spawn(go);
-        go.GetComponent<FarmManager>().Cmd_SetInitialOwner(this.gameObject);
+        if (Gold >= 2)
+        {
+            Gold -= 2;
+            GameObject go = (GameObject)Instantiate(Farm, UnitPos, Quaternion.identity);
+            NetworkServer.Spawn(go);
+            if (isServer)
+            {
+                go.GetComponent<FarmManager>().Rpc_SetInitialOwner(this.gameObject);
+
+            }
+            else
+            {
+                go.GetComponent<FarmManager>().Cmd_SetInitialOwner(this.gameObject);
+            }
+        }
+        
     }
 
 
@@ -282,28 +308,34 @@ public class PlayerBase : NetworkBehaviour {
     {
         var Archer = Cao_Archer;
 
-        if (ArcherID == 1)
+        if (Gold >= 7)
         {
-            Archer = Cao_Archer;
-        }
-        if (ArcherID == 2)
-        {
-            Archer = Aguia_Archer;
-        }
-        if (ArcherID == 3)
-        {
-            Archer = Rato_Archer;
-        }
-        if (ArcherID == 4)
-        {
-            Archer = Gato_Archer;
-        }
+            Gold -= 7;
+            
 
-        GameObject go = (GameObject)Instantiate(Archer, this.transform.position, Quaternion.identity);
-        NetworkServer.SpawnWithClientAuthority(go, this.gameObject);
-        go.GetComponent<UnitManager>().PlayerOwner = this.gameObject;
+            if (ArcherID == 1)
+            {
+                Archer = Cao_Archer;
+            }
+            if (ArcherID == 2)
+            {
+                Archer = Aguia_Archer;
+            }
+            if (ArcherID == 3)
+            {
+                Archer = Rato_Archer;
+            }
+            if (ArcherID == 4)
+            {
+                Archer = Gato_Archer;
+            }
 
-        Rpc_SetObjectOwner(go);
+            GameObject go = (GameObject)Instantiate(Archer, this.transform.position, Quaternion.identity);
+            NetworkServer.SpawnWithClientAuthority(go, this.gameObject);
+            go.GetComponent<UnitManager>().PlayerOwner = this.gameObject;
+
+            Rpc_SetObjectOwner(go);
+        }
     }
 
     [ClientRpc]

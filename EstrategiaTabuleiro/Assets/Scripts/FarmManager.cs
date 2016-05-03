@@ -4,6 +4,10 @@ using System.Collections;
 
 public class FarmManager : NetworkBehaviour {
 
+    public Material Vermelho, Amarelo, Verde, Azul;
+
+    public MeshRenderer Flag;
+
     [SyncVar]
     public GameObject PlayerOwner;
 
@@ -13,6 +17,23 @@ public class FarmManager : NetworkBehaviour {
         PlayerOwner.GetComponent<PlayerBase>().Food--;
         PlayerOwner = newOwner;
         PlayerOwner.GetComponent<PlayerBase>().Food++;
+
+        if (PlayerOwner.GetComponent<PlayerBase>().PlayerBaseID == 1)
+        {
+            Flag.material = Vermelho;
+        }
+        if (PlayerOwner.GetComponent<PlayerBase>().PlayerBaseID == 2)
+        {
+            Flag.material = Amarelo;
+        }
+        if (PlayerOwner.GetComponent<PlayerBase>().PlayerBaseID == 3)
+        {
+            Flag.material = Verde;
+        }
+        if (PlayerOwner.GetComponent<PlayerBase>().PlayerBaseID == 4)
+        {
+            Flag.material = Azul;
+        }
     }
 
     [ClientRpc]
@@ -21,6 +42,23 @@ public class FarmManager : NetworkBehaviour {
         PlayerOwner.GetComponent<PlayerBase>().Food--;
         PlayerOwner = newOwner;
         PlayerOwner.GetComponent<PlayerBase>().Food++;
+
+        if (PlayerOwner.GetComponent<PlayerBase>().PlayerBaseID == 1)
+        {
+            Flag.material = Vermelho;
+        }
+        if (PlayerOwner.GetComponent<PlayerBase>().PlayerBaseID == 2)
+        {
+            Flag.material = Amarelo;
+        }
+        if (PlayerOwner.GetComponent<PlayerBase>().PlayerBaseID == 3)
+        {
+            Flag.material = Verde;
+        }
+        if (PlayerOwner.GetComponent<PlayerBase>().PlayerBaseID == 4)
+        {
+            Flag.material = Azul;
+        }
     }
 
     [Command]
@@ -28,6 +66,47 @@ public class FarmManager : NetworkBehaviour {
     {
         PlayerOwner = newOwner;
         PlayerOwner.GetComponent<PlayerBase>().Food++;
+
+        if (PlayerOwner.GetComponent<PlayerBase>().PlayerBaseID == 1)
+        {
+            Flag.material = Vermelho;
+        }
+        if (PlayerOwner.GetComponent<PlayerBase>().PlayerBaseID == 2)
+        {
+            Flag.material = Amarelo;
+        }
+        if (PlayerOwner.GetComponent<PlayerBase>().PlayerBaseID == 3)
+        {
+            Flag.material = Verde;
+        }
+        if (PlayerOwner.GetComponent<PlayerBase>().PlayerBaseID == 4)
+        {
+            Flag.material = Azul;
+        }
+    }
+
+    [ClientRpc]
+    public void Rpc_SetInitialOwner(GameObject newOwner)
+    {
+        PlayerOwner = newOwner;
+        PlayerOwner.GetComponent<PlayerBase>().Food++;
+
+        if (PlayerOwner.GetComponent<PlayerBase>().PlayerBaseID == 1)
+        {
+            Flag.material = Vermelho;
+        }
+        if (PlayerOwner.GetComponent<PlayerBase>().PlayerBaseID == 2)
+        {
+            Flag.material = Amarelo;
+        }
+        if (PlayerOwner.GetComponent<PlayerBase>().PlayerBaseID == 3)
+        {
+            Flag.material = Verde;
+        }
+        if (PlayerOwner.GetComponent<PlayerBase>().PlayerBaseID == 4)
+        {
+            Flag.material = Azul;
+        }
     }
 
     void OnTriggerEnter(Collider other)
