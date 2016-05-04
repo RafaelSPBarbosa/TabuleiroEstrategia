@@ -26,9 +26,12 @@ public class PlayerBase : NetworkBehaviour {
     public bool Destroyed;
     public Text GoldText, FoodText;
 
+    //Váriaveis da gambiarra
+    float tempoTurno = 0;
+
     //[SerializeField]
-   // MeshFilter MeshObj;
-   // [SerializeField]
+    // MeshFilter MeshObj;
+    // [SerializeField]
     //MeshRenderer Mat;
 
     //public Mesh MeshBaseCao, MeshBaseAguia, MeshBaseGato, MeshBaseRato;
@@ -132,6 +135,8 @@ public class PlayerBase : NetworkBehaviour {
 
     void Update()
     {
+
+
         GoldText.text = "Gold : " + Gold;
         FoodText.text = "Food : " + Food;
 
@@ -152,7 +157,10 @@ public class PlayerBase : NetworkBehaviour {
         {
             PassTurnButton.interactable = true;
 
-            if(Occupied == false)
+            ControlaTempoTurno();
+            
+
+            if (Occupied == false)
             {
                 if(Gold >= 2)
                     SpawnExplorerBtn.interactable = true;
@@ -427,5 +435,21 @@ public class PlayerBase : NetworkBehaviour {
     {
         
         tile.GetComponent<TileManager>().SteppingObject = Obj;
+    }
+
+    public void ControlaTempoTurno() {
+        
+        //Crio uma variável que guarda o tempo em segundos
+        tempoTurno = tempoTurno + Time.deltaTime;
+        if (tempoTurno > 10.0)
+        {//guerra civil
+            Cmd_PassTurn(); // to chutando não sei qual que é a estrutrua qeu o cara gerou pra mudar o tuno
+
+            Debug.Log("passao truno");
+            tempoTurno = 0;
+        }
+        //Tá contando :D
+        Debug.Log(tempoTurno);
+        /* ACABOU A GAMBIARRA */
     }
 }
