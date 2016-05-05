@@ -2,11 +2,13 @@
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using System.Collections;
+using System;
 
 public class PlayerBase : NetworkBehaviour {
 
     GameManager gameManager;
     PlayerManager playerManager;
+    Text TempoTxt;
     public GameObject Aguia_Explorer , Cao_Explorer, Rato_Explorer , Gato_Explorer;
     public GameObject Aguia_Warrior, Cao_Warrior , Rato_Warrior , Gato_Warrior;
     public GameObject Aguia_Archer, Cao_Archer , Rato_Archer , Gato_Archer;
@@ -27,7 +29,7 @@ public class PlayerBase : NetworkBehaviour {
     public Text GoldText, FoodText;
 
     //Váriaveis da gambiarra
-    float tempoTurno = 0;
+    float tempoTurno = 45;
 
     //[SerializeField]
     // MeshFilter MeshObj;
@@ -49,6 +51,7 @@ public class PlayerBase : NetworkBehaviour {
     {
         GoldText = GameObject.Find("_Dinheiro").GetComponent<Text>();
         FoodText = GameObject.Find("_Comida").GetComponent<Text>();
+        TempoTxt = GameObject.Find("_Tempo").GetComponent<Text>();
 
         gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
         playerManager = GameObject.Find("_PlayerManager").GetComponent<PlayerManager>();
@@ -153,12 +156,11 @@ public class PlayerBase : NetworkBehaviour {
             
         }
 
-        if (gameManager.curTurn == playerManager.MyTurn && Destroyed == false)
+            //ControlaTempoTurno();
+
+            if (gameManager.curTurn == playerManager.MyTurn && Destroyed == false)
         {
             PassTurnButton.interactable = true;
-
-            ControlaTempoTurno();
-            
 
             if (Occupied == false)
             {
@@ -227,70 +229,89 @@ public class PlayerBase : NetworkBehaviour {
     [Command]
     public void Cmd_SpawnExplorer( int ExplorerID , bool isFirst )
     {
-        var Explorer = Cao_Explorer;
-
-        if (Gold >= 2)
+        GameObject[] AllUnits = GameObject.FindGameObjectsWithTag("Unit");
+        int AmmountOfFriendlyUnits = 0;
+        for(int i = 0; i < AllUnits.Length; i++)
         {
-            Gold -= 2;
+            if(AllUnits[i].GetComponent<UnitManager>().PlayerOwner == this.gameObject )
+                AmmountOfFriendlyUnits++;
+        }
+        if (Food > AmmountOfFriendlyUnits && AmmountOfFriendlyUnits <= 5)
+        {
+            var Explorer = Cao_Explorer;
+            if (Gold >= 2)
+            {
+                Gold -= 2;
 
-            if (ExplorerID == 1)
-            {
-                Explorer = Cao_Explorer;
-            }
-            if (ExplorerID == 2)
-            {
-                Explorer = Aguia_Explorer;
-            }
-            if (ExplorerID == 3)
-            {
-                Explorer = Rato_Explorer;
-            }
-            if (ExplorerID == 4)
-            {
-                Explorer = Gato_Explorer;
-            }
+                if (ExplorerID == 1)
+                {
+                    Explorer = Cao_Explorer;
+                }
+                if (ExplorerID == 2)
+                {
+                    Explorer = Aguia_Explorer;
+                }
+                if (ExplorerID == 3)
+                {
+                    Explorer = Rato_Explorer;
+                }
+                if (ExplorerID == 4)
+                {
+                    Explorer = Gato_Explorer;
+                }
 
-            GameObject go = (GameObject)Instantiate(Explorer, this.transform.position, Quaternion.identity);
-            NetworkServer.SpawnWithClientAuthority(go, connectionToClient);
-            go.GetComponent<UnitManager>().PlayerOwner = this.gameObject;
-            if (isFirst == true)
-                go.GetComponent<UnitManager>().curActions = 3;
+                GameObject go = (GameObject)Instantiate(Explorer, this.transform.position, Quaternion.identity);
+                NetworkServer.SpawnWithClientAuthority(go, connectionToClient);
+                go.GetComponent<UnitManager>().PlayerOwner = this.gameObject;
+                if (isFirst == true)
+                    go.GetComponent<UnitManager>().curActions = 3;
 
-            Rpc_SetObjectOwner(go);
+                Rpc_SetObjectOwner(go);
+            }
         }
     }
 
     [Command]
     public void Cmd_SpawnGuerreiro(int WarriorID)
     {
-        var Warrior = Cao_Warrior;
-
-        if (Gold >= 5)
+        GameObject[] AllUnits = GameObject.FindGameObjectsWithTag("Unit");
+        int AmmountOfFriendlyUnits = 0;
+        for (int i = 0; i < AllUnits.Length; i++)
         {
-            Gold -= 5;
+            if (AllUnits[i].GetComponent<UnitManager>().PlayerOwner == this.gameObject)
+                AmmountOfFriendlyUnits++;
+        }
+        if (Food > AmmountOfFriendlyUnits && AmmountOfFriendlyUnits <= 5)
+        {
+            var Warrior = Cao_Warrior;
 
-            if (WarriorID == 1)
+            if (Gold >= 5)
             {
-                Warrior = Cao_Warrior;
-            }
-            if (WarriorID == 2)
-            {
-                Warrior = Aguia_Warrior;
-            }
-            if (WarriorID == 3)
-            {
-                Warrior = Rato_Warrior;
-            }
-            if (WarriorID == 4)
-            {
-                Warrior = Gato_Warrior;
-            }
+                Gold -= 5;
 
-            GameObject go = (GameObject)Instantiate(Warrior, this.transform.position, Quaternion.identity);
-            NetworkServer.SpawnWithClientAuthority(go, this.gameObject);
-            go.GetComponent<UnitManager>().PlayerOwner = this.gameObject;
+                if (WarriorID == 1)
+                {
+                    Warrior = Cao_Warrior;
+                }
+                if (WarriorID == 2)
+                {
+                    Warrior = Aguia_Warrior;
+                }
+                if (WarriorID == 3)
+                {
+                    Warrior = Rato_Warrior;
+                }
+                if (WarriorID == 4)
+                {
+                    Warrior = Gato_Warrior;
+                }
 
-            Rpc_SetObjectOwner(go);
+                GameObject go = (GameObject)Instantiate(Warrior, this.transform.position, Quaternion.identity);
+                NetworkServer.SpawnWithClientAuthority(go, this.gameObject);
+                go.GetComponent<UnitManager>().PlayerOwner = this.gameObject;
+
+                Rpc_SetObjectOwner(go);
+            }
         }
     }
 
@@ -319,35 +340,45 @@ public class PlayerBase : NetworkBehaviour {
     [Command]
     public void Cmd_SpawnArqueiro(int ArcherID)
     {
-        var Archer = Cao_Archer;
-
-        if (Gold >= 7)
+        GameObject[] AllUnits = GameObject.FindGameObjectsWithTag("Unit");
+        int AmmountOfFriendlyUnits = 0;
+        for (int i = 0; i < AllUnits.Length; i++)
         {
-            Gold -= 7;
-            
+            if (AllUnits[i].GetComponent<UnitManager>().PlayerOwner == this.gameObject)
+                AmmountOfFriendlyUnits++;
+        }
+        if (Food > AmmountOfFriendlyUnits && AmmountOfFriendlyUnits <= 5)
+        {
+            var Archer = Cao_Archer;
 
-            if (ArcherID == 1)
+            if (Gold >= 7)
             {
-                Archer = Cao_Archer;
-            }
-            if (ArcherID == 2)
-            {
-                Archer = Aguia_Archer;
-            }
-            if (ArcherID == 3)
-            {
-                Archer = Rato_Archer;
-            }
-            if (ArcherID == 4)
-            {
-                Archer = Gato_Archer;
-            }
+                Gold -= 7;
 
-            GameObject go = (GameObject)Instantiate(Archer, this.transform.position, Quaternion.identity);
-            NetworkServer.SpawnWithClientAuthority(go, this.gameObject);
-            go.GetComponent<UnitManager>().PlayerOwner = this.gameObject;
 
-            Rpc_SetObjectOwner(go);
+                if (ArcherID == 1)
+                {
+                    Archer = Cao_Archer;
+                }
+                if (ArcherID == 2)
+                {
+                    Archer = Aguia_Archer;
+                }
+                if (ArcherID == 3)
+                {
+                    Archer = Rato_Archer;
+                }
+                if (ArcherID == 4)
+                {
+                    Archer = Gato_Archer;
+                }
+
+                GameObject go = (GameObject)Instantiate(Archer, this.transform.position, Quaternion.identity);
+                NetworkServer.SpawnWithClientAuthority(go, this.gameObject);
+                go.GetComponent<UnitManager>().PlayerOwner = this.gameObject;
+
+                Rpc_SetObjectOwner(go);
+            }
         }
     }
 
@@ -361,6 +392,7 @@ public class PlayerBase : NetworkBehaviour {
     public void Cmd_PassTurn()
     {
         gameManager.curTurn++;
+        //tempoTurno = 45;
 
         int GoldToGive = 1;
         GameObject[] AllGoldMines = GameObject.FindGameObjectsWithTag("GoldMine");
@@ -385,12 +417,24 @@ public class PlayerBase : NetworkBehaviour {
             AllFriendlyUnits[i].GetComponent<UnitManager>().curActions = AllFriendlyUnits[i].GetComponent<UnitManager>().MaxActions;
             AllFriendlyUnits[i].GetComponent<UnitManager>().HasAttacked = false;
         }
+
+       /* if (isServer)
+        {
+            Cmd_ResetTimer();
+        }
+        else
+        {
+            Rpc_ResetTimer();
+        }*/
+
         Rpc_PassTurn();
+
     }
 
     [ClientRpc]
     public void Rpc_PassTurn()
     {
+        //tempoTurno = 45;
         //Gold++;
         //Aqui carrego a variável com todos os objetos da cena que possuem o Tag "Unit"
         GameObject[] AllFriendlyUnits = GameObject.FindGameObjectsWithTag("Unit");
@@ -401,8 +445,29 @@ public class PlayerBase : NetworkBehaviour {
             AllFriendlyUnits[i].GetComponent<UnitManager>().curActions = AllFriendlyUnits[i].GetComponent<UnitManager>().MaxActions;
             AllFriendlyUnits[i].GetComponent<UnitManager>().HasAttacked = false;
         }
-
+        /*if (isServer)
+        {
+            Cmd_ResetTimer();
+        }
+        else
+        {
+            Rpc_ResetTimer();
+        }*/
     }
+
+    [Command]
+    void Cmd_ResetTimer()
+    {
+        tempoTurno = 45;
+    }
+
+    [ClientRpc]
+    void Rpc_ResetTimer()
+    {
+        tempoTurno = 45;
+    }
+
+
 
     [Command]
     public void Cmd_MoveUnit(GameObject Obj, GameObject Tile)
@@ -440,16 +505,24 @@ public class PlayerBase : NetworkBehaviour {
     public void ControlaTempoTurno() {
         
         //Crio uma variável que guarda o tempo em segundos
-        tempoTurno = tempoTurno + Time.deltaTime;
-        if (tempoTurno > 10.0)
+        tempoTurno = tempoTurno - Time.deltaTime;
+        TempoTxt.text = Convert.ToInt32(tempoTurno).ToString();
+        if (tempoTurno <= 0)
         {//guerra civil
             Cmd_PassTurn(); // to chutando não sei qual que é a estrutrua qeu o cara gerou pra mudar o tuno
-
-            Debug.Log("passao truno");
-            tempoTurno = 0;
+            if (isServer)
+            {
+                Cmd_ResetTimer();
+            }
+            else
+            {
+                Rpc_ResetTimer();
+            }
+            //Debug.Log("passao truno");
+            tempoTurno = 45;
         }
         //Tá contando :D
-        Debug.Log(tempoTurno);
+        //Debug.Log(tempoTurno);
         /* ACABOU A GAMBIARRA */
     }
 }
