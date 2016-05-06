@@ -8,10 +8,10 @@ public class PlayerManager : MonoBehaviour {
     public GameManager gameManager;
     Button PassTurnBtn;
 
-    void Start()
+    public void UpdateVariables()
     {
 
-        PlayerID = GameObject.FindGameObjectsWithTag("PlayerBase").Length;
+        //PlayerID = GameObject.FindGameObjectsWithTag("PlayerBase").Length;
         MyTurn = PlayerID;
         GameObject.Find("PlayerIndicatorText").GetComponent<Text>().text = "Player : " + PlayerID;
 

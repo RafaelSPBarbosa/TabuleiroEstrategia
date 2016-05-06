@@ -31,6 +31,8 @@ public class PlayerBase : NetworkBehaviour {
     //Váriaveis da gambiarra
     float tempoTurno = 45;
 
+    bool ReadyToPlay = false;
+
     //[SerializeField]
     // MeshFilter MeshObj;
     // [SerializeField]
@@ -42,13 +44,21 @@ public class PlayerBase : NetworkBehaviour {
     public GameObject Farm;
 
     [Command]
-    void Cmd_UpdatePlayerBaseID(int ID)
+    public void Cmd_UpdatePlayerBaseID(int ID)
+    {
+        PlayerBaseID = ID;
+    }
+    [ClientRpc]
+    public void Rpc_UpdatePlayerBaseID(int ID)
     {
         PlayerBaseID = ID;
     }
 
-    void Start()
+    IEnumerator DelayedStart()
     {
+
+        yield return new WaitForSeconds(5);
+
         GoldText = GameObject.Find("_Dinheiro").GetComponent<Text>();
         FoodText = GameObject.Find("_Comida").GetComponent<Text>();
         TempoTxt = GameObject.Find("_Tempo").GetComponent<Text>();
@@ -58,58 +68,73 @@ public class PlayerBase : NetworkBehaviour {
 
         if (isLocalPlayer)
         {
-            PlayerBaseID = GameObject.FindGameObjectsWithTag("PlayerBase").Length;
-            Cmd_UpdatePlayerBaseID(PlayerBaseID);
+            //PlayerBaseID = GetComponent<NetworkIdentity>().Networ;
+            /*GameObject[] AllLobbyPlayers = GameObject.FindGameObjectsWithTag("LobbyPlayer");
+            for(int i = 0; i < AllLobbyPlayers.Length; i++)
+            {
+                if(AllLobbyPlayers[i].GetComponent<NetworkIdentity>().isLocalPlayer == true)
+                {
+                    print(AllLobbyPlayers[i].GetComponent<NetworkIdentity>().netId.ToString());
+                    PlayerBaseID = Convert.ToInt32(AllLobbyPlayers[i].GetComponent<NetworkIdentity>().netId.ToString());
+                }
+            }*/
+
+
+            // Cmd_UpdatePlayerBaseID(PlayerBaseID);
+            
             gameManager.MyPlayerBase = this.gameObject;
+            playerManager.PlayerID = PlayerBaseID;
+            playerManager.UpdateVariables();
+
         }
 
         if (isLocalPlayer)
         {
             if (PlayerBaseID == 1)
             {
-               // Mat.material = MatBaseCao;
+                // Mat.material = MatBaseCao;
                 GameObject.Find("CameraRotator").transform.Rotate(0, 45, 0);
             }
             if (PlayerBaseID == 2)
             {
-               // Mat.material = MatBaseAguia;
+                // Mat.material = MatBaseAguia;
                 GameObject.Find("CameraRotator").transform.Rotate(0, 135, 0);
             }
             if (PlayerBaseID == 3)
             {
-               // Mat.material = MatBaseGato;
+                // Mat.material = MatBaseGato;
                 GameObject.Find("CameraRotator").transform.Rotate(0, 330, 0);
             }
             if (PlayerBaseID == 4)
             {
-               // Mat.material = MatBaseRato;
+                // Mat.material = MatBaseRato;
                 GameObject.Find("CameraRotator").transform.Rotate(0, 210, 0);
             }
         }
-       /* else
-        {
-            if (PlayerBaseID == 1)
-            {
-                Mat.material = MatBaseCao;
-            }
-            if (PlayerBaseID == 2)
-            {
-                Mat.material = MatBaseAguia;
-            }
-            if (PlayerBaseID == 3)
-            {
-                Mat.material = MatBaseGato;
-            }
-            if (PlayerBaseID == 4)
-            {
-                Mat.material = MatBaseRato;
-            }
-        }*/
+        /* else
+         {
+             if (PlayerBaseID == 1)
+             {
+                 Mat.material = MatBaseCao;
+             }
+             if (PlayerBaseID == 2)
+             {
+                 Mat.material = MatBaseAguia;
+             }
+             if (PlayerBaseID == 3)
+             {
+                 Mat.material = MatBaseGato;
+             }
+             if (PlayerBaseID == 4)
+             {
+                 Mat.material = MatBaseRato;
+             }
+         }*/
 
         if (isLocalPlayer)
         {
             SpawnExplorerBtn = GameObject.Find("SpawnExplorer").GetComponent<Button>();
-            SpawnExplorerBtn.onClick.AddListener(() => Cmd_SpawnExplorer(PlayerBaseID,false));
+            SpawnExplorerBtn.onClick.AddListener(() => Cmd_SpawnExplorer(PlayerBaseID, false));
 
             SpawnGuerreiroBtn = GameObject.Find("SpawnWarrior").GetComponent<Button>();
             SpawnGuerreiroBtn.onClick.AddListener(() => Cmd_SpawnGuerreiro(PlayerBaseID));
@@ -122,6 +147,13 @@ public class PlayerBase : NetworkBehaviour {
 
             //Cmd_SpawnExplorer(true);
         }
+        ReadyToPlay = true;
+    }
+
+    void Start()
+    {
+        StartCoroutine("DelayedStart");
+        
     }
 
     [Command]
@@ -138,58 +170,68 @@ public class PlayerBase : NetworkBehaviour {
 
     void Update()
     {
-
-
-        GoldText.text = "Gold : " + Gold;
-        FoodText.text = "Food : " + Food;
-
-        if(gameManager.curTurn == playerManager.MyTurn && Destroyed == true)
+        if (ReadyToPlay == true)
         {
-            if (isServer)
+            if (gameManager == null)
             {
-                Rpc_PassDestroyedTurn(playerManager.MyTurn + 1);
+                gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
             }
-            else
+            if (playerManager == null)
             {
-                Cmd_PassDestroyedTurn(playerManager.MyTurn + 1);
+                playerManager = GameObject.Find("_PlayerManager").GetComponent<PlayerManager>();
             }
-            
-        }
+
+            GoldText.text = "Gold : " + Gold;
+            FoodText.text = "Food : " + Food;
+
+            if (gameManager.curTurn == playerManager.MyTurn && Destroyed == true)
+            {
+                if (isServer)
+                {
+                    Rpc_PassDestroyedTurn(playerManager.MyTurn + 1);
+                }
+                else
+                {
+                    Cmd_PassDestroyedTurn(playerManager.MyTurn + 1);
+                }
+
+            }
 
             //ControlaTempoTurno();
 
             if (gameManager.curTurn == playerManager.MyTurn && Destroyed == false)
-        {
-            PassTurnButton.interactable = true;
-
-            if (Occupied == false)
             {
-                if(Gold >= 2)
-                    SpawnExplorerBtn.interactable = true;
-                if (Gold >= 5)
-                    SpawnGuerreiroBtn.interactable = true;
-                if (Gold >= 7)
-                    SpawnArqueiroBtn.interactable = true;
+                PassTurnButton.interactable = true;
+
+                if (Occupied == false)
+                {
+                    if (Gold >= 2)
+                        SpawnExplorerBtn.interactable = true;
+                    if (Gold >= 5)
+                        SpawnGuerreiroBtn.interactable = true;
+                    if (Gold >= 7)
+                        SpawnArqueiroBtn.interactable = true;
+                }
+                else
+                {
+                    SpawnExplorerBtn.interactable = false;
+                    SpawnGuerreiroBtn.interactable = false;
+                    SpawnArqueiroBtn.interactable = false;
+                }
+
             }
             else
             {
+                PassTurnButton.interactable = false;
                 SpawnExplorerBtn.interactable = false;
                 SpawnGuerreiroBtn.interactable = false;
                 SpawnArqueiroBtn.interactable = false;
-            }             
+            }
 
-        }
-        else
-        {
-               PassTurnButton.interactable = false;
-               SpawnExplorerBtn.interactable = false;
-               SpawnGuerreiroBtn.interactable = false;
-               SpawnArqueiroBtn.interactable = false;
-        }
-
-        if( curHealth <= 0 && Destroyed == false)
-        {
-            Cmd_DestroyKingdom();
+            if (curHealth <= 0 && Destroyed == false)
+            {
+                Cmd_DestroyKingdom();
+            }
         }
     }
 
