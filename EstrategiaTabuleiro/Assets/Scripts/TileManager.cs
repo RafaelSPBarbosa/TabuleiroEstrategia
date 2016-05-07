@@ -12,7 +12,7 @@ public class TileManager : NetworkBehaviour {
     public GameObject SelectedUnit;
     public GameManager gameManager;
     public PlayerManager playerManager;
-    public GameObject SteppingObject;
+    public GameObject SteppingObject , Construction;
     public GameObject PlayerBase;
     public bool hasMonster , isMonsterTrigger , CanSpawnMonster = true;
     public GameObject CurrentMonster;
@@ -124,7 +124,7 @@ public class TileManager : NetworkBehaviour {
                 }
             }
 
-            if (SelectedUnit != null && SteppingObject == null)
+            if (SelectedUnit != null && SteppingObject == null )
             {
                 //Esta parte serve para mostrar melhor os tiles para os quais o player pode se movimentar
 
@@ -149,7 +149,7 @@ public class TileManager : NetworkBehaviour {
                     }
                 }
             }
-            else //Este Else serve para des-selecionar as tiles quando o player for des-selecionado.
+            else  //Este Else serve para des-selecionar as tiles quando o player for des-selecionado.
             {
                 if (GetComponent<MeshRenderer>().material.color == Moveable)
                 {
@@ -174,7 +174,8 @@ public class TileManager : NetworkBehaviour {
     {
         if (SelectedUnit != null && SteppingObject == null) //Ainda é preciso pedir a quantidade de ações que uma unidade pode executar
         {
-            if (hasMonster == false) { 
+            if (hasMonster == false)
+            {
                 if (SelectedUnit.GetComponent<UnitManager>().PlayerOwner == PlayerBase || PlayerBase == null)
                 {
                     if (SelectedUnit.GetComponent<UnitManager>().Busy == false)
@@ -200,7 +201,7 @@ public class TileManager : NetworkBehaviour {
 
         if( other.transform.tag == "Farm")
         {
-            SteppingObject = other.transform.gameObject;
+            Construction = other.gameObject;
         }
 
         if (isMonsterTrigger)
@@ -208,6 +209,17 @@ public class TileManager : NetworkBehaviour {
             if (other.transform.tag == "Unit")
             {
                 MonsterSpawner.SpawnMonster(other.gameObject);
+            }
+        }
+        
+    }
+    void OnTriggerStay(Collider other)
+    {
+        if (Construction == null)
+        {
+            if (other.transform.tag == "GoldMine")
+            {
+                Construction = other.gameObject;
             }
         }
     }

@@ -29,17 +29,10 @@ public class PlayerBase : NetworkBehaviour {
     public Text GoldText, FoodText;
 
     //Váriaveis da gambiarra
+    [SyncVar]
     float tempoTurno = 45;
 
     bool ReadyToPlay = false;
-
-    //[SerializeField]
-    // MeshFilter MeshObj;
-    // [SerializeField]
-    //MeshRenderer Mat;
-
-    //public Mesh MeshBaseCao, MeshBaseAguia, MeshBaseGato, MeshBaseRato;
-    //public Material MatBaseCao, MatBaseAguia, MatBaseGato, MatBaseRato;
 
     public GameObject Farm;
 
@@ -57,7 +50,7 @@ public class PlayerBase : NetworkBehaviour {
     IEnumerator DelayedStart()
     {
 
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(0.5f);
 
         GoldText = GameObject.Find("_Dinheiro").GetComponent<Text>();
         FoodText = GameObject.Find("_Comida").GetComponent<Text>();
@@ -68,19 +61,6 @@ public class PlayerBase : NetworkBehaviour {
 
         if (isLocalPlayer)
         {
-            //PlayerBaseID = GetComponent<NetworkIdentity>().Networ;
-            /*GameObject[] AllLobbyPlayers = GameObject.FindGameObjectsWithTag("LobbyPlayer");
-            for(int i = 0; i < AllLobbyPlayers.Length; i++)
-            {
-                if(AllLobbyPlayers[i].GetComponent<NetworkIdentity>().isLocalPlayer == true)
-                {
-                    print(AllLobbyPlayers[i].GetComponent<NetworkIdentity>().netId.ToString());
-                    PlayerBaseID = Convert.ToInt32(AllLobbyPlayers[i].GetComponent<NetworkIdentity>().netId.ToString());
-                }
-            }*/
-
-
-            // Cmd_UpdatePlayerBaseID(PlayerBaseID);
             
             gameManager.MyPlayerBase = this.gameObject;
             playerManager.PlayerID = PlayerBaseID;
@@ -111,25 +91,6 @@ public class PlayerBase : NetworkBehaviour {
                 GameObject.Find("CameraRotator").transform.Rotate(0, 210, 0);
             }
         }
-        /* else
-         {
-             if (PlayerBaseID == 1)
-             {
-                 Mat.material = MatBaseCao;
-             }
-             if (PlayerBaseID == 2)
-             {
-                 Mat.material = MatBaseAguia;
-             }
-             if (PlayerBaseID == 3)
-             {
-                 Mat.material = MatBaseGato;
-             }
-             if (PlayerBaseID == 4)
-             {
-                 Mat.material = MatBaseRato;
-             }
-         }*/
 
         if (isLocalPlayer)
         {
@@ -145,7 +106,7 @@ public class PlayerBase : NetworkBehaviour {
             PassTurnButton = GameObject.Find("PassTurnBtn").GetComponent<Button>();
             PassTurnButton.onClick.AddListener(() => Cmd_PassTurn());
 
-            //Cmd_SpawnExplorer(true);
+            Cmd_SpawnExplorer(PlayerBaseID , true);
         }
         ReadyToPlay = true;
     }
@@ -197,7 +158,11 @@ public class PlayerBase : NetworkBehaviour {
 
             }
 
-            //ControlaTempoTurno();
+           // if (isServer)
+          //  {
+               // ControlaTempoTurno();
+           // }
+            
 
             if (gameManager.curTurn == playerManager.MyTurn && Destroyed == false)
             {
@@ -281,10 +246,40 @@ public class PlayerBase : NetworkBehaviour {
         if (Food > AmmountOfFriendlyUnits && AmmountOfFriendlyUnits <= 5)
         {
             var Explorer = Cao_Explorer;
-            if (Gold >= 2)
+            if (isFirst == false)
             {
-                Gold -= 2;
+                if (Gold >= 2)
+                {
+                    Gold -= 2;
 
+                    if (ExplorerID == 1)
+                    {
+                        Explorer = Cao_Explorer;
+                    }
+                    if (ExplorerID == 2)
+                    {
+                        Explorer = Aguia_Explorer;
+                    }
+                    if (ExplorerID == 3)
+                    {
+                        Explorer = Rato_Explorer;
+                    }
+                    if (ExplorerID == 4)
+                    {
+                        Explorer = Gato_Explorer;
+                    }
+
+                    GameObject go = (GameObject)Instantiate(Explorer, this.transform.position, Quaternion.identity);
+                    NetworkServer.SpawnWithClientAuthority(go, connectionToClient);
+                    go.GetComponent<UnitManager>().PlayerOwner = this.gameObject;
+                    if (isFirst == true)
+                        go.GetComponent<UnitManager>().curActions = 3;
+
+                    Rpc_SetObjectOwner(go);
+                }
+            }
+            else
+            {
                 if (ExplorerID == 1)
                 {
                     Explorer = Cao_Explorer;
@@ -360,20 +355,16 @@ public class PlayerBase : NetworkBehaviour {
     [Command]
     public void Cmd_BuildFarm(Vector3 UnitPos)
     {
-        if (Gold >= 2)
+        GameObject go = (GameObject)Instantiate(Farm, UnitPos, Quaternion.identity);
+        NetworkServer.Spawn(go);
+        if (isServer)
         {
-            Gold -= 2;
-            GameObject go = (GameObject)Instantiate(Farm, UnitPos, Quaternion.identity);
-            NetworkServer.Spawn(go);
-            if (isServer)
-            {
-                go.GetComponent<FarmManager>().Rpc_SetInitialOwner(this.gameObject);
+            go.GetComponent<FarmManager>().Rpc_SetInitialOwner(this.gameObject);
 
-            }
-            else
-            {
-                go.GetComponent<FarmManager>().Cmd_SetInitialOwner(this.gameObject);
-            }
+        }
+        else
+        {
+            go.GetComponent<FarmManager>().Cmd_SetInitialOwner(this.gameObject);
         }
         
     }
@@ -440,9 +431,12 @@ public class PlayerBase : NetworkBehaviour {
         GameObject[] AllGoldMines = GameObject.FindGameObjectsWithTag("GoldMine");
         for(int i =0; i < AllGoldMines.Length; i++)
         {
-            if(AllGoldMines[i].GetComponent<GoldMineManager>().PlayerOwner == this.gameObject)
+            if (AllGoldMines[i].GetComponent<GoldMineManager>().PlayerOwner != null)
             {
-                GoldToGive++;
+                if (AllGoldMines[i].GetComponent<GoldMineManager>().PlayerOwner == this.gameObject)
+                {
+                    GoldToGive++;
+                }
             }
         }
         Gold += GoldToGive;
@@ -460,14 +454,14 @@ public class PlayerBase : NetworkBehaviour {
             AllFriendlyUnits[i].GetComponent<UnitManager>().HasAttacked = false;
         }
 
-       /* if (isServer)
+        if (isServer)
         {
-            Cmd_ResetTimer();
+            ResetTimer();
         }
         else
         {
-            Rpc_ResetTimer();
-        }*/
+            Cmd_ResetTimer();
+        }
 
         Rpc_PassTurn();
 
@@ -487,14 +481,14 @@ public class PlayerBase : NetworkBehaviour {
             AllFriendlyUnits[i].GetComponent<UnitManager>().curActions = AllFriendlyUnits[i].GetComponent<UnitManager>().MaxActions;
             AllFriendlyUnits[i].GetComponent<UnitManager>().HasAttacked = false;
         }
-        /*if (isServer)
+        if (isServer)
         {
-            Cmd_ResetTimer();
+            ResetTimer();
         }
         else
         {
-            Rpc_ResetTimer();
-        }*/
+            Cmd_ResetTimer();
+        }
     }
 
     [Command]
@@ -503,13 +497,10 @@ public class PlayerBase : NetworkBehaviour {
         tempoTurno = 45;
     }
 
-    [ClientRpc]
-    void Rpc_ResetTimer()
+    void ResetTimer()
     {
         tempoTurno = 45;
     }
-
-
 
     [Command]
     public void Cmd_MoveUnit(GameObject Obj, GameObject Tile)
@@ -550,21 +541,17 @@ public class PlayerBase : NetworkBehaviour {
         tempoTurno = tempoTurno - Time.deltaTime;
         TempoTxt.text = Convert.ToInt32(tempoTurno).ToString();
         if (tempoTurno <= 0)
-        {//guerra civil
-            Cmd_PassTurn(); // to chutando não sei qual que é a estrutrua qeu o cara gerou pra mudar o tuno
+        {
+            Cmd_PassTurn(); 
             if (isServer)
             {
-                Cmd_ResetTimer();
+                ResetTimer();
             }
             else
             {
-                Rpc_ResetTimer();
+                Cmd_ResetTimer();
             }
-            //Debug.Log("passao truno");
             tempoTurno = 45;
         }
-        //Tá contando :D
-        //Debug.Log(tempoTurno);
-        /* ACABOU A GAMBIARRA */
     }
 }

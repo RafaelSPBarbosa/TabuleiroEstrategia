@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System;
 
 public class LobbyPlayerUpdate : NetworkBehaviour {
 
-    public bool isMine = false;
+    bool isMine = false;
     public bool On = true;
 
     void Start()
@@ -18,7 +19,7 @@ public class LobbyPlayerUpdate : NetworkBehaviour {
     {
         if (On == true)
         {
-            if (Application.loadedLevelName == "Game")
+            if (SceneManager.GetActiveScene().name == "Game")
             {
                 if (isMine == true)
                 {
@@ -27,7 +28,6 @@ public class LobbyPlayerUpdate : NetworkBehaviour {
                     {
                         if (AllPlayerBases[i].GetComponent<PlayerBase>().enabled == true)
                         {
-                            print("OI!");
                             AllPlayerBases[i].GetComponent<PlayerBase>().Cmd_UpdatePlayerBaseID(Convert.ToInt32(GetComponent<NetworkIdentity>().netId.ToString()));
                             //AllPlayerBases[i].GetComponent<PlayerBase>().Rpc_UpdatePlayerBaseID(Convert.ToInt32(GetComponent<NetworkIdentity>().netId.ToString()));
                             On = false;
