@@ -166,20 +166,23 @@ public class UnitManager : NetworkBehaviour {
         Destroy(this.gameObject);
     }
 
+
     public void Cmd_SpawnFarm()
     {
+        if (!Busy) { 
         GameObject[] AllFarms = GameObject.FindGameObjectsWithTag("Farm");
-        if (AllFarms.Length < 20)
-        {
-            if (PlayerOwner.GetComponent<PlayerBase>().Gold >= 2)
+            if (AllFarms.Length < 20)
             {
-                if (SteppingTile.GetComponent<TileManager>().SteppingObject == null || SteppingTile.GetComponent<TileManager>().SteppingObject == this.gameObject && SteppingTile.GetComponent<TileManager>().Construction == null)
+                if (PlayerOwner.GetComponent<PlayerBase>().Gold >= 2)
                 {
-                    if (SteppingTile.GetComponent<TileManager>().PlayerBase == null)
+                    if (SteppingTile.GetComponent<TileManager>().SteppingObject == null || SteppingTile.GetComponent<TileManager>().SteppingObject == this.gameObject && SteppingTile.GetComponent<TileManager>().Construction == null)
                     {
-                        PlayerOwner.GetComponent<PlayerBase>().Gold -= 2;
-                        curActions--;
-                        PlayerOwner.GetComponent<PlayerBase>().Cmd_BuildFarm(this.transform.position);
+                        if (SteppingTile.GetComponent<TileManager>().PlayerBase == null)
+                        {
+                            PlayerOwner.GetComponent<PlayerBase>().Gold -= 2;
+                            curActions--;
+                            PlayerOwner.GetComponent<PlayerBase>().Cmd_BuildFarm(this.transform.position);
+                        }
                     }
                 }
             }
@@ -667,7 +670,7 @@ public class UnitManager : NetworkBehaviour {
 
     public IEnumerator StopRunning()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.8f);
         Busy = false;
         Rpc_MakeUnitRun(false);
     }

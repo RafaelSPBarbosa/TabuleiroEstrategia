@@ -9,8 +9,9 @@ public class NetManager : NetworkLobbyManager {
 
     public void StartServerButton()
     {
-       StartHost();
-       SceneManager.LoadScene("Lobby");
+        StartHost();
+        SceneManager.LoadScene("Lobby");
+        TryToAddPlayer();
     }
 
     public void StartClientButton()

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
+using System.Collections.Generic;
 
 public class FarmManager : NetworkBehaviour {
 
@@ -15,6 +16,26 @@ public class FarmManager : NetworkBehaviour {
     public void Cmd_ChangeOwner(GameObject newOwner)
     {
         PlayerOwner.GetComponent<PlayerBase>().Food--;
+        //Kill Hungry Unit
+        GameObject[] AllUnits = GameObject.FindGameObjectsWithTag("Unit");
+        int UnitAmmount = 0;
+        List<GameObject> MyUnits = new List<GameObject>();
+        for (int i = 0; i < AllUnits.Length; i++)
+        {
+            if (AllUnits[i].GetComponent<UnitManager>().PlayerOwner == PlayerOwner)
+            {
+                UnitAmmount++;
+                MyUnits.Add(AllUnits[i]);
+            }
+        }
+
+        if (UnitAmmount > PlayerOwner.GetComponent<PlayerBase>().Food)
+        {
+            int r = Random.Range(0, MyUnits.Count);
+            MyUnits[r].GetComponent<UnitManager>().Cmd_KillUnit();
+            MyUnits[r].GetComponent<UnitManager>().StartCoroutine("HideDeadUnit");
+        }
+        
         PlayerOwner = newOwner;
         PlayerOwner.GetComponent<PlayerBase>().Food++;
 
@@ -40,6 +61,26 @@ public class FarmManager : NetworkBehaviour {
     public void Rpc_ChangeOwner(GameObject newOwner)
     {
         PlayerOwner.GetComponent<PlayerBase>().Food--;
+        //Kill Hungry Unit
+        GameObject[] AllUnits = GameObject.FindGameObjectsWithTag("Unit");
+        int UnitAmmount = 0;
+        List<GameObject> MyUnits = new List<GameObject>();
+
+        for (int i = 0; i < AllUnits.Length; i++)
+        {
+            if (AllUnits[i].GetComponent<UnitManager>().PlayerOwner == PlayerOwner)
+            {
+                UnitAmmount++;
+                MyUnits.Add(AllUnits[i]);
+            }
+        }
+
+        if (UnitAmmount > PlayerOwner.GetComponent<PlayerBase>().Food)
+        {
+            int r = Random.Range(0, MyUnits.Count);
+            MyUnits[r].GetComponent<UnitManager>().Cmd_KillUnit();
+            MyUnits[r].GetComponent<UnitManager>().StartCoroutine("HideDeadUnit");
+        }
         PlayerOwner = newOwner;
         PlayerOwner.GetComponent<PlayerBase>().Food++;
 

@@ -33,11 +33,11 @@ public class SetBaseColor : NetworkBehaviour {
             }
             if (GetComponent<PlayerBase>().PlayerBaseID == 3)
             {
-                Mat.material = MatBaseGato;
+                Mat.material = MatBaseRato;
             }
             if (GetComponent<PlayerBase>().PlayerBaseID == 4)
             {
-                Mat.material = MatBaseRato;
+                Mat.material = MatBaseGato;
             }
         }
     }

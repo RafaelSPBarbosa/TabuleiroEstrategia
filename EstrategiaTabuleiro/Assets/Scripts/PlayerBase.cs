@@ -170,12 +170,35 @@ public class PlayerBase : NetworkBehaviour {
 
                 if (Occupied == false)
                 {
+                    //Explorador
                     if (Gold >= 2)
+                    {
                         SpawnExplorerBtn.interactable = true;
+                    }
+                    else
+                    {
+                        SpawnExplorerBtn.interactable = false;
+                    }
+
+                    //Guerreiro
                     if (Gold >= 5)
+                    {
                         SpawnGuerreiroBtn.interactable = true;
+                    }
+                    else
+                    {
+                        SpawnGuerreiroBtn.interactable = false;
+                    }
+
+                    //Arqueiro
                     if (Gold >= 7)
+                    {
                         SpawnArqueiroBtn.interactable = true;
+                    }
+                    else
+                    {
+                        SpawnArqueiroBtn.interactable = false;
+                    }
                 }
                 else
                 {
