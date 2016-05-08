@@ -1,0 +1,999 @@
+fileFormatVersion: 2
+guid: 9f83ba2760989b8468467cf0970cbee6
+timeCreated: 1462739334
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Armature
+    100004: Belly
+    100006: BodyTracker
+    100008: BodyTracker_end
+    100010: Bone.008
+    100012: Chest
+    100014: Cintura
+    100016: Cylinder
+    100018: Head
+    100020: HeadTracker
+    100022: HeadTracker_end
+    100024: L_Fingers
+    100026: L_Fingers_end
+    100028: L_FootReference
+    100030: L_FootReference_end
+    100032: L_FootTracker
+    100034: L_FootTracker_end
+    100036: L_Hand
+    100038: L_HandTracker
+    100040: L_HandTracker_end
+    100042: L_LowerLeg
+    100044: L_LowerThumb
+    100046: L_LowerThumb_end
+    100048: L_LowerWing
+    100050: L_LowerWing_end
+    100052: L_MiddleArm
+    100054: L_MiddleWing
+    100056: L_Thumb
+    100058: L_UpperArm
+    100060: L_UpperLeg
+    100062: L_UpperThumb
+    100064: L_UpperWing
+    100066: LowerNeck
+    100068: Mouth
+    100070: Mouth_end
+    100072: Neck
+    100074: R_Fingers
+    100076: R_Fingers_end
+    100078: R_FootReference
+    100080: R_FootReference_end
+    100082: R_FootTracker
+    100084: R_FootTracker_end
+    100086: R_Hand
+    100088: R_HandTracker
+    100090: R_HandTracker_end
+    100092: R_LowerArm
+    100094: R_LowerLeg
+    100096: R_LowerThumb
+    100098: R_LowerThumb_end
+    100100: R_LowerWing
+    100102: R_LowerWing_end
+    100104: R_MiddleThumb
+    100106: R_MiddleWIng
+    100108: R_UpperArm
+    100110: R_UpperLeg
+    100112: R_UpperThumb
+    100114: R_UpperWing
+    100116: Root
+    100118: Tail
+    100120: Tail_end
+    100122: UpperHead
+    100124: UpperHead_end
+    100126: Weapon
+    100128: Weapon_end
+    400000: //RootNode
+    400002: Armature
+    400004: Belly
+    400006: BodyTracker
+    400008: BodyTracker_end
+    400010: Bone.008
+    400012: Chest
+    400014: Cintura
+    400016: Cylinder
+    400018: Head
+    400020: HeadTracker
+    400022: HeadTracker_end
+    400024: L_Fingers
+    400026: L_Fingers_end
+    400028: L_FootReference
+    400030: L_FootReference_end
+    400032: L_FootTracker
+    400034: L_FootTracker_end
+    400036: L_Hand
+    400038: L_HandTracker
+    400040: L_HandTracker_end
+    400042: L_LowerLeg
+    400044: L_LowerThumb
+    400046: L_LowerThumb_end
+    400048: L_LowerWing
+    400050: L_LowerWing_end
+    400052: L_MiddleArm
+    400054: L_MiddleWing
+    400056: L_Thumb
+    400058: L_UpperArm
+    400060: L_UpperLeg
+    400062: L_UpperThumb
+    400064: L_UpperWing
+    400066: LowerNeck
+    400068: Mouth
+    400070: Mouth_end
+    400072: Neck
+    400074: R_Fingers
+    400076: R_Fingers_end
+    400078: R_FootReference
+    400080: R_FootReference_end
+    400082: R_FootTracker
+    400084: R_FootTracker_end
+    400086: R_Hand
+    400088: R_HandTracker
+    400090: R_HandTracker_end
+    400092: R_LowerArm
+    400094: R_LowerLeg
+    400096: R_LowerThumb
+    400098: R_LowerThumb_end
+    400100: R_LowerWing
+    400102: R_LowerWing_end
+    400104: R_MiddleThumb
+    400106: R_MiddleWIng
+    400108: R_UpperArm
+    400110: R_UpperLeg
+    400112: R_UpperThumb
+    400114: R_UpperWing
+    400116: Root
+    400118: Tail
+    400120: Tail_end
+    400122: UpperHead
+    400124: UpperHead_end
+    400126: Weapon
+    400128: Weapon_end
+    4300000: Cylinder
+    7400000: Armature|Attacking
+    7400002: Armature|Dying
+    7400004: Armature|Getting Hit
+    7400006: Armature|Idle
+    7400008: Armature|Running
+    9500000: //RootNode
+    13700000: Cylinder
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Armature|Attacking
+      takeName: Armature|Attacking
+      firstFrame: 0
+      lastFrame: 42
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/L_FootReference
+        weight: 1
+      - path: Armature/L_FootReference/L_FootReference_end
+        weight: 1
+      - path: Armature/R_FootReference
+        weight: 1
+      - path: Armature/R_FootReference/R_FootReference_end
+        weight: 1
+      - path: Armature/Root
+        weight: 1
+      - path: Armature/Root/Cintura
+        weight: 1
+      - path: Armature/Root/Cintura/Belly
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/BodyTracker
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/BodyTracker/BodyTracker_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_Hand
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_Hand/L_Fingers
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_Hand/L_Fingers/L_Fingers_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_HandTracker
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_HandTracker/L_HandTracker_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_UpperThumb
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_UpperThumb/L_Thumb
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_UpperThumb/L_Thumb/L_LowerThumb
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_UpperThumb/L_Thumb/L_LowerThumb/L_LowerThumb_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/Bone.008
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/Bone.008/Mouth
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/Bone.008/Mouth/Mouth_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/HeadTracker
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/HeadTracker/HeadTracker_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/UpperHead
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/UpperHead/UpperHead_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_Hand
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_Hand/R_Fingers
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_Hand/R_Fingers/R_Fingers_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_HandTracker
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_HandTracker/R_HandTracker_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_UpperThumb
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_UpperThumb/R_MiddleThumb
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_UpperThumb/R_MiddleThumb/R_LowerThumb
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_UpperThumb/R_MiddleThumb/R_LowerThumb/R_LowerThumb_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/Weapon
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/Weapon/Weapon_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/L_UpperWing
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/L_UpperWing/L_MiddleWing
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/L_UpperWing/L_MiddleWing/L_LowerWing
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/L_UpperWing/L_MiddleWing/L_LowerWing/L_LowerWing_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/R_UpperWing
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/R_UpperWing/R_MiddleWIng
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/R_UpperWing/R_MiddleWIng/R_LowerWing
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/R_UpperWing/R_MiddleWIng/R_LowerWing/R_LowerWing_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Tail
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Tail/Tail_end
+        weight: 1
+      - path: Armature/Root/Cintura/L_UpperLeg
+        weight: 1
+      - path: Armature/Root/Cintura/L_UpperLeg/L_LowerLeg
+        weight: 1
+      - path: Armature/Root/Cintura/L_UpperLeg/L_LowerLeg/L_FootTracker
+        weight: 1
+      - path: Armature/Root/Cintura/L_UpperLeg/L_LowerLeg/L_FootTracker/L_FootTracker_end
+        weight: 1
+      - path: Armature/Root/Cintura/R_UpperLeg
+        weight: 1
+      - path: Armature/Root/Cintura/R_UpperLeg/R_LowerLeg
+        weight: 1
+      - path: Armature/Root/Cintura/R_UpperLeg/R_LowerLeg/R_FootTracker
+        weight: 1
+      - path: Armature/Root/Cintura/R_UpperLeg/R_LowerLeg/R_FootTracker/R_FootTracker_end
+        weight: 1
+      - path: Cylinder
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|Dying
+      takeName: Armature|Dying
+      firstFrame: 0
+      lastFrame: 51
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/L_FootReference
+        weight: 1
+      - path: Armature/L_FootReference/L_FootReference_end
+        weight: 1
+      - path: Armature/R_FootReference
+        weight: 1
+      - path: Armature/R_FootReference/R_FootReference_end
+        weight: 1
+      - path: Armature/Root
+        weight: 1
+      - path: Armature/Root/Cintura
+        weight: 1
+      - path: Armature/Root/Cintura/Belly
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/BodyTracker
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/BodyTracker/BodyTracker_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_Hand
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_Hand/L_Fingers
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_Hand/L_Fingers/L_Fingers_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_HandTracker
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_HandTracker/L_HandTracker_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_UpperThumb
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_UpperThumb/L_Thumb
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_UpperThumb/L_Thumb/L_LowerThumb
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_UpperThumb/L_Thumb/L_LowerThumb/L_LowerThumb_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/Bone.008
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/Bone.008/Mouth
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/Bone.008/Mouth/Mouth_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/HeadTracker
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/HeadTracker/HeadTracker_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/UpperHead
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/UpperHead/UpperHead_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_Hand
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_Hand/R_Fingers
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_Hand/R_Fingers/R_Fingers_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_HandTracker
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_HandTracker/R_HandTracker_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_UpperThumb
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_UpperThumb/R_MiddleThumb
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_UpperThumb/R_MiddleThumb/R_LowerThumb
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_UpperThumb/R_MiddleThumb/R_LowerThumb/R_LowerThumb_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/Weapon
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/Weapon/Weapon_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/L_UpperWing
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/L_UpperWing/L_MiddleWing
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/L_UpperWing/L_MiddleWing/L_LowerWing
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/L_UpperWing/L_MiddleWing/L_LowerWing/L_LowerWing_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/R_UpperWing
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/R_UpperWing/R_MiddleWIng
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/R_UpperWing/R_MiddleWIng/R_LowerWing
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/R_UpperWing/R_MiddleWIng/R_LowerWing/R_LowerWing_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Tail
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Tail/Tail_end
+        weight: 1
+      - path: Armature/Root/Cintura/L_UpperLeg
+        weight: 1
+      - path: Armature/Root/Cintura/L_UpperLeg/L_LowerLeg
+        weight: 1
+      - path: Armature/Root/Cintura/L_UpperLeg/L_LowerLeg/L_FootTracker
+        weight: 1
+      - path: Armature/Root/Cintura/L_UpperLeg/L_LowerLeg/L_FootTracker/L_FootTracker_end
+        weight: 1
+      - path: Armature/Root/Cintura/R_UpperLeg
+        weight: 1
+      - path: Armature/Root/Cintura/R_UpperLeg/R_LowerLeg
+        weight: 1
+      - path: Armature/Root/Cintura/R_UpperLeg/R_LowerLeg/R_FootTracker
+        weight: 1
+      - path: Armature/Root/Cintura/R_UpperLeg/R_LowerLeg/R_FootTracker/R_FootTracker_end
+        weight: 1
+      - path: Cylinder
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|Getting Hit
+      takeName: Armature|Getting Hit
+      firstFrame: 0
+      lastFrame: 25
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/L_FootReference
+        weight: 1
+      - path: Armature/L_FootReference/L_FootReference_end
+        weight: 1
+      - path: Armature/R_FootReference
+        weight: 1
+      - path: Armature/R_FootReference/R_FootReference_end
+        weight: 1
+      - path: Armature/Root
+        weight: 1
+      - path: Armature/Root/Cintura
+        weight: 1
+      - path: Armature/Root/Cintura/Belly
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/BodyTracker
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/BodyTracker/BodyTracker_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_Hand
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_Hand/L_Fingers
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_Hand/L_Fingers/L_Fingers_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_HandTracker
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_HandTracker/L_HandTracker_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_UpperThumb
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_UpperThumb/L_Thumb
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_UpperThumb/L_Thumb/L_LowerThumb
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_UpperThumb/L_Thumb/L_LowerThumb/L_LowerThumb_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/Bone.008
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/Bone.008/Mouth
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/Bone.008/Mouth/Mouth_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/HeadTracker
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/HeadTracker/HeadTracker_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/UpperHead
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/UpperHead/UpperHead_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_Hand
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_Hand/R_Fingers
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_Hand/R_Fingers/R_Fingers_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_HandTracker
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_HandTracker/R_HandTracker_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_UpperThumb
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_UpperThumb/R_MiddleThumb
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_UpperThumb/R_MiddleThumb/R_LowerThumb
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_UpperThumb/R_MiddleThumb/R_LowerThumb/R_LowerThumb_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/Weapon
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/Weapon/Weapon_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/L_UpperWing
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/L_UpperWing/L_MiddleWing
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/L_UpperWing/L_MiddleWing/L_LowerWing
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/L_UpperWing/L_MiddleWing/L_LowerWing/L_LowerWing_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/R_UpperWing
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/R_UpperWing/R_MiddleWIng
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/R_UpperWing/R_MiddleWIng/R_LowerWing
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/R_UpperWing/R_MiddleWIng/R_LowerWing/R_LowerWing_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Tail
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Tail/Tail_end
+        weight: 1
+      - path: Armature/Root/Cintura/L_UpperLeg
+        weight: 1
+      - path: Armature/Root/Cintura/L_UpperLeg/L_LowerLeg
+        weight: 1
+      - path: Armature/Root/Cintura/L_UpperLeg/L_LowerLeg/L_FootTracker
+        weight: 1
+      - path: Armature/Root/Cintura/L_UpperLeg/L_LowerLeg/L_FootTracker/L_FootTracker_end
+        weight: 1
+      - path: Armature/Root/Cintura/R_UpperLeg
+        weight: 1
+      - path: Armature/Root/Cintura/R_UpperLeg/R_LowerLeg
+        weight: 1
+      - path: Armature/Root/Cintura/R_UpperLeg/R_LowerLeg/R_FootTracker
+        weight: 1
+      - path: Armature/Root/Cintura/R_UpperLeg/R_LowerLeg/R_FootTracker/R_FootTracker_end
+        weight: 1
+      - path: Cylinder
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|Idle
+      takeName: Armature|Idle
+      firstFrame: 0
+      lastFrame: 39
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/L_FootReference
+        weight: 1
+      - path: Armature/L_FootReference/L_FootReference_end
+        weight: 1
+      - path: Armature/R_FootReference
+        weight: 1
+      - path: Armature/R_FootReference/R_FootReference_end
+        weight: 1
+      - path: Armature/Root
+        weight: 1
+      - path: Armature/Root/Cintura
+        weight: 1
+      - path: Armature/Root/Cintura/Belly
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/BodyTracker
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/BodyTracker/BodyTracker_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_Hand
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_Hand/L_Fingers
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_Hand/L_Fingers/L_Fingers_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_HandTracker
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_HandTracker/L_HandTracker_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_UpperThumb
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_UpperThumb/L_Thumb
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_UpperThumb/L_Thumb/L_LowerThumb
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_UpperThumb/L_Thumb/L_LowerThumb/L_LowerThumb_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/Bone.008
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/Bone.008/Mouth
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/Bone.008/Mouth/Mouth_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/HeadTracker
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/HeadTracker/HeadTracker_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/UpperHead
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/UpperHead/UpperHead_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_Hand
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_Hand/R_Fingers
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_Hand/R_Fingers/R_Fingers_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_HandTracker
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_HandTracker/R_HandTracker_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_UpperThumb
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_UpperThumb/R_MiddleThumb
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_UpperThumb/R_MiddleThumb/R_LowerThumb
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_UpperThumb/R_MiddleThumb/R_LowerThumb/R_LowerThumb_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/Weapon
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/Weapon/Weapon_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/L_UpperWing
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/L_UpperWing/L_MiddleWing
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/L_UpperWing/L_MiddleWing/L_LowerWing
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/L_UpperWing/L_MiddleWing/L_LowerWing/L_LowerWing_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/R_UpperWing
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/R_UpperWing/R_MiddleWIng
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/R_UpperWing/R_MiddleWIng/R_LowerWing
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/R_UpperWing/R_MiddleWIng/R_LowerWing/R_LowerWing_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Tail
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Tail/Tail_end
+        weight: 1
+      - path: Armature/Root/Cintura/L_UpperLeg
+        weight: 1
+      - path: Armature/Root/Cintura/L_UpperLeg/L_LowerLeg
+        weight: 1
+      - path: Armature/Root/Cintura/L_UpperLeg/L_LowerLeg/L_FootTracker
+        weight: 1
+      - path: Armature/Root/Cintura/L_UpperLeg/L_LowerLeg/L_FootTracker/L_FootTracker_end
+        weight: 1
+      - path: Armature/Root/Cintura/R_UpperLeg
+        weight: 1
+      - path: Armature/Root/Cintura/R_UpperLeg/R_LowerLeg
+        weight: 1
+      - path: Armature/Root/Cintura/R_UpperLeg/R_LowerLeg/R_FootTracker
+        weight: 1
+      - path: Armature/Root/Cintura/R_UpperLeg/R_LowerLeg/R_FootTracker/R_FootTracker_end
+        weight: 1
+      - path: Cylinder
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|Running
+      takeName: Armature|Running
+      firstFrame: 0
+      lastFrame: 41
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/L_FootReference
+        weight: 1
+      - path: Armature/L_FootReference/L_FootReference_end
+        weight: 1
+      - path: Armature/R_FootReference
+        weight: 1
+      - path: Armature/R_FootReference/R_FootReference_end
+        weight: 1
+      - path: Armature/Root
+        weight: 1
+      - path: Armature/Root/Cintura
+        weight: 1
+      - path: Armature/Root/Cintura/Belly
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/BodyTracker
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/BodyTracker/BodyTracker_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_Hand
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_Hand/L_Fingers
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_Hand/L_Fingers/L_Fingers_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_HandTracker
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_HandTracker/L_HandTracker_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_UpperThumb
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_UpperThumb/L_Thumb
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_UpperThumb/L_Thumb/L_LowerThumb
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/L_UpperArm/L_MiddleArm/L_UpperThumb/L_Thumb/L_LowerThumb/L_LowerThumb_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/Bone.008
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/Bone.008/Mouth
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/Bone.008/Mouth/Mouth_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/HeadTracker
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/HeadTracker/HeadTracker_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/UpperHead
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/LowerNeck/Neck/Head/UpperHead/UpperHead_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_Hand
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_Hand/R_Fingers
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_Hand/R_Fingers/R_Fingers_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_HandTracker
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_HandTracker/R_HandTracker_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_UpperThumb
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_UpperThumb/R_MiddleThumb
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_UpperThumb/R_MiddleThumb/R_LowerThumb
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/R_UpperThumb/R_MiddleThumb/R_LowerThumb/R_LowerThumb_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/Weapon
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Chest/R_UpperArm/R_LowerArm/Weapon/Weapon_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/L_UpperWing
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/L_UpperWing/L_MiddleWing
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/L_UpperWing/L_MiddleWing/L_LowerWing
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/L_UpperWing/L_MiddleWing/L_LowerWing/L_LowerWing_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/R_UpperWing
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/R_UpperWing/R_MiddleWIng
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/R_UpperWing/R_MiddleWIng/R_LowerWing
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/R_UpperWing/R_MiddleWIng/R_LowerWing/R_LowerWing_end
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Tail
+        weight: 1
+      - path: Armature/Root/Cintura/Belly/Tail/Tail_end
+        weight: 1
+      - path: Armature/Root/Cintura/L_UpperLeg
+        weight: 1
+      - path: Armature/Root/Cintura/L_UpperLeg/L_LowerLeg
+        weight: 1
+      - path: Armature/Root/Cintura/L_UpperLeg/L_LowerLeg/L_FootTracker
+        weight: 1
+      - path: Armature/Root/Cintura/L_UpperLeg/L_LowerLeg/L_FootTracker/L_FootTracker_end
+        weight: 1
+      - path: Armature/Root/Cintura/R_UpperLeg
+        weight: 1
+      - path: Armature/Root/Cintura/R_UpperLeg/R_LowerLeg
+        weight: 1
+      - path: Armature/Root/Cintura/R_UpperLeg/R_LowerLeg/R_FootTracker
+        weight: 1
+      - path: Armature/Root/Cintura/R_UpperLeg/R_LowerLeg/R_FootTracker/R_FootTracker_end
+        weight: 1
+      - path: Cylinder
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.15
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
