@@ -1,0 +1,185 @@
+fileFormatVersion: 2
+guid: 3802e229e36c3814dba2ea48c80fab02
+timeCreated: 1462801300
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Armature
+    100004: Belly
+    100006: BodyTracker
+    100008: BodyTracker_end
+    100010: Chest
+    100012: Collar
+    100014: Collar_end
+    100016: Cylinder.005
+    100018: Head
+    100020: HeadTracker
+    100022: HeadTracker_end
+    100024: L_Finger
+    100026: L_Foot
+    100028: L_Foot_end
+    100030: L_FootTracker
+    100032: L_FootTracker_end
+    100034: L_Hand
+    100036: L_LowerArm
+    100038: L_LowerFinger
+    100040: L_LowerFinger_end
+    100042: L_LowerLeg
+    100044: L_LowerThumb
+    100046: L_LowerThumb_end
+    100048: L_Shoulder
+    100050: L_UpperArm
+    100052: L_UpperLeg
+    100054: L_UpperThumb
+    100056: LowerMouth
+    100058: LowerMouth_end
+    100060: LowerNeck
+    100062: LowerTail
+    100064: LowerTail_end
+    100066: Neck
+    100068: R_Finger
+    100070: R_Foot
+    100072: R_Foot_end
+    100074: R_FootTracker
+    100076: R_FootTracker_end
+    100078: R_Hand
+    100080: R_LowerArm
+    100082: R_LowerFinger
+    100084: R_LowerFinger_end
+    100086: R_LowerLeg
+    100088: R_LowerThumb
+    100090: R_LowerThumb_end
+    100092: R_Shoulder
+    100094: R_UpperArm
+    100096: R_UpperLeg
+    100098: R_UpperThumb
+    100100: Root
+    100102: UpperMouth
+    100104: UpperMouth_end
+    100106: UpperTail
+    400000: //RootNode
+    400002: Armature
+    400004: Belly
+    400006: BodyTracker
+    400008: BodyTracker_end
+    400010: Chest
+    400012: Collar
+    400014: Collar_end
+    400016: Cylinder.005
+    400018: Head
+    400020: HeadTracker
+    400022: HeadTracker_end
+    400024: L_Finger
+    400026: L_Foot
+    400028: L_Foot_end
+    400030: L_FootTracker
+    400032: L_FootTracker_end
+    400034: L_Hand
+    400036: L_LowerArm
+    400038: L_LowerFinger
+    400040: L_LowerFinger_end
+    400042: L_LowerLeg
+    400044: L_LowerThumb
+    400046: L_LowerThumb_end
+    400048: L_Shoulder
+    400050: L_UpperArm
+    400052: L_UpperLeg
+    400054: L_UpperThumb
+    400056: LowerMouth
+    400058: LowerMouth_end
+    400060: LowerNeck
+    400062: LowerTail
+    400064: LowerTail_end
+    400066: Neck
+    400068: R_Finger
+    400070: R_Foot
+    400072: R_Foot_end
+    400074: R_FootTracker
+    400076: R_FootTracker_end
+    400078: R_Hand
+    400080: R_LowerArm
+    400082: R_LowerFinger
+    400084: R_LowerFinger_end
+    400086: R_LowerLeg
+    400088: R_LowerThumb
+    400090: R_LowerThumb_end
+    400092: R_Shoulder
+    400094: R_UpperArm
+    400096: R_UpperLeg
+    400098: R_UpperThumb
+    400100: Root
+    400102: UpperMouth
+    400104: UpperMouth_end
+    400106: UpperTail
+    4300000: Cylinder.005
+    7400000: Armature|Dying
+    7400002: Armature|Idle
+    7400004: Armature|Running
+    9500000: //RootNode
+    13700000: Cylinder.005
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.14
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
