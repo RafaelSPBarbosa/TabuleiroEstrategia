@@ -568,11 +568,11 @@ public class PlayerBase : NetworkBehaviour {
             Cmd_PassTurn(); 
             if (isServer)
             {
-                ResetTimer();
+                ResetTimer(); // CRIARAM UMA FUNÇÃO PRA CONTROLAR O TEMPO USAM A BASE QUE FIZ MAS MUDARAM ;/ DAI NEM ROLA, SE FOR PRA MUDAR O CARA LEVA TEMPO PRA ENTENDER ENTÃO ELE PODE FAZER :S
             }
             else
             {
-                Cmd_ResetTimer();
+                Cmd_ResetTimer(); //MEXERAM AQUI!!! EU TO FAZENDO DE FORMA PRIMITIVA, NUNCA TRAMPEI COM SERVER MUITO MENOS NETWORK PRA UM GAME
             }
             tempoTurno = 45;
         }
