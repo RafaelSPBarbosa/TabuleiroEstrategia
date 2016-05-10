@@ -2,6 +2,7 @@
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 
 public class PlayerBase : NetworkBehaviour {
@@ -28,6 +29,12 @@ public class PlayerBase : NetworkBehaviour {
     public bool Destroyed;
     public Text GoldText, FoodText;
 
+    public int GoldMineAmmount = 0;
+
+    public Text ObjectiveText;
+    [SyncVar]
+    public int MyObjective;
+
     //Váriaveis da gambiarra
     [SyncVar]
     float tempoTurno = 45;
@@ -47,6 +54,34 @@ public class PlayerBase : NetworkBehaviour {
         PlayerBaseID = ID;
     }
 
+    [Command]
+    public void Cmd_UpdateGoldMineAmmount( bool isIncreasing)
+    {
+        if (isIncreasing)
+        {
+            GoldMineAmmount++;
+
+        }
+        else
+        {
+            GoldMineAmmount--;
+        }
+    }
+
+    [ClientRpc]
+    public void Rpc_UpdateGoldMineAmmount(bool isIncreasing)
+    {
+        if (isIncreasing)
+        {
+            GoldMineAmmount++;
+
+        }
+        else
+        {
+            GoldMineAmmount--;
+        }
+    }
+
     IEnumerator DelayedStart()
     {
 
@@ -55,6 +90,7 @@ public class PlayerBase : NetworkBehaviour {
         GoldText = GameObject.Find("_Dinheiro").GetComponent<Text>();
         FoodText = GameObject.Find("_Comida").GetComponent<Text>();
         TempoTxt = GameObject.Find("_Tempo").GetComponent<Text>();
+        ObjectiveText = GameObject.Find("_ObjectiveText").GetComponent<Text>();
 
         gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
         playerManager = GameObject.Find("_PlayerManager").GetComponent<PlayerManager>();
@@ -112,9 +148,67 @@ public class PlayerBase : NetworkBehaviour {
 
             Cmd_SpawnExplorer(PlayerBaseID , true);
         }
+
+        if (isServer)
+        {
+            DistributeObjectives();
+        }
+
         ReadyToPlay = true;
 
+    }
 
+    void DistributeObjectives()
+    {
+        GameObject[] AllPlayers = GameObject.FindGameObjectsWithTag("PlayerBase");
+        List<int> UsedIds = new List<int>();
+        for (int i = 0; i < AllPlayers.Length; i++)
+        {
+            int id = UnityEngine.Random.Range(1, 6);
+            if (UsedIds.Count != 6)
+            {
+                while (UsedIds.Contains(id))
+                {
+                    id = UnityEngine.Random.Range(1, 6);
+                }
+            }
+            
+            UsedIds.Add(id);
+            AllPlayers[i].GetComponent<PlayerBase>().Rpc_RecieveObjective(id);
+        }
+    }
+
+    [ClientRpc]
+    void Rpc_RecieveObjective(int ID)
+    {
+        MyObjective = ID;
+        ObjectiveText = GameObject.Find("_ObjectiveText").GetComponent<Text>();
+        if (isLocalPlayer)
+        {
+            switch (MyObjective)
+            {
+                case 1:
+                    //print("Elimine o Jogador Vermelho");
+                    ObjectiveText.text = "Elimine o Jogador Vermelho";
+                    break;
+                case 2:
+                    //print("Elimine o Jogador Amarelo");
+                    ObjectiveText.text = "Elimine o Jogador Amarelo";
+                    break;
+                case 3:
+                    //print("Elimine o Jogador Verde");
+                    ObjectiveText.text = "Elimine o Jogador Verde";
+                    break;
+                case 4:
+                    //print("Elimine o Jogador Azul");
+                    ObjectiveText.text = "Elimine o Jogador Azul";
+                    break;
+                case 5:
+                    //print("Possua 10 Plantações e 2 Minas de Ouro");
+                    ObjectiveText.text = "Possua 10 Plantações e 2 Minas de Ouro";
+                    break;
+            }
+        }
     }
 
     void Start()
@@ -227,6 +321,21 @@ public class PlayerBase : NetworkBehaviour {
                 Cmd_DestroyKingdom();
             }
         }
+
+        //Condições de vitória
+        if(MyObjective == 5)
+        {
+            if(Food == 11 & GoldMineAmmount == 2)
+            {
+
+                WinMatch();
+            }
+        }
+    }
+
+    public void WinMatch()
+    {
+        ObjectiveText.text = "YOU WON THE GAME!!";
     }
 
     [Command]

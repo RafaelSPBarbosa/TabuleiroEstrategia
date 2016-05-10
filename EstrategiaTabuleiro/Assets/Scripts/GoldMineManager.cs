@@ -15,9 +15,15 @@ public class GoldMineManager : NetworkBehaviour {
     [Command]
     public void Cmd_ChangeOwner(GameObject newOwner)
     {
+        if (PlayerOwner != null)
+        {
+            PlayerOwner.GetComponent<PlayerBase>().Cmd_UpdateGoldMineAmmount(false);
+        }
         PlayerOwner = newOwner;
 
-        if(PlayerOwner.GetComponent<PlayerBase>().PlayerBaseID == 1)
+        PlayerOwner.GetComponent<PlayerBase>().Cmd_UpdateGoldMineAmmount(true);
+
+        if (PlayerOwner.GetComponent<PlayerBase>().PlayerBaseID == 1)
         {
             Flag.material = Vermelho;
         }
@@ -38,7 +44,19 @@ public class GoldMineManager : NetworkBehaviour {
     [ClientRpc]
     public void Rpc_ChangeOwner(GameObject newOwner)
     {
+        if (PlayerOwner != null)
+        {
+            if (isServer)
+            {
+                PlayerOwner.GetComponent<PlayerBase>().Rpc_UpdateGoldMineAmmount(false);
+            }
+        }
+
         PlayerOwner = newOwner;
+        if (isServer)
+        {
+            PlayerOwner.GetComponent<PlayerBase>().Rpc_UpdateGoldMineAmmount(true);
+        }
 
         if (PlayerOwner.GetComponent<PlayerBase>().PlayerBaseID == 1)
         {
