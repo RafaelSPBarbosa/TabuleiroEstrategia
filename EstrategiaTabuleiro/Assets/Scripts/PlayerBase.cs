@@ -27,6 +27,8 @@ public class PlayerBase : NetworkBehaviour {
     public bool Occupied;
     [SyncVar]
     public bool Destroyed;
+    [SyncVar]
+    public int LastAttackingPlayerId ;
     public Text GoldText, FoodText;
 
     public int GoldMineAmmount = 0;
@@ -349,6 +351,32 @@ public class PlayerBase : NetworkBehaviour {
             {
                 AllUnits[i].GetComponent<UnitManager>().curHealth = 0;
             }
+        }
+        GameObject[] AllPlayers = GameObject.FindGameObjectsWithTag("PlayerBase");
+        GameObject TargetPlayer = null;
+        for(int i = 0; i < AllPlayers.Length; i++)
+        {
+            if(AllPlayers[i].GetComponent<PlayerBase>().PlayerBaseID == LastAttackingPlayerId)
+            {
+                TargetPlayer = AllPlayers[i];
+            }
+        }
+
+        if(TargetPlayer.GetComponent<PlayerBase>().MyObjective == 1 && PlayerBaseID == 1)
+        {
+            TargetPlayer.GetComponent<PlayerBase>().WinMatch();
+        }
+        if (TargetPlayer.GetComponent<PlayerBase>().MyObjective == 2 && PlayerBaseID == 2)
+        {
+            TargetPlayer.GetComponent<PlayerBase>().WinMatch();
+        }
+        if (TargetPlayer.GetComponent<PlayerBase>().MyObjective == 3 && PlayerBaseID == 4)
+        {
+            TargetPlayer.GetComponent<PlayerBase>().WinMatch();
+        }
+        if (TargetPlayer.GetComponent<PlayerBase>().MyObjective == 4 && PlayerBaseID == 3)
+        {
+            TargetPlayer.GetComponent<PlayerBase>().WinMatch();
         }
     }
 

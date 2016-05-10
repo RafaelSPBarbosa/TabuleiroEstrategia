@@ -631,6 +631,7 @@ public class UnitManager : NetworkBehaviour {
     {
 
         Target.GetComponent<PlayerBase>().curHealth -= Inc_Damage;
+        Target.GetComponent<PlayerBase>().LastAttackingPlayerId = this.PlayerOwner.GetComponent<PlayerBase>().PlayerBaseID;
 
     }
 
@@ -639,6 +640,7 @@ public class UnitManager : NetworkBehaviour {
     {
 
         Target.GetComponent<PlayerBase>().curHealth -= Inc_Damage;
+        Target.GetComponent<PlayerBase>().LastAttackingPlayerId = this.PlayerOwner.GetComponent<PlayerBase>().PlayerBaseID;
 
     }
 
