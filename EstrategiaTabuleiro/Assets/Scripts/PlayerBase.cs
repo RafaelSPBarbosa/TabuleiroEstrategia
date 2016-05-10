@@ -73,22 +73,26 @@ public class PlayerBase : NetworkBehaviour {
             if (PlayerBaseID == 1)
             {
                 // Mat.material = MatBaseCao;
-                GameObject.Find("CameraRotator").transform.Rotate(0, 45, 0);
+                GameObject CameraRot = GameObject.Find("CameraRotator");
+                CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 45 ,this.transform.eulerAngles.z);
+            }
+            if (PlayerBaseID == 4)
+            {
+                // Mat.material = MatBaseGato;
+                GameObject CameraRot = GameObject.Find("CameraRotator");
+                CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 210 ,this.transform.eulerAngles.z);
+            }
+            if (PlayerBaseID == 3)
+            {
+                // Mat.material = MatBaseRato;
+                GameObject CameraRot = GameObject.Find("CameraRotator");
+                CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 330, this.transform.eulerAngles.z);
             }
             if (PlayerBaseID == 2)
             {
                 // Mat.material = MatBaseAguia;
-                GameObject.Find("CameraRotator").transform.Rotate(0, 135, 0);
-            }
-            if (PlayerBaseID == 3)
-            {
-                // Mat.material = MatBaseGato;
-                GameObject.Find("CameraRotator").transform.Rotate(0, 330, 0);
-            }
-            if (PlayerBaseID == 4)
-            {
-                // Mat.material = MatBaseRato;
-                GameObject.Find("CameraRotator").transform.Rotate(0, 210, 0);
+                GameObject CameraRot = GameObject.Find("CameraRotator");
+                CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 135, this.transform.eulerAngles.z);
             }
         }
 
@@ -109,6 +113,8 @@ public class PlayerBase : NetworkBehaviour {
             Cmd_SpawnExplorer(PlayerBaseID , true);
         }
         ReadyToPlay = true;
+
+
     }
 
     void Start()
@@ -447,46 +453,49 @@ public class PlayerBase : NetworkBehaviour {
     [Command]
     public void Cmd_PassTurn()
     {
-        gameManager.curTurn++;
-        //tempoTurno = 45;
-
-        int GoldToGive = 1;
-        GameObject[] AllGoldMines = GameObject.FindGameObjectsWithTag("GoldMine");
-        for(int i =0; i < AllGoldMines.Length; i++)
+        if (gameManager.curTurn == PlayerBaseID)
         {
-            if (AllGoldMines[i].GetComponent<GoldMineManager>().PlayerOwner != null)
+            gameManager.curTurn++;
+            //tempoTurno = 45;
+
+            int GoldToGive = 1;
+            GameObject[] AllGoldMines = GameObject.FindGameObjectsWithTag("GoldMine");
+            for (int i = 0; i < AllGoldMines.Length; i++)
             {
-                if (AllGoldMines[i].GetComponent<GoldMineManager>().PlayerOwner == this.gameObject)
+                if (AllGoldMines[i].GetComponent<GoldMineManager>().PlayerOwner != null)
                 {
-                    GoldToGive++;
+                    if (AllGoldMines[i].GetComponent<GoldMineManager>().PlayerOwner == this.gameObject)
+                    {
+                        GoldToGive++;
+                    }
                 }
             }
+            Gold += GoldToGive;
+
+            if (gameManager.curTurn > gameManager.MaxTurns)
+                gameManager.curTurn = 1;
+
+            //Aqui carrego a variável com todos os objetos da cena que possuem o Tag "Unit"
+            GameObject[] AllFriendlyUnits = GameObject.FindGameObjectsWithTag("Unit");
+
+            //Este For loop, é para identificar qual das unidades do jogador que está atualmente selecionado e salvá-lo na variável "SelectedUnit"
+            for (int i = 0; i < AllFriendlyUnits.Length; i++)
+            {
+                AllFriendlyUnits[i].GetComponent<UnitManager>().curActions = AllFriendlyUnits[i].GetComponent<UnitManager>().MaxActions;
+                AllFriendlyUnits[i].GetComponent<UnitManager>().HasAttacked = false;
+            }
+
+            if (isServer)
+            {
+                ResetTimer();
+            }
+            else
+            {
+                Cmd_ResetTimer();
+            }
+
+            Rpc_PassTurn();
         }
-        Gold += GoldToGive;
-
-        if (gameManager.curTurn > gameManager.MaxTurns)
-            gameManager.curTurn = 1;
-
-        //Aqui carrego a variável com todos os objetos da cena que possuem o Tag "Unit"
-        GameObject[] AllFriendlyUnits = GameObject.FindGameObjectsWithTag("Unit");
-
-        //Este For loop, é para identificar qual das unidades do jogador que está atualmente selecionado e salvá-lo na variável "SelectedUnit"
-        for (int i = 0; i < AllFriendlyUnits.Length; i++)
-        {
-            AllFriendlyUnits[i].GetComponent<UnitManager>().curActions = AllFriendlyUnits[i].GetComponent<UnitManager>().MaxActions;
-            AllFriendlyUnits[i].GetComponent<UnitManager>().HasAttacked = false;
-        }
-
-        if (isServer)
-        {
-            ResetTimer();
-        }
-        else
-        {
-            Cmd_ResetTimer();
-        }
-
-        Rpc_PassTurn();
 
     }
 

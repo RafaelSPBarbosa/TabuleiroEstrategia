@@ -10,14 +10,14 @@ public class NetManager : NetworkLobbyManager {
     public void StartServerButton()
     {
         StartHost();
-        SceneManager.LoadScene("Lobby");
-        TryToAddPlayer();
+        //SceneManager.LoadScene("Lobby");
+
     }
 
     public void StartClientButton()
     {
        StartClient();
-       SceneManager.LoadScene("Lobby");
+        SceneManager.LoadScene("Lobby");
     }
 
     public void SetIP(string ip)
@@ -32,6 +32,11 @@ public class NetManager : NetworkLobbyManager {
 
     public override void OnStartHost()
     {
-        
+        SceneManager.LoadScene("Lobby");
+    }
+
+    void Update()
+    {
+        minPlayers = numPlayers;
     }
 }
