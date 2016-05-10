@@ -31,6 +31,8 @@ public class PlayerBase : NetworkBehaviour {
     public int LastAttackingPlayerId ;
     public Text GoldText, FoodText;
 
+    public Vector3 WinningPlayerPos;
+
     public int GoldMineAmmount = 0;
 
     public Text ObjectiveText;
@@ -231,6 +233,18 @@ public class PlayerBase : NetworkBehaviour {
         gameManager.curTurn = TargetTurn;
     }
 
+    [ClientRpc]
+    public void Rpc_UpdateWinningPlayer(Vector3 Pos)
+    {
+        WinningPlayerPos = Pos;
+    }
+
+    [Command]
+    public void Cmd_UpdateWinningPlayer(Vector3 Pos)
+    {
+        WinningPlayerPos = Pos;
+    }
+
     void Update()
     {
         if (ReadyToPlay == true)
@@ -331,6 +345,24 @@ public class PlayerBase : NetworkBehaviour {
             {
 
                 WinMatch();
+                GameObject[] AllPlayers = GameObject.FindGameObjectsWithTag("PlayerBase");
+                for (int i = 0; i < AllPlayers.Length; i++)
+                {
+                    if (!AllPlayers[i].GetComponent<NetworkIdentity>().isLocalPlayer)
+                    {
+                        if (AllPlayers[i].GetComponent<NetworkIdentity>().isServer)
+                        {
+                            AllPlayers[i].GetComponent<PlayerBase>().Rpc_LooseMatch();
+                            AllPlayers[i].GetComponent<PlayerBase>().Rpc_UpdateWinningPlayer(this.transform.position);
+                        }
+                        
+                        else
+                        {
+                            AllPlayers[i].GetComponent<PlayerBase>().Cmd_LooseMatch();
+                            AllPlayers[i].GetComponent<PlayerBase>().Cmd_UpdateWinningPlayer(this.transform.position);
+                        }
+                    }
+                }
             }
         }
     }
@@ -338,6 +370,29 @@ public class PlayerBase : NetworkBehaviour {
     public void WinMatch()
     {
         ObjectiveText.text = "YOU WON THE GAME!!";
+        WinningPlayerPos = this.transform.position;
+        StartCoroutine("RepositionCamera");
+    }
+
+    [Command]
+    public void Cmd_LooseMatch()
+    {
+        ObjectiveText.text = "YOU LOST THE GAME!!";
+        StartCoroutine("RepositionCamera");
+    }
+
+    [ClientRpc]
+    public void Rpc_LooseMatch()
+    {
+        ObjectiveText.text = "YOU LOST THE GAME!!";
+        StartCoroutine("RepositionCamera");
+    }
+
+    public IEnumerator RepositionCamera()
+    {
+        yield return new WaitForSeconds(2);
+        Camera.main.transform.parent.GetComponent<MoveCamera>().enabled = false;
+        Camera.main.transform.parent.transform.position = Vector3.Lerp(Camera.main.transform.parent.transform.position, new Vector3(WinningPlayerPos.x , 7.1f, WinningPlayerPos.z ), Time.deltaTime * 2);
     }
 
     [Command]
@@ -365,18 +420,81 @@ public class PlayerBase : NetworkBehaviour {
         if(TargetPlayer.GetComponent<PlayerBase>().MyObjective == 1 && PlayerBaseID == 1)
         {
             TargetPlayer.GetComponent<PlayerBase>().WinMatch();
+            WinningPlayerPos = TargetPlayer.transform.position;
+            for (int i = 0; i < AllPlayers.Length; i++)
+            {
+                if (!AllPlayers[i].GetComponent<NetworkIdentity>().isLocalPlayer)
+                {
+                    if (AllPlayers[i].GetComponent<NetworkIdentity>().isServer)
+                    {
+                        AllPlayers[i].GetComponent<PlayerBase>().Cmd_LooseMatch();
+                    }
+                    else
+                    {
+                        AllPlayers[i].GetComponent<PlayerBase>().Rpc_LooseMatch();
+                    }
+                }
+            }
         }
         if (TargetPlayer.GetComponent<PlayerBase>().MyObjective == 2 && PlayerBaseID == 2)
         {
             TargetPlayer.GetComponent<PlayerBase>().WinMatch();
+            WinningPlayerPos = TargetPlayer.transform.position;
+
+            for (int i = 0; i < AllPlayers.Length; i++)
+            {
+                if (!AllPlayers[i].GetComponent<NetworkIdentity>().isLocalPlayer)
+                {
+                    if (AllPlayers[i].GetComponent<NetworkIdentity>().isServer)
+                    {
+                        AllPlayers[i].GetComponent<PlayerBase>().Cmd_LooseMatch();
+                    }
+                    else
+                    {
+                        AllPlayers[i].GetComponent<PlayerBase>().Rpc_LooseMatch();
+                    }
+                }
+            }
         }
         if (TargetPlayer.GetComponent<PlayerBase>().MyObjective == 3 && PlayerBaseID == 4)
         {
             TargetPlayer.GetComponent<PlayerBase>().WinMatch();
+            WinningPlayerPos = TargetPlayer.transform.position;
+
+            for (int i = 0; i < AllPlayers.Length; i++)
+            {
+                if (!AllPlayers[i].GetComponent<NetworkIdentity>().isLocalPlayer)
+                {
+                    if (AllPlayers[i].GetComponent<NetworkIdentity>().isServer)
+                    {
+                        AllPlayers[i].GetComponent<PlayerBase>().Cmd_LooseMatch();
+                    }
+                    else
+                    {
+                        AllPlayers[i].GetComponent<PlayerBase>().Rpc_LooseMatch();
+                    }
+                }
+            }
         }
         if (TargetPlayer.GetComponent<PlayerBase>().MyObjective == 4 && PlayerBaseID == 3)
         {
             TargetPlayer.GetComponent<PlayerBase>().WinMatch();
+            WinningPlayerPos = TargetPlayer.transform.position;
+
+            for (int i = 0; i < AllPlayers.Length; i++)
+            {
+                if (!AllPlayers[i].GetComponent<NetworkIdentity>().isLocalPlayer)
+                {
+                    if (AllPlayers[i].GetComponent<NetworkIdentity>().isServer)
+                    {
+                        AllPlayers[i].GetComponent<PlayerBase>().Cmd_LooseMatch();
+                    }
+                    else
+                    {
+                        AllPlayers[i].GetComponent<PlayerBase>().Rpc_LooseMatch();
+                    }
+                }
+            }
         }
     }
 
