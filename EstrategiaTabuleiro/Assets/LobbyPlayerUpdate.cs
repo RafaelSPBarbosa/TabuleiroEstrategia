@@ -6,18 +6,30 @@ using System;
 
 public class LobbyPlayerUpdate : NetworkBehaviour {
 
-    bool isMine = false;
+    public bool isMine = false;
     public bool On = true;
+    [SyncVar]
+    public int PlayerId = 0;
 
     void Start()
     {
         if (isLocalPlayer)
+        {
             isMine = true;
+            Cmd_UpdatePlayerId( GameObject.FindGameObjectsWithTag("LobbyPlayer").Length);
+
+        }
+    }
+
+    [Command]
+    void Cmd_UpdatePlayerId(int id)
+    {
+        PlayerId = id;
     }
 
 	void Update()
     {
-        if (On == true)
+        /*if (On == true)
         {
             if (SceneManager.GetActiveScene().name == "Game")
             {
@@ -28,13 +40,25 @@ public class LobbyPlayerUpdate : NetworkBehaviour {
                     {
                         if (AllPlayerBases[i].GetComponent<PlayerBase>().enabled == true)
                         {
-                            AllPlayerBases[i].GetComponent<PlayerBase>().Cmd_UpdatePlayerBaseID(Convert.ToInt32(GetComponent<NetworkIdentity>().netId.ToString()));
+                            //AllPlayerBases[i].GetComponent<PlayerBase>().Cmd_UpdatePlayerBaseID(Convert.ToInt32(GetComponent<NetworkIdentity>().netId.ToString()));
                             //AllPlayerBases[i].GetComponent<PlayerBase>().Rpc_UpdatePlayerBaseID(Convert.ToInt32(GetComponent<NetworkIdentity>().netId.ToString()));
-                            On = false;
+
+                            StartCoroutine("WhileRetry",AllPlayerBases[i]);
+                           On = false;
                         }
                     }
                 }
             }
-        }
+        }*/
     }
+    /*IEnumerator WhileRetry(GameObject Base)
+    {
+        while (Base.GetComponent<PlayerBase>().PlayerBaseID == 0)
+        {
+            print("Retring - LobbyPlayer");
+            Base.GetComponent<PlayerBase>().Cmd_UpdatePlayerBaseID(PlayerId);
+
+            yield return Base.GetComponent<PlayerBase>().PlayerBaseID;
+        }
+    }*/
 }

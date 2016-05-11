@@ -7,8 +7,8 @@ using System;
 
 public class PlayerBase : NetworkBehaviour {
 
-    GameManager gameManager;
-    PlayerManager playerManager;
+    public GameManager gameManager;
+    public PlayerManager playerManager;
     Text TempoTxt;
     public GameObject Aguia_Explorer , Cao_Explorer, Rato_Explorer , Gato_Explorer;
     public GameObject Aguia_Warrior, Cao_Warrior , Rato_Warrior , Gato_Warrior;
@@ -53,6 +53,7 @@ public class PlayerBase : NetworkBehaviour {
     public void Cmd_UpdatePlayerBaseID(int ID)
     {
         PlayerBaseID = ID;
+
     }
     [ClientRpc]
     public void Rpc_UpdatePlayerBaseID(int ID)
@@ -90,9 +91,16 @@ public class PlayerBase : NetworkBehaviour {
 
     IEnumerator DelayedStart()
     {
+        GameObject[] AllLobbyPlayers = GameObject.FindGameObjectsWithTag("LobbyPlayer");
+        for(int i = 0; i < AllLobbyPlayers.Length; i++)
+        {
+            if(AllLobbyPlayers[i].GetComponent<LobbyPlayerUpdate>().isMine == true)
+            {
+                PlayerBaseID = AllLobbyPlayers[i].GetComponent<LobbyPlayerUpdate>().PlayerId;
+            }
+        }
 
-        yield return new WaitForSeconds(0.5f);
-
+        yield return new WaitForSeconds(1);
         GoldText = GameObject.Find("_Dinheiro").GetComponent<Text>();
         FoodText = GameObject.Find("_Comida").GetComponent<Text>();
         TempoTxt = GameObject.Find("_Tempo").GetComponent<Text>();
@@ -103,26 +111,22 @@ public class PlayerBase : NetworkBehaviour {
 
         if (isLocalPlayer)
         {
-            
+
             gameManager.MyPlayerBase = this.gameObject;
             playerManager.PlayerID = PlayerBaseID;
             playerManager.UpdateVariables();
 
-        }
-
-        if (isLocalPlayer)
-        {
             if (PlayerBaseID == 1)
             {
                 // Mat.material = MatBaseCao;
                 GameObject CameraRot = GameObject.Find("CameraRotator");
-                CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 45 ,this.transform.eulerAngles.z);
+                CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 45, this.transform.eulerAngles.z);
             }
             if (PlayerBaseID == 4)
             {
                 // Mat.material = MatBaseGato;
                 GameObject CameraRot = GameObject.Find("CameraRotator");
-                CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 210 ,this.transform.eulerAngles.z);
+                CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 210, this.transform.eulerAngles.z);
             }
             if (PlayerBaseID == 3)
             {
@@ -136,10 +140,7 @@ public class PlayerBase : NetworkBehaviour {
                 GameObject CameraRot = GameObject.Find("CameraRotator");
                 CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 135, this.transform.eulerAngles.z);
             }
-        }
 
-        if (isLocalPlayer)
-        {
             SpawnExplorerBtn = GameObject.Find("SpawnExplorer").GetComponent<Button>();
             SpawnExplorerBtn.onClick.AddListener(() => Cmd_SpawnExplorer(PlayerBaseID, false));
 
@@ -152,16 +153,9 @@ public class PlayerBase : NetworkBehaviour {
             PassTurnButton = GameObject.Find("PassTurnBtn").GetComponent<Button>();
             PassTurnButton.onClick.AddListener(() => Cmd_PassTurn());
 
-            Cmd_SpawnExplorer(PlayerBaseID , true);
+            Cmd_SpawnExplorer(PlayerBaseID, true);
+
         }
-
-        if (isServer)
-        {
-            DistributeObjectives();
-        }
-
-        ReadyToPlay = true;
-
     }
 
     void DistributeObjectives()
@@ -230,7 +224,6 @@ public class PlayerBase : NetworkBehaviour {
     void Start()
     {
         StartCoroutine("DelayedStart");
-        
     }
 
     [Command]
@@ -299,14 +292,7 @@ public class PlayerBase : NetworkBehaviour {
         }
         if (ReadyToPlay == true)
         {
-            if (gameManager == null)
-            {
-                gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
-            }
-            if (playerManager == null)
-            {
-                playerManager = GameObject.Find("_PlayerManager").GetComponent<PlayerManager>();
-            }
+            
 
             GoldText.text = "Gold : " + Gold;
             FoodText.text = "Food : " + Food;
