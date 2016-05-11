@@ -4,7 +4,8 @@ using System.Collections;
 
 public class PlayerManager : MonoBehaviour {
 
-    public int MyTurn, PlayerID;
+    public int MyTurn;
+    public int PlayerID = 1;
     public GameManager gameManager;
     Button PassTurnBtn;
 

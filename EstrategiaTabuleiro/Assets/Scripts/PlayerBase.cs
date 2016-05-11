@@ -9,12 +9,16 @@ public class PlayerBase : NetworkBehaviour {
 
     public GameManager gameManager;
     public PlayerManager playerManager;
+    NetManager netManager;
+
     Text TempoTxt;
     public GameObject Aguia_Explorer , Cao_Explorer, Rato_Explorer , Gato_Explorer;
     public GameObject Aguia_Warrior, Cao_Warrior , Rato_Warrior , Gato_Warrior;
     public GameObject Aguia_Archer, Cao_Archer , Rato_Archer , Gato_Archer;
 
     Button SpawnExplorerBtn, PassTurnButton, SpawnGuerreiroBtn, SpawnArqueiroBtn;
+    [SyncVar]
+    public string test="test";
     [SyncVar]
     public int Gold;
     [SyncVar]
@@ -41,6 +45,7 @@ public class PlayerBase : NetworkBehaviour {
 
     bool CanMoveCamera = false;
 
+    string PlayerString;
     //Váriaveis da gambiarra
     [SyncVar]
     float tempoTurno = 45;
@@ -53,12 +58,12 @@ public class PlayerBase : NetworkBehaviour {
     public void Cmd_UpdatePlayerBaseID(int ID)
     {
         PlayerBaseID = ID;
-
     }
     [ClientRpc]
     public void Rpc_UpdatePlayerBaseID(int ID)
     {
         PlayerBaseID = ID;
+        Debug.Log("RPC ID Update");
     }
 
     [Command]
@@ -223,6 +228,19 @@ public class PlayerBase : NetworkBehaviour {
 
     void Start()
     {
+        // PlayerString = Guid.NewGuid().ToString();
+        netManager = GameObject.Find("NetManager").GetComponent<NetManager>();
+        //netManager.storage.Rpc_GetPlayerNumber(netManager.net_Guid);
+        for (int x = 0; x < netManager.storage.ids.Count; x++)
+        {
+            if (netManager.storage.ids[x] == netManager.net_Guid)
+            {
+                //Found the client, so X + 1 is equal to their player number.
+                PlayerBaseID = x + 1;
+                break;
+            }
+        }
+        //PlayerBaseID = netManager.storage.my_Player_Number;
         StartCoroutine("DelayedStart");
     }
 
@@ -252,7 +270,6 @@ public class PlayerBase : NetworkBehaviour {
 
     void Update()
     {
-
         if(CanMoveCamera == true)
         {
             GameObject.Find("CameraRotator").transform.position = Vector3.Lerp(GameObject.Find("CameraRotator").transform.position, new Vector3(WinningPlayerPos.x, 0, WinningPlayerPos.z), Time.deltaTime * 2);
