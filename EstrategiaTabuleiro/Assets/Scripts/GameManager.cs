@@ -65,7 +65,7 @@ public class GameManager : NetworkBehaviour {
         curTurn = Turn;
     }
 
-    //SÓ EXISTE 1 CONTROLADOR DE COMUNICAÇÃO ENTRE O SERVER E O USER QUE MANDA O TURNO, TERÍA QUE SER FEITO ALGO QUE MANDE OS CHAT, OS TEXTO PARA QUE TODOS VEJAM
+    //:) SÓ EXISTE 1 CONTROLADOR DE COMUNICAÇÃO ENTRE O SERVER E O USER QUE MANDA O TURNO, TERÍA QUE SER FEITO ALGO QUE MANDE OS CHAT, OS TEXTO PARA QUE TODOS VEJAM
     //Não sei mandar isso pra outra máquina :/  Tá além do meu conhecimento teria que começar com algo basico entre interação do unity entre máquinas, não sei como se comportam, nem como funcionam
     /*
     [Command]
