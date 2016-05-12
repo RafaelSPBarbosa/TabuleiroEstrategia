@@ -13,7 +13,17 @@ public class NetManager : NetworkLobbyManager {
 
     public string net_Guid;
 
-    void Start()
+    bool loadedGameLevel = false;
+
+    IEnumerator LoadGameLevel()
+    {
+        yield return new WaitForSeconds(3);
+        //SceneManager.LoadScene("Game");
+        ServerChangeScene("Game");
+    }
+
+
+        void Start()
     {
         //storage = GameObject.Find("Storage").GetComponent<TempStorage>();
     }
@@ -29,13 +39,6 @@ public class NetManager : NetworkLobbyManager {
     {
         StartClient();
         SceneManager.LoadScene("Lobby");
-    }
-
-    public override void OnLobbyServerPlayersReady()
-    {
-        //var player = (GameObject)GameObject.Instantiate(playerPrefab, playerSpawnPos, Quaternion.identity);
-        //NetworkServer.AddPlayerForConnection(conn, player, playerControllerId);
-        
     }
 
     public void SetIP(string ip)
@@ -86,5 +89,16 @@ public class NetManager : NetworkLobbyManager {
 
         minPlayers = numPlayers;
         //Debug.Log(NetManager.singleton.numPlayers);
+
+
+        if (loadedGameLevel == false)
+        {
+            if (SceneManager.GetActiveScene().name == "LoadingScreen")
+            {
+                loadedGameLevel = true;
+                StartCoroutine("LoadGameLevel");
+            }
+        }
+
     }
 }

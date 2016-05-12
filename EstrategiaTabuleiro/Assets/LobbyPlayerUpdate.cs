@@ -29,7 +29,7 @@ public class LobbyPlayerUpdate : NetworkBehaviour {
 
 	void Update()
     {
-        
+
         if (On == true)
 
         {
@@ -37,9 +37,9 @@ public class LobbyPlayerUpdate : NetworkBehaviour {
             {
                 if (isMine == true)
                 {
-                    if (isServer) 
-                    //StartCoroutine("AssignIds");
-                    On = false;
+                    if (isServer)
+                        //StartCoroutine("AssignIds");
+                        On = false;
                 }
             }
         }

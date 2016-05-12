@@ -57,6 +57,9 @@ public class PlayerBase : NetworkBehaviour {
 
     public bool GameOver = false;
 
+    bool loadedGameLevel = false;
+    bool Initialized = false;
+
     [Command]
     public void Cmd_UpdatePlayerBaseID(int ID)
     {
@@ -108,12 +111,12 @@ public class PlayerBase : NetworkBehaviour {
              }
          }*/
         //print(Convert.ToInt32(playerControllerId));
-        Cmd_UpdatePlayerBaseID(Convert.ToInt32(GetComponent<NetworkIdentity>().netId.Value));
+        
         //Cmd_UpdatePlayerBaseID(Convert.ToInt32(playerControllerId));
 
         //PlayerBaseID = GetComponent<NetworkIdentity>().NetworkConnection.connectionId();
 
-        yield return null;
+        yield return new WaitForSeconds(2);
 
         GoldText = GameObject.Find("_Dinheiro").GetComponent<Text>();
         FoodText = GameObject.Find("_Comida").GetComponent<Text>();
@@ -227,6 +230,8 @@ public class PlayerBase : NetworkBehaviour {
 
     void Start()
     {
+        Cmd_UpdatePlayerBaseID(Convert.ToInt32(GetComponent<NetworkIdentity>().netId.Value));
+        DontDestroyOnLoad(this.gameObject);
         // PlayerString = Guid.NewGuid().ToString();
         /* netManager = GameObject.Find("NetManager").GetComponent<NetManager>();
          //netManager.storage.Rpc_GetPlayerNumber(netManager.net_Guid);
@@ -241,14 +246,9 @@ public class PlayerBase : NetworkBehaviour {
          }
          */
         //PlayerBaseID = netManager.storage.my_Player_Number;
-        if (SceneManager.GetActiveScene().name == "Game")
-        {
-            if (isLocalPlayer)
-            {
-                StartCoroutine("DelayedStart");
-            }
-        }
+
     }
+
 
     [Command]
     public void Cmd_PassDestroyedTurn(int TargetTurn)
@@ -278,6 +278,15 @@ public class PlayerBase : NetworkBehaviour {
     {
         if (SceneManager.GetActiveScene().name == "Game")
         {
+            if(Initialized == false)
+            {
+                if (isLocalPlayer)
+                {
+                    StartCoroutine("DelayedStart");
+                    Initialized = true;
+                }
+            }
+
             // if (gameManager == null)
             //  gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
             //if (playerManager == null)
@@ -779,9 +788,11 @@ public class PlayerBase : NetworkBehaviour {
     [Command]
     public void Cmd_PassTurn(int ID)
     {
-        if (gameManager.curTurn == ID)
+        GameManager TempGameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
+
+        if (TempGameManager.curTurn == ID)
         {
-            gameManager.curTurn++;
+            TempGameManager.curTurn++;
             //tempoTurno = 45;
 
             int GoldToGive = 1;
@@ -798,8 +809,8 @@ public class PlayerBase : NetworkBehaviour {
             }
             Gold += GoldToGive;
 
-            if (gameManager.curTurn > gameManager.MaxTurns)
-                gameManager.curTurn = 1;
+            if (TempGameManager.curTurn > TempGameManager.MaxTurns)
+                TempGameManager.curTurn = 1;
 
             //Aqui carrego a variável com todos os objetos da cena que possuem o Tag "Unit"
             GameObject[] AllFriendlyUnits = GameObject.FindGameObjectsWithTag("Unit");
