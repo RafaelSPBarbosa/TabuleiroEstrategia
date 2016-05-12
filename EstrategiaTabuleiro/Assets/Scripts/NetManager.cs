@@ -12,6 +12,7 @@ public class NetManager : NetworkLobbyManager {
     public TempStorage storage;
 
     public string net_Guid;
+
     void Start()
     {
         //storage = GameObject.Find("Storage").GetComponent<TempStorage>();
@@ -26,8 +27,15 @@ public class NetManager : NetworkLobbyManager {
 
     public void StartClientButton()
     {
-       StartClient();
+        StartClient();
         SceneManager.LoadScene("Lobby");
+    }
+
+    public override void OnLobbyServerPlayersReady()
+    {
+        //var player = (GameObject)GameObject.Instantiate(playerPrefab, playerSpawnPos, Quaternion.identity);
+        //NetworkServer.AddPlayerForConnection(conn, player, playerControllerId);
+        
     }
 
     public void SetIP(string ip)
@@ -50,30 +58,31 @@ public class NetManager : NetworkLobbyManager {
         conn.isReady = true;
         this.TryToAddPlayer();
 
-        net_Guid = Guid.NewGuid().ToString();
-        storage.Cmd_AddGuid(net_Guid);
+        //net_Guid = Guid.NewGuid().ToString();
+       // storage.Cmd_AddGuid(net_Guid);
        // storage.Cmd_UpdatePlayerNumber();
        //player_Count++;
 
     }
 
-    public override void OnServerConnect(NetworkConnection conn)
-    {
-        if (conn.address == "localServer" && storage.PlayerNumber == 0 && conn.connectionId == 0 )
-        {
-            storage.PlayerNumber = 1;
-            net_Guid = Guid.NewGuid().ToString();
-            storage.ids.Add(net_Guid);
-            storage.my_Player_Number = 1;
-        }
-    }
+    //public override void OnServerConnect(NetworkConnection conn)
+   // {
+        //if (conn.address == "localServer" && conn.connectionId == 0 )
+        //{
+            //storage.PlayerNumber = 1;
+            //net_Guid = Guid.NewGuid().ToString();
+            //storage.ids.Add(net_Guid);
+            //storage.my_Player_Number = 1;
+            //this.TryToAddPlayer();
+        //}
+    //}
 
     void Update()
     {
-        if (GameObject.Find("Storage") != null)
-        {
-            GameObject.Find("Storage").SetActive(true);
-        }
+        //if (GameObject.Find("Storage") != null)
+       // {
+           // GameObject.Find("Storage").SetActive(true);
+       // }
 
         minPlayers = numPlayers;
         //Debug.Log(NetManager.singleton.numPlayers);

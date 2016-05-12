@@ -16,6 +16,7 @@ public class networkComponentVerificationOffline : NetworkBehaviour {
             for(int i = 0; i < ComponentsToDisable.Length; i++)
             {
                 ComponentsToDisable[i].enabled = false;
+
             }
         }
     }

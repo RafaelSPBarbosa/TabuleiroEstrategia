@@ -13,10 +13,10 @@ public class LobbyPlayerUpdate : NetworkBehaviour {
 
     void Start()
     {
-        if (isLocalPlayer)
+        if (isServer)
         {
             isMine = true;
-            Cmd_UpdatePlayerId( GameObject.FindGameObjectsWithTag("LobbyPlayer").Length);
+            //Cmd_UpdatePlayerId( GameObject.FindGameObjectsWithTag("LobbyPlayer").Length);
 
         }
     }
@@ -29,7 +29,6 @@ public class LobbyPlayerUpdate : NetworkBehaviour {
 
 	void Update()
     {
-        /*if (On == true)
         
         if (On == true)
 
@@ -38,39 +37,27 @@ public class LobbyPlayerUpdate : NetworkBehaviour {
             {
                 if (isMine == true)
                 {
-                    Debug.Log("Local");
-                    GameObject[] AllPlayerBases = GameObject.FindGameObjectsWithTag("PlayerBase");
-                    for (int i = 0; i < AllPlayerBases.Length; i++)
-                    {
-                        if (AllPlayerBases[i].GetComponent<PlayerBase>().enabled == true)
-                        {
-
-                            //AllPlayerBases[i].GetComponent<PlayerBase>().Cmd_UpdatePlayerBaseID(Convert.ToInt32(GetComponent<NetworkIdentity>().netId.ToString()));
-                            //AllPlayerBases[i].GetComponent<PlayerBase>().Rpc_UpdatePlayerBaseID(Convert.ToInt32(GetComponent<NetworkIdentity>().netId.ToString()));
-
-                            StartCoroutine("WhileRetry",AllPlayerBases[i]);
-                           On = false;
-
-                            /* if (isServer)
-                             {
-                                 Debug.Log("Server " + Convert.ToInt32(GetComponent<NetworkIdentity>().netId.Value));
-                                 AllPlayerBases[i].GetComponent<PlayerBase>().Cmd_UpdatePlayerBaseID(Convert.ToInt32(GetComponent<NetworkIdentity>().netId.Value));
-                             }
-                             else
-                             {
-                                 Debug.Log("Local " + Convert.ToInt32(GetComponent<NetworkIdentity>().netId.Value));
-
-                                 AllPlayerBases[i].GetComponent<PlayerBase>().Rpc_UpdatePlayerBaseID(Convert.ToInt32(GetComponent<NetworkIdentity>().netId.Value));
-                             }
-
-                            //AllPlayerBases[i].GetComponent<PlayerBase>()
-                        }
-                    }
+                    if (isServer) 
+                    //StartCoroutine("AssignIds");
                     On = false;
                 }
             }
-        }*/
+        }
 
+    }
+
+    IEnumerator AssignIds()
+    {
+        yield return new WaitForSeconds( 0.5f);
+        GameObject[] AllPlayerBases = GameObject.FindGameObjectsWithTag("PlayerBase");
+        for (int i = 0; i < AllPlayerBases.Length; i++)
+        {
+
+                //AllPlayerBases[i].GetComponent<PlayerBase>().Cmd_UpdatePlayerBaseID(Convert.ToInt32(GetComponent<NetworkIdentity>().netId.ToString()));
+                //AllPlayerBases[i].GetComponent<PlayerBase>().Rpc_UpdatePlayerBaseID(Convert.ToInt32(GetComponent<NetworkIdentity>().netId.ToString()));
+
+            AllPlayerBases[i].GetComponent<UpdatePlayerBaseId>().Cmd_UpdatePlayerBaseID(Convert.ToInt32(GetComponent<NetworkIdentity>().netId.Value));
+        }
     }
     /*IEnumerator WhileRetry(GameObject Base)
     {

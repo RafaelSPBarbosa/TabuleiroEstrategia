@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using System;
@@ -43,12 +44,9 @@ public class PlayerBase : NetworkBehaviour {
     [SyncVar]
     public int MyObjective;
 
-<<<<<<< HEAD
     bool CanMoveCamera = false;
 
     string PlayerString;
-=======
->>>>>>> parent of aaa0205... Continuação dos objetivos
     //Váriaveis da gambiarra
     [SyncVar]
     float tempoTurno = 45;
@@ -57,15 +55,17 @@ public class PlayerBase : NetworkBehaviour {
 
     public GameObject Farm;
 
+    public bool GameOver = false;
+
     [Command]
     public void Cmd_UpdatePlayerBaseID(int ID)
     {
-        PlayerBaseID = ID;
+        PlayerBaseID = ID - GameObject.Find("NetManager").GetComponent<NetworkManager>().numPlayers;
     }
     [ClientRpc]
     public void Rpc_UpdatePlayerBaseID(int ID)
     {
-        PlayerBaseID = ID;
+        //PlayerBaseID = ID;
         Debug.Log("RPC ID Update");
     }
 
@@ -99,16 +99,22 @@ public class PlayerBase : NetworkBehaviour {
 
     IEnumerator DelayedStart()
     {
-        GameObject[] AllLobbyPlayers = GameObject.FindGameObjectsWithTag("LobbyPlayer");
-        for(int i = 0; i < AllLobbyPlayers.Length; i++)
-        {
-            if(AllLobbyPlayers[i].GetComponent<LobbyPlayerUpdate>().isMine == true)
-            {
-                PlayerBaseID = AllLobbyPlayers[i].GetComponent<LobbyPlayerUpdate>().PlayerId;
-            }
-        }
+        /* GameObject[] AllLobbyPlayers = GameObject.FindGameObjectsWithTag("LobbyPlayer");
+         for(int i = 0; i < AllLobbyPlayers.Length; i++)
+         {
+             if(AllLobbyPlayers[i].GetComponent<LobbyPlayerUpdate>().isMine == true)
+             {
+                 PlayerBaseID = AllLobbyPlayers[i].GetComponent<LobbyPlayerUpdate>().PlayerId;
+             }
+         }*/
+        //print(Convert.ToInt32(playerControllerId));
+        Cmd_UpdatePlayerBaseID(Convert.ToInt32(GetComponent<NetworkIdentity>().netId.Value));
+        //Cmd_UpdatePlayerBaseID(Convert.ToInt32(playerControllerId));
 
-        yield return new WaitForSeconds(1);
+        //PlayerBaseID = GetComponent<NetworkIdentity>().NetworkConnection.connectionId();
+
+        yield return null;
+
         GoldText = GameObject.Find("_Dinheiro").GetComponent<Text>();
         FoodText = GameObject.Find("_Comida").GetComponent<Text>();
         TempoTxt = GameObject.Find("_Tempo").GetComponent<Text>();
@@ -117,53 +123,53 @@ public class PlayerBase : NetworkBehaviour {
         gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
         playerManager = GameObject.Find("_PlayerManager").GetComponent<PlayerManager>();
 
-        if (isLocalPlayer)
+        gameManager.MyPlayerBase = this.gameObject;
+        playerManager.PlayerID = PlayerBaseID;
+        playerManager.UpdateVariables();
+
+        if (PlayerBaseID == 1)
         {
-
-            gameManager.MyPlayerBase = this.gameObject;
-            playerManager.PlayerID = PlayerBaseID;
-            playerManager.UpdateVariables();
-
-            if (PlayerBaseID == 1)
-            {
-                // Mat.material = MatBaseCao;
-                GameObject CameraRot = GameObject.Find("CameraRotator");
-                CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 45, this.transform.eulerAngles.z);
-            }
-            if (PlayerBaseID == 4)
-            {
-                // Mat.material = MatBaseGato;
-                GameObject CameraRot = GameObject.Find("CameraRotator");
-                CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 210, this.transform.eulerAngles.z);
-            }
-            if (PlayerBaseID == 3)
-            {
-                // Mat.material = MatBaseRato;
-                GameObject CameraRot = GameObject.Find("CameraRotator");
-                CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 330, this.transform.eulerAngles.z);
-            }
-            if (PlayerBaseID == 2)
-            {
-                // Mat.material = MatBaseAguia;
-                GameObject CameraRot = GameObject.Find("CameraRotator");
-                CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 135, this.transform.eulerAngles.z);
-            }
-
-            SpawnExplorerBtn = GameObject.Find("SpawnExplorer").GetComponent<Button>();
-            SpawnExplorerBtn.onClick.AddListener(() => Cmd_SpawnExplorer(PlayerBaseID, false));
-
-            SpawnGuerreiroBtn = GameObject.Find("SpawnWarrior").GetComponent<Button>();
-            SpawnGuerreiroBtn.onClick.AddListener(() => Cmd_SpawnGuerreiro(PlayerBaseID));
-
-            SpawnArqueiroBtn = GameObject.Find("SpawnArcher").GetComponent<Button>();
-            SpawnArqueiroBtn.onClick.AddListener(() => Cmd_SpawnArqueiro(PlayerBaseID));
-
-            PassTurnButton = GameObject.Find("PassTurnBtn").GetComponent<Button>();
-            PassTurnButton.onClick.AddListener(() => Cmd_PassTurn());
-
-            Cmd_SpawnExplorer(PlayerBaseID, true);
-
+            // Mat.material = MatBaseCao;
+            GameObject CameraRot = GameObject.Find("CameraRotator");
+            CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 45, this.transform.eulerAngles.z);
         }
+        if (PlayerBaseID == 4)
+        {
+            // Mat.material = MatBaseGato;
+            GameObject CameraRot = GameObject.Find("CameraRotator");
+            CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 210, this.transform.eulerAngles.z);
+        }
+        if (PlayerBaseID == 3)
+        {
+            // Mat.material = MatBaseRato;
+            GameObject CameraRot = GameObject.Find("CameraRotator");
+            CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 330, this.transform.eulerAngles.z);
+        }
+        if (PlayerBaseID == 2)
+        {
+            // Mat.material = MatBaseAguia;
+            GameObject CameraRot = GameObject.Find("CameraRotator");
+            CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 135, this.transform.eulerAngles.z);
+        }
+
+        SpawnExplorerBtn = GameObject.Find("SpawnExplorer").GetComponent<Button>();
+        SpawnExplorerBtn.onClick.AddListener(() => Cmd_SpawnExplorer(PlayerBaseID, false));
+
+        SpawnGuerreiroBtn = GameObject.Find("SpawnWarrior").GetComponent<Button>();
+        SpawnGuerreiroBtn.onClick.AddListener(() => Cmd_SpawnGuerreiro(PlayerBaseID));
+
+        SpawnArqueiroBtn = GameObject.Find("SpawnArcher").GetComponent<Button>();
+        SpawnArqueiroBtn.onClick.AddListener(() => Cmd_SpawnArqueiro(PlayerBaseID));
+
+        PassTurnButton = GameObject.Find("PassTurnBtn").GetComponent<Button>();
+        PassTurnButton.onClick.AddListener(() => Cmd_PassTurn(PlayerBaseID));
+
+        Cmd_SpawnExplorer(PlayerBaseID, true);
+
+        if (isServer)
+            DistributeObjectives();
+
+        ReadyToPlay = true;
     }
 
     void DistributeObjectives()
@@ -222,19 +228,26 @@ public class PlayerBase : NetworkBehaviour {
     void Start()
     {
         // PlayerString = Guid.NewGuid().ToString();
-        netManager = GameObject.Find("NetManager").GetComponent<NetManager>();
-        //netManager.storage.Rpc_GetPlayerNumber(netManager.net_Guid);
-        for (int x = 0; x < netManager.storage.ids.Count; x++)
+        /* netManager = GameObject.Find("NetManager").GetComponent<NetManager>();
+         //netManager.storage.Rpc_GetPlayerNumber(netManager.net_Guid);
+         for (int x = 0; x < netManager.storage.ids.Count; x++)
+         {
+             if (netManager.storage.ids[x] == netManager.net_Guid)
+             {
+                 //Found the client, so X + 1 is equal to their player number.
+                 PlayerBaseID = x + 1;
+                 break;
+             }
+         }
+         */
+        //PlayerBaseID = netManager.storage.my_Player_Number;
+        if (SceneManager.GetActiveScene().name == "Game")
         {
-            if (netManager.storage.ids[x] == netManager.net_Guid)
+            if (isLocalPlayer)
             {
-                //Found the client, so X + 1 is equal to their player number.
-                PlayerBaseID = x + 1;
-                break;
+                StartCoroutine("DelayedStart");
             }
         }
-        //PlayerBaseID = netManager.storage.my_Player_Number;
-        StartCoroutine("DelayedStart");
     }
 
     [Command]
@@ -263,152 +276,161 @@ public class PlayerBase : NetworkBehaviour {
 
     void Update()
     {
-<<<<<<< HEAD
-        if(CanMoveCamera == true)
+        if (SceneManager.GetActiveScene().name == "Game")
         {
-            GameObject.Find("CameraRotator").transform.position = Vector3.Lerp(GameObject.Find("CameraRotator").transform.position, new Vector3(WinningPlayerPos.x, 0, WinningPlayerPos.z), Time.deltaTime * 2);
-        }
-
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            
-            GameObject[] AllPlayers = GameObject.FindGameObjectsWithTag("PlayerBase");
-            for (int i = 0; i < AllPlayers.Length; i++)
+            // if (gameManager == null)
+            //  gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
+            //if (playerManager == null)
+            // playerManager = GameObject.Find("_PlayerManager").GetComponent<PlayerManager>();
+            if (GameOver == true)
             {
-                if (AllPlayers[i] != this.gameObject)
+                Camera.main.transform.parent.transform.position = Vector3.Lerp(Camera.main.transform.parent.transform.position, new Vector3(WinningPlayerPos.x, 7.1f, WinningPlayerPos.z), Time.deltaTime * 2);
+            }
+
+            if (CanMoveCamera == true)
+            {
+                GameObject.Find("CameraRotator").transform.position = Vector3.Lerp(GameObject.Find("CameraRotator").transform.position, new Vector3(WinningPlayerPos.x, 0, WinningPlayerPos.z), Time.deltaTime * 2);
+            }
+
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+
+                GameObject[] AllPlayers = GameObject.FindGameObjectsWithTag("PlayerBase");
+                for (int i = 0; i < AllPlayers.Length; i++)
                 {
-                    
-                    //if (AllPlayers[i].GetComponent<NetworkIdentity>().isServer)
-                    if (AllPlayers[i].GetComponent<NetworkIdentity>().isServer)
+                    if (AllPlayers[i] != this.gameObject)
                     {
-                        AllPlayers[i].GetComponent<PlayerBase>().Rpc_UpdateWinningPlayer(this.transform.position);
-                        AllPlayers[i].GetComponent<PlayerBase>().Rpc_LooseMatch();
-                    }
-                    else {
-                        AllPlayers[i].GetComponent<PlayerBase>().Cmd_UpdateWinningPlayer(this.transform.position);
-                        AllPlayers[i].GetComponent<PlayerBase>().Cmd_LooseMatch();
+
+                        //if (AllPlayers[i].GetComponent<NetworkIdentity>().isServer)
+                        if (AllPlayers[i].GetComponent<NetworkIdentity>().isServer)
+                        {
+                            AllPlayers[i].GetComponent<PlayerBase>().Rpc_UpdateWinningPlayer(this.transform.position);
+                            AllPlayers[i].GetComponent<PlayerBase>().Rpc_LooseMatch();
+                        }
+                        else {
+                            AllPlayers[i].GetComponent<PlayerBase>().Cmd_UpdateWinningPlayer(this.transform.position);
+                            AllPlayers[i].GetComponent<PlayerBase>().Cmd_LooseMatch();
+                        }
                     }
                 }
-            }
-            if (isServer)
-            {
-                //Rpc_UpdateWinningPlayer(this.transform.position);
-                WinMatch();
-            }
-            else
-            {
-                //Cmd_UpdateWinningPlayer(this.transform.position);
-                WinMatch();
-            }
-        }
-=======
->>>>>>> parent of aaa0205... Continuação dos objetivos
-        if (ReadyToPlay == true)
-        {
-            
-
-            GoldText.text = "Gold : " + Gold;
-            FoodText.text = "Food : " + Food;
-
-            if (gameManager.curTurn == playerManager.MyTurn && Destroyed == true)
-            {
                 if (isServer)
                 {
-                    Rpc_PassDestroyedTurn(playerManager.MyTurn + 1);
+                    //Rpc_UpdateWinningPlayer(this.transform.position);
+                    WinMatch();
                 }
                 else
                 {
-                    Cmd_PassDestroyedTurn(playerManager.MyTurn + 1);
+                    //Cmd_UpdateWinningPlayer(this.transform.position);
+                    WinMatch();
+                }
+            }
+            if (ReadyToPlay == true)
+            {
+
+
+                GoldText.text = "Gold : " + Gold;
+                FoodText.text = "Food : " + Food;
+
+                if (gameManager.curTurn == playerManager.MyTurn && Destroyed == true)
+                {
+                    if (isServer)
+                    {
+                        Rpc_PassDestroyedTurn(playerManager.MyTurn + 1);
+                    }
+                    else
+                    {
+                        Cmd_PassDestroyedTurn(playerManager.MyTurn + 1);
+                    }
+
                 }
 
-            }
+                // if (isServer)
+                //  {
+                // ControlaTempoTurno();
+                // }
 
-           // if (isServer)
-          //  {
-               // ControlaTempoTurno();
-           // }
-            
 
-            if (gameManager.curTurn == playerManager.MyTurn && Destroyed == false)
-            {
-                PassTurnButton.interactable = true;
-
-                if (Occupied == false)
+                if (gameManager.curTurn == playerManager.MyTurn && Destroyed == false)
                 {
-                    //Explorador
-                    if (Gold >= 2)
+                    PassTurnButton.interactable = true;
+
+                    if (Occupied == false)
                     {
-                        SpawnExplorerBtn.interactable = true;
+                        //Explorador
+                        if (Gold >= 2)
+                        {
+                            SpawnExplorerBtn.interactable = true;
+                        }
+                        else
+                        {
+                            SpawnExplorerBtn.interactable = false;
+                        }
+
+                        //Guerreiro
+                        if (Gold >= 5)
+                        {
+                            SpawnGuerreiroBtn.interactable = true;
+                        }
+                        else
+                        {
+                            SpawnGuerreiroBtn.interactable = false;
+                        }
+
+                        //Arqueiro
+                        if (Gold >= 7)
+                        {
+                            SpawnArqueiroBtn.interactable = true;
+                        }
+                        else
+                        {
+                            SpawnArqueiroBtn.interactable = false;
+                        }
                     }
                     else
                     {
                         SpawnExplorerBtn.interactable = false;
-                    }
-
-                    //Guerreiro
-                    if (Gold >= 5)
-                    {
-                        SpawnGuerreiroBtn.interactable = true;
-                    }
-                    else
-                    {
                         SpawnGuerreiroBtn.interactable = false;
-                    }
-
-                    //Arqueiro
-                    if (Gold >= 7)
-                    {
-                        SpawnArqueiroBtn.interactable = true;
-                    }
-                    else
-                    {
                         SpawnArqueiroBtn.interactable = false;
                     }
+
                 }
                 else
                 {
+                    PassTurnButton.interactable = false;
                     SpawnExplorerBtn.interactable = false;
                     SpawnGuerreiroBtn.interactable = false;
                     SpawnArqueiroBtn.interactable = false;
                 }
 
-            }
-            else
-            {
-                PassTurnButton.interactable = false;
-                SpawnExplorerBtn.interactable = false;
-                SpawnGuerreiroBtn.interactable = false;
-                SpawnArqueiroBtn.interactable = false;
-            }
-
-            if (curHealth <= 0 && Destroyed == false)
-            {
-                Cmd_DestroyKingdom();
-            }
-        }
-
-        //Condições de vitória
-        if(MyObjective == 5)
-        {
-            if(Food == 11 & GoldMineAmmount == 2)
-            {
-
-                WinMatch();
-                GameObject[] AllPlayers = GameObject.FindGameObjectsWithTag("PlayerBase");
-                for (int i = 0; i < AllPlayers.Length; i++)
+                if (curHealth <= 0 && Destroyed == false)
                 {
-                    if (!AllPlayers[i].GetComponent<NetworkIdentity>().isLocalPlayer)
+                    Cmd_DestroyKingdom();
+                }
+            }
+
+            //Condições de vitória
+            if (MyObjective == 5)
+            {
+                if (Food == 11 & GoldMineAmmount == 2)
+                {
+
+                    WinMatch();
+                    GameObject[] AllPlayers = GameObject.FindGameObjectsWithTag("PlayerBase");
+                    for (int i = 0; i < AllPlayers.Length; i++)
                     {
-                        if (AllPlayers[i].GetComponent<NetworkIdentity>().isServer)
+                        if (!AllPlayers[i].GetComponent<NetworkIdentity>().isLocalPlayer)
                         {
-                            AllPlayers[i].GetComponent<PlayerBase>().Rpc_LooseMatch();
-                            AllPlayers[i].GetComponent<PlayerBase>().Rpc_UpdateWinningPlayer(this.transform.position);
-                        }
-                        
-                        else
-                        {
-                            AllPlayers[i].GetComponent<PlayerBase>().Cmd_LooseMatch();
-                            AllPlayers[i].GetComponent<PlayerBase>().Cmd_UpdateWinningPlayer(this.transform.position);
+                            if (AllPlayers[i].GetComponent<NetworkIdentity>().isServer)
+                            {
+                                AllPlayers[i].GetComponent<PlayerBase>().Rpc_LooseMatch();
+                                AllPlayers[i].GetComponent<PlayerBase>().Rpc_UpdateWinningPlayer(this.transform.position);
+                            }
+
+                            else
+                            {
+                                AllPlayers[i].GetComponent<PlayerBase>().Cmd_LooseMatch();
+                                AllPlayers[i].GetComponent<PlayerBase>().Cmd_UpdateWinningPlayer(this.transform.position);
+                            }
                         }
                     }
                 }
@@ -441,7 +463,7 @@ public class PlayerBase : NetworkBehaviour {
     {
         yield return new WaitForSeconds(2);
         Camera.main.transform.parent.GetComponent<MoveCamera>().enabled = false;
-        Camera.main.transform.parent.transform.position = Vector3.Lerp(Camera.main.transform.parent.transform.position, new Vector3(WinningPlayerPos.x , 7.1f, WinningPlayerPos.z ), Time.deltaTime * 2);
+        GameOver = true;
     }
 
     [Command]
@@ -755,9 +777,9 @@ public class PlayerBase : NetworkBehaviour {
     }
 
     [Command]
-    public void Cmd_PassTurn()
+    public void Cmd_PassTurn(int ID)
     {
-        if (gameManager.curTurn == PlayerBaseID)
+        if (gameManager.curTurn == ID)
         {
             gameManager.curTurn++;
             //tempoTurno = 45;
@@ -878,7 +900,7 @@ public class PlayerBase : NetworkBehaviour {
         TempoTxt.text = Convert.ToInt32(tempoTurno).ToString();
         if (tempoTurno <= 0)
         {
-            Cmd_PassTurn(); 
+            Cmd_PassTurn(PlayerBaseID); 
             if (isServer)
             {
                 ResetTimer(); // CRIARAM UMA FUNÇÃO PRA CONTROLAR O TEMPO USAM A BASE QUE FIZ MAS MUDARAM ;/ DAI NEM ROLA, SE FOR PRA MUDAR O CARA LEVA TEMPO PRA ENTENDER ENTÃO ELE PODE FAZER :S

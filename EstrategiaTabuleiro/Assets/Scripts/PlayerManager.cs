@@ -16,7 +16,6 @@ public class PlayerManager : MonoBehaviour {
         MyTurn = PlayerID;
         GameObject.Find("PlayerIndicatorText").GetComponent<Text>().text = "Player : " + PlayerID;
 
-        this.transform.name = "_PlayerManager";
         gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
     }
 }
