@@ -116,11 +116,11 @@ public class FarmManager : NetworkBehaviour {
         {
             Flag.material = Amarelo;
         }
-        if (PlayerOwner.GetComponent<PlayerBase>().PlayerBaseID == 3)
+        if (PlayerOwner.GetComponent<PlayerBase>().PlayerBaseID == 4)
         {
             Flag.material = Verde;
         }
-        if (PlayerOwner.GetComponent<PlayerBase>().PlayerBaseID == 4)
+        if (PlayerOwner.GetComponent<PlayerBase>().PlayerBaseID == 3)
         {
             Flag.material = Azul;
         }
@@ -140,11 +140,11 @@ public class FarmManager : NetworkBehaviour {
         {
             Flag.material = Amarelo;
         }
-        if (PlayerOwner.GetComponent<PlayerBase>().PlayerBaseID == 3)
+        if (PlayerOwner.GetComponent<PlayerBase>().PlayerBaseID == 4)
         {
             Flag.material = Verde;
         }
-        if (PlayerOwner.GetComponent<PlayerBase>().PlayerBaseID == 4)
+        if (PlayerOwner.GetComponent<PlayerBase>().PlayerBaseID == 3)
         {
             Flag.material = Azul;
         }
