@@ -322,15 +322,20 @@ public class PlayerBase : NetworkBehaviour {
                         }
                     }
                 }
-                if (isServer)
+
+                //Rpc_UpdateWinningPlayer(this.transform.position);
+                if (isLocalPlayer)
                 {
-                    //Rpc_UpdateWinningPlayer(this.transform.position);
-                    WinMatch();
-                }
-                else
-                {
-                    //Cmd_UpdateWinningPlayer(this.transform.position);
-                    WinMatch();
+                    if (isServer)
+                    {
+                        //Rpc_UpdateWinningPlayer(this.transform.position);
+                        Rpc_WinMatch();
+                    }
+                    else
+                    {
+                        //Rpc_UpdateWinningPlayer(this.transform.position);
+                        Cmd_WinMatch();
+                    }
                 }
             }
             if (ReadyToPlay == true)
@@ -422,8 +427,14 @@ public class PlayerBase : NetworkBehaviour {
             {
                 if (Food == 11 & GoldMineAmmount == 2)
                 {
-
-                    WinMatch();
+                    if (isServer)
+                    {
+                        WinMatch();
+                    }
+                    else
+                    {
+                        Cmd_WinMatch();
+                    }
                     GameObject[] AllPlayers = GameObject.FindGameObjectsWithTag("PlayerBase");
                     for (int i = 0; i < AllPlayers.Length; i++)
                     {
@@ -448,6 +459,22 @@ public class PlayerBase : NetworkBehaviour {
     }
 
     public void WinMatch()
+    {
+        ObjectiveText.text = "YOU WON THE GAME!!";
+        WinningPlayerPos = this.transform.position;
+        StartCoroutine("RepositionCamera");
+    }
+
+    [Command]
+    public void Cmd_WinMatch()
+    {
+        ObjectiveText.text = "YOU WON THE GAME!!";
+        WinningPlayerPos = this.transform.position;
+        StartCoroutine("RepositionCamera");
+    }
+
+    [ClientRpc]
+    public void Rpc_WinMatch()
     {
         ObjectiveText.text = "YOU WON THE GAME!!";
         WinningPlayerPos = this.transform.position;
