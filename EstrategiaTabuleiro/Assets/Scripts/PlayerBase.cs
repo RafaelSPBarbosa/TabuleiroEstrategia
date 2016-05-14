@@ -179,6 +179,27 @@ public class PlayerBase : NetworkBehaviour {
             
             UsedIds.Add(id);
             AllPlayers[i].GetComponent<PlayerBase>().Rpc_RecieveObjective(id);
+
+            if(AllPlayers[i].GetComponent<PlayerBase>().PlayerBaseID == 1 && id == 1)
+            {
+                DistributeObjectives();
+                break;
+            }
+            if (AllPlayers[i].GetComponent<PlayerBase>().PlayerBaseID == 2 && id == 2)
+            {
+                DistributeObjectives();
+                break;
+            }
+            if (AllPlayers[i].GetComponent<PlayerBase>().PlayerBaseID == 3 && id == 4)
+            {
+                DistributeObjectives();
+                break;
+            }
+            if (AllPlayers[i].GetComponent<PlayerBase>().PlayerBaseID == 4 && id == 3)
+            {
+                DistributeObjectives();
+                break;
+            }
         }
     }
 
@@ -193,23 +214,23 @@ public class PlayerBase : NetworkBehaviour {
             {
                 case 1:
                     //print("Elimine o Jogador Vermelho");
-                    ObjectiveText.text = "Elimine o Jogador Vermelho";
+                    ObjectiveText.text = "Eliminate the Red Player";
                     break;
                 case 2:
                     //print("Elimine o Jogador Amarelo");
-                    ObjectiveText.text = "Elimine o Jogador Amarelo";
+                    ObjectiveText.text = "Elminate the Yellow Player";
                     break;
                 case 3:
                     //print("Elimine o Jogador Verde");
-                    ObjectiveText.text = "Elimine o Jogador Verde";
+                    ObjectiveText.text = "Eliminate the Green Player";
                     break;
                 case 4:
                     //print("Elimine o Jogador Azul");
-                    ObjectiveText.text = "Elimine o Jogador Azul";
+                    ObjectiveText.text = "Eliminate the Blue Player";
                     break;
                 case 5:
                     //print("Possua 10 Plantações e 2 Minas de Ouro");
-                    ObjectiveText.text = "Possua 10 Plantações e 2 Minas de Ouro";
+                    ObjectiveText.text = "Possess 10 Farms and 2 Gold Mines";
                     break;
             }
         }
