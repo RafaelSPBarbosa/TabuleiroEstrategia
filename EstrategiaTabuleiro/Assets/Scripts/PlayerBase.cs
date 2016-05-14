@@ -102,19 +102,6 @@ public class PlayerBase : NetworkBehaviour {
 
     IEnumerator DelayedStart()
     {
-        /* GameObject[] AllLobbyPlayers = GameObject.FindGameObjectsWithTag("LobbyPlayer");
-         for(int i = 0; i < AllLobbyPlayers.Length; i++)
-         {
-             if(AllLobbyPlayers[i].GetComponent<LobbyPlayerUpdate>().isMine == true)
-             {
-                 PlayerBaseID = AllLobbyPlayers[i].GetComponent<LobbyPlayerUpdate>().PlayerId;
-             }
-         }*/
-        //print(Convert.ToInt32(playerControllerId));
-        
-        //Cmd_UpdatePlayerBaseID(Convert.ToInt32(playerControllerId));
-
-        //PlayerBaseID = GetComponent<NetworkIdentity>().NetworkConnection.connectionId();
 
         yield return new WaitForSeconds(2);
 
@@ -269,9 +256,9 @@ public class PlayerBase : NetworkBehaviour {
     }
 
     [Command]
-    public void Cmd_UpdateWinningPlayer(Vector3 Pos)
+    public void Cmd_UpdateWinningPlayer(Vector3 Pos , GameObject target)
     {
-        WinningPlayerPos = Pos;
+        target.GetComponent<PlayerBase>().Rpc_UpdateWinningPlayer(Pos);
     }
 
     void Update()
@@ -301,7 +288,7 @@ public class PlayerBase : NetworkBehaviour {
                 GameObject.Find("CameraRotator").transform.position = Vector3.Lerp(GameObject.Find("CameraRotator").transform.position, new Vector3(WinningPlayerPos.x, 0, WinningPlayerPos.z), Time.deltaTime * 2);
             }
 
-            if (Input.GetKeyDown(KeyCode.T))
+           /* if (Input.GetKeyDown(KeyCode.T))
             {
 
                 GameObject[] AllPlayers = GameObject.FindGameObjectsWithTag("PlayerBase");
@@ -310,15 +297,14 @@ public class PlayerBase : NetworkBehaviour {
                     if (AllPlayers[i] != this.gameObject)
                     {
 
-                        //if (AllPlayers[i].GetComponent<NetworkIdentity>().isServer)
-                        if (AllPlayers[i].GetComponent<NetworkIdentity>().isServer)
+                        if (isServer)
                         {
                             AllPlayers[i].GetComponent<PlayerBase>().Rpc_UpdateWinningPlayer(this.transform.position);
                             AllPlayers[i].GetComponent<PlayerBase>().Rpc_LooseMatch();
                         }
                         else {
-                            AllPlayers[i].GetComponent<PlayerBase>().Cmd_UpdateWinningPlayer(this.transform.position);
-                            AllPlayers[i].GetComponent<PlayerBase>().Cmd_LooseMatch();
+                            Cmd_UpdateWinningPlayer(this.transform.position, AllPlayers[i]);
+                            Cmd_LooseMatch( AllPlayers[i]);
                         }
                     }
                 }
@@ -329,15 +315,15 @@ public class PlayerBase : NetworkBehaviour {
                     if (isServer)
                     {
                         //Rpc_UpdateWinningPlayer(this.transform.position);
-                        Rpc_WinMatch();
+                        WinMatch();
                     }
                     else
                     {
                         //Rpc_UpdateWinningPlayer(this.transform.position);
-                        Cmd_WinMatch();
+                        WinMatch();
                     }
                 }
-            }
+            }*/
             if (ReadyToPlay == true)
             {
 
@@ -427,30 +413,36 @@ public class PlayerBase : NetworkBehaviour {
             {
                 if (Food == 11 & GoldMineAmmount == 2)
                 {
-                    if (isServer)
-                    {
-                        WinMatch();
-                    }
-                    else
-                    {
-                        Cmd_WinMatch();
-                    }
                     GameObject[] AllPlayers = GameObject.FindGameObjectsWithTag("PlayerBase");
                     for (int i = 0; i < AllPlayers.Length; i++)
                     {
-                        if (!AllPlayers[i].GetComponent<NetworkIdentity>().isLocalPlayer)
+                        if (AllPlayers[i] != this.gameObject)
                         {
-                            if (AllPlayers[i].GetComponent<NetworkIdentity>().isServer)
-                            {
-                                AllPlayers[i].GetComponent<PlayerBase>().Rpc_LooseMatch();
-                                AllPlayers[i].GetComponent<PlayerBase>().Rpc_UpdateWinningPlayer(this.transform.position);
-                            }
 
-                            else
+                            if (isServer)
                             {
-                                AllPlayers[i].GetComponent<PlayerBase>().Cmd_LooseMatch();
-                                AllPlayers[i].GetComponent<PlayerBase>().Cmd_UpdateWinningPlayer(this.transform.position);
+                                AllPlayers[i].GetComponent<PlayerBase>().Rpc_UpdateWinningPlayer(this.transform.position);
+                                AllPlayers[i].GetComponent<PlayerBase>().Rpc_LooseMatch();
                             }
+                            else {
+                                Cmd_UpdateWinningPlayer(this.transform.position, AllPlayers[i]);
+                                Cmd_LooseMatch(AllPlayers[i]);
+                            }
+                        }
+                    }
+
+                    //Rpc_UpdateWinningPlayer(this.transform.position);
+                    if (isLocalPlayer)
+                    {
+                        if (isServer)
+                        {
+                            //Rpc_UpdateWinningPlayer(this.transform.position);
+                            WinMatch();
+                        }
+                        else
+                        {
+                            //Rpc_UpdateWinningPlayer(this.transform.position);
+                            WinMatch();
                         }
                     }
                 }
@@ -466,11 +458,9 @@ public class PlayerBase : NetworkBehaviour {
     }
 
     [Command]
-    public void Cmd_WinMatch()
+    public void Cmd_WinMatch(GameObject target)
     {
-        ObjectiveText.text = "YOU WON THE GAME!!";
-        WinningPlayerPos = this.transform.position;
-        StartCoroutine("RepositionCamera");
+        target.GetComponent<PlayerBase>(). Rpc_WinMatch();
     }
 
     [ClientRpc]
@@ -482,17 +472,19 @@ public class PlayerBase : NetworkBehaviour {
     }
 
     [Command]
-    public void Cmd_LooseMatch()
+    public void Cmd_LooseMatch(GameObject target)
     {
-        ObjectiveText.text = "YOU LOST THE GAME!!";
-        StartCoroutine("RepositionCamera");
+        target.GetComponent<PlayerBase>().Rpc_LooseMatch();
     }
 
     [ClientRpc]
     public void Rpc_LooseMatch()
     {
-        ObjectiveText.text = "YOU LOST THE GAME!!";
-        StartCoroutine("RepositionCamera");
+        if (isLocalPlayer)
+        {
+            ObjectiveText.text = "YOU LOST THE GAME!!";
+            StartCoroutine("RepositionCamera");
+        }
     }
 
     public IEnumerator RepositionCamera()
@@ -526,79 +518,87 @@ public class PlayerBase : NetworkBehaviour {
 
         if(TargetPlayer.GetComponent<PlayerBase>().MyObjective == 1 && PlayerBaseID == 1)
         {
-            TargetPlayer.GetComponent<PlayerBase>().WinMatch();
+            Cmd_WinMatch(TargetPlayer);
             WinningPlayerPos = TargetPlayer.transform.position;
             for (int i = 0; i < AllPlayers.Length; i++)
             {
-                if (!AllPlayers[i].GetComponent<NetworkIdentity>().isLocalPlayer)
+                if (AllPlayers[i] != TargetPlayer)
                 {
-                    if (AllPlayers[i].GetComponent<NetworkIdentity>().isServer)
+
+                    if (isServer)
                     {
-                        AllPlayers[i].GetComponent<PlayerBase>().Cmd_LooseMatch();
-                    }
-                    else
-                    {
+                        AllPlayers[i].GetComponent<PlayerBase>().Rpc_UpdateWinningPlayer(this.transform.position);
                         AllPlayers[i].GetComponent<PlayerBase>().Rpc_LooseMatch();
+                    }
+                    else {
+                        Cmd_UpdateWinningPlayer(this.transform.position, AllPlayers[i]);
+                        Cmd_LooseMatch(AllPlayers[i]);
                     }
                 }
             }
         }
         if (TargetPlayer.GetComponent<PlayerBase>().MyObjective == 2 && PlayerBaseID == 2)
         {
-            TargetPlayer.GetComponent<PlayerBase>().WinMatch();
+            Cmd_WinMatch(TargetPlayer);
             WinningPlayerPos = TargetPlayer.transform.position;
 
             for (int i = 0; i < AllPlayers.Length; i++)
             {
-                if (!AllPlayers[i].GetComponent<NetworkIdentity>().isLocalPlayer)
+                if (AllPlayers[i] != TargetPlayer)
                 {
-                    if (AllPlayers[i].GetComponent<NetworkIdentity>().isServer)
+
+                    if (isServer)
                     {
-                        AllPlayers[i].GetComponent<PlayerBase>().Cmd_LooseMatch();
-                    }
-                    else
-                    {
+                        AllPlayers[i].GetComponent<PlayerBase>().Rpc_UpdateWinningPlayer(this.transform.position);
                         AllPlayers[i].GetComponent<PlayerBase>().Rpc_LooseMatch();
+                    }
+                    else {
+                        Cmd_UpdateWinningPlayer(this.transform.position, AllPlayers[i]);
+                        Cmd_LooseMatch(AllPlayers[i]);
                     }
                 }
             }
         }
         if (TargetPlayer.GetComponent<PlayerBase>().MyObjective == 3 && PlayerBaseID == 4)
         {
-            TargetPlayer.GetComponent<PlayerBase>().WinMatch();
+            Cmd_WinMatch(TargetPlayer);
             WinningPlayerPos = TargetPlayer.transform.position;
 
             for (int i = 0; i < AllPlayers.Length; i++)
             {
-                if (!AllPlayers[i].GetComponent<NetworkIdentity>().isLocalPlayer)
+                if (AllPlayers[i] != TargetPlayer)
                 {
-                    if (AllPlayers[i].GetComponent<NetworkIdentity>().isServer)
+
+                    if (isServer)
                     {
-                        AllPlayers[i].GetComponent<PlayerBase>().Cmd_LooseMatch();
-                    }
-                    else
-                    {
+                        AllPlayers[i].GetComponent<PlayerBase>().Rpc_UpdateWinningPlayer(this.transform.position);
                         AllPlayers[i].GetComponent<PlayerBase>().Rpc_LooseMatch();
+                    }
+                    else {
+                        Cmd_UpdateWinningPlayer(this.transform.position, AllPlayers[i]);
+                        Cmd_LooseMatch(AllPlayers[i]);
                     }
                 }
             }
         }
         if (TargetPlayer.GetComponent<PlayerBase>().MyObjective == 4 && PlayerBaseID == 3)
         {
-            TargetPlayer.GetComponent<PlayerBase>().WinMatch();
+            Cmd_WinMatch(TargetPlayer);
             WinningPlayerPos = TargetPlayer.transform.position;
 
             for (int i = 0; i < AllPlayers.Length; i++)
             {
-                if (!AllPlayers[i].GetComponent<NetworkIdentity>().isLocalPlayer)
+                if (AllPlayers[i] != TargetPlayer)
                 {
-                    if (AllPlayers[i].GetComponent<NetworkIdentity>().isServer)
+
+                    if (isServer)
                     {
-                        AllPlayers[i].GetComponent<PlayerBase>().Cmd_LooseMatch();
-                    }
-                    else
-                    {
+                        AllPlayers[i].GetComponent<PlayerBase>().Rpc_UpdateWinningPlayer(this.transform.position);
                         AllPlayers[i].GetComponent<PlayerBase>().Rpc_LooseMatch();
+                    }
+                    else {
+                        Cmd_UpdateWinningPlayer(this.transform.position, AllPlayers[i]);
+                        Cmd_LooseMatch(AllPlayers[i]);
                     }
                 }
             }
