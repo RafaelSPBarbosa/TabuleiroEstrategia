@@ -117,25 +117,25 @@ public class PlayerBase : NetworkBehaviour {
         playerManager.PlayerID = PlayerBaseID;
         playerManager.UpdateVariables();
 
-        if (PlayerBaseID == 1)
+        if (PlayerBaseID == 4)
         {
             // Mat.material = MatBaseCao;
             GameObject CameraRot = GameObject.Find("CameraRotator");
             CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 45, this.transform.eulerAngles.z);
         }
-        if (PlayerBaseID == 4)
+        if (PlayerBaseID == 3)
         {
             // Mat.material = MatBaseGato;
             GameObject CameraRot = GameObject.Find("CameraRotator");
             CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 210, this.transform.eulerAngles.z);
         }
-        if (PlayerBaseID == 3)
+        if (PlayerBaseID == 2)
         {
             // Mat.material = MatBaseRato;
             GameObject CameraRot = GameObject.Find("CameraRotator");
             CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 330, this.transform.eulerAngles.z);
         }
-        if (PlayerBaseID == 2)
+        if (PlayerBaseID == 1)
         {
             // Mat.material = MatBaseAguia;
             GameObject CameraRot = GameObject.Find("CameraRotator");

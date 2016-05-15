@@ -11,7 +11,7 @@ public class MoveCamera : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 
-        CameraRotator.transform.Translate(Input.GetAxis("Horizontal") * Speed, -Input.GetAxis("Mouse ScrollWheel") * (Speed * 5) ,Input.GetAxis("Vertical") * Speed);
+        this.transform.Translate(Input.GetAxis("Horizontal") * Speed, -Input.GetAxis("Mouse ScrollWheel") * (Speed * 5) ,Input.GetAxis("Vertical") * Speed);
 
         //                       Movimento Horizontal                     Zoom                                            Movimento Vertical
         //Note que todos os valores estão multiplicados por Speed, ou seja, quanto maior speed, mais rápido a câmera age.

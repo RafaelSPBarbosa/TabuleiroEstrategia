@@ -671,6 +671,17 @@ public class UnitManager : NetworkBehaviour {
         }
     }
 
+    [Command]
+    void Cmd_DestroyCloud(GameObject target)
+    {
+        Destroy(target);
+    }
+    [ClientRpc]
+    void Rpc_DestroyCloud(GameObject target)
+    {
+        Destroy(target);
+    }
+
     public IEnumerator StopRunning()
     {
         yield return new WaitForSeconds(0.8f);
