@@ -22,8 +22,24 @@ public class NetManager : NetworkLobbyManager {
         ServerChangeScene("Game");
     }
 
+    public override void OnLobbyServerConnect(NetworkConnection conn)
+    {
+        GameObject[] AllLobbyPlayers = GameObject.FindGameObjectsWithTag("LobbyPlayer");
+        GameObject TargetPlayer = null;
+        for(int a = 0; a < AllLobbyPlayers.Length; a++)
+        {
+            if (AllLobbyPlayers[a].GetComponent<NetworkIdentity>().isServer)
+            {
+                TargetPlayer = AllLobbyPlayers[a];
+            }
+        }
 
-        void Start()
+        
+        TargetPlayer.GetComponent<LobbyPlayerUpdate>().Cmd_UpdateJoiningPlayer();
+    }
+
+
+    void Start()
     {
         //storage = GameObject.Find("Storage").GetComponent<TempStorage>();
     }
@@ -32,7 +48,13 @@ public class NetManager : NetworkLobbyManager {
     {
         StartHost();
         //SceneManager.LoadScene("Lobby");
+        StartCoroutine("AddServerAsPlayer");
+    }
 
+    IEnumerator AddServerAsPlayer()
+    {
+        yield return new WaitForSeconds(0.5f);
+        this.TryToAddPlayer();
     }
 
     public void StartClientButton()
@@ -54,6 +76,7 @@ public class NetManager : NetworkLobbyManager {
     public override void OnStartHost()
     {
         SceneManager.LoadScene("Lobby");
+        
     }
 
     public override void OnClientConnect(NetworkConnection conn)
