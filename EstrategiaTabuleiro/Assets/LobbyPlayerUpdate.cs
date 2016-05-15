@@ -185,12 +185,11 @@ public class LobbyPlayerUpdate : NetworkBehaviour {
         {
             if (AllIllustrations[i].GetComponent<Image>().enabled == true)
             {
-                print("turning " + AllIllustrations[i].transform.name + " on");
                 Rpc_UpdateIlustration(i, true);
             }
             else
             {
-                print("turning " + AllIllustrations[i].transform.name + " off");
+
                 Rpc_UpdateIlustration(i, false);
             }
         }

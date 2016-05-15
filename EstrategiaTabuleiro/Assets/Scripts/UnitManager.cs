@@ -193,6 +193,22 @@ public class UnitManager : NetworkBehaviour {
     {
         if (isAlive == true)
         {
+
+            if (Input.GetKeyDown(KeyCode.Delete))
+            {
+                if(Selected == true)
+                {
+                    Selected = false;
+                    if (SteppingTile.GetComponent<TileManager>().PlayerBase != null)
+                    {
+                        SteppingTile.GetComponent<TileManager>().PlayerBase.GetComponent<PlayerBase>().Cmd_SwitchOccupied();
+                        //SteppingTile.GetComponent<TileManager>().PlayerBase.GetComponent<PlayerBase>().Occupied = false;
+                    }
+                    Cmd_KillUnit();
+                    DeSelectUnit();
+                    StartCoroutine(HideDeadUnit());
+                }
+            }
             
             if(UnitType == 0)
             {
