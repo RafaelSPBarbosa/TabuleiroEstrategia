@@ -159,6 +159,8 @@ public class PlayerBase : NetworkBehaviour {
         if (isServer)
             DistributeObjectives();
 
+        Destroy(GameObject.Find("Background"));
+
         ReadyToPlay = true;
     }
 
