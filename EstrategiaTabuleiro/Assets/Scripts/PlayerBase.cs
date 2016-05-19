@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System;
 
 public class PlayerBase : NetworkBehaviour {
@@ -60,11 +61,17 @@ public class PlayerBase : NetworkBehaviour {
     bool loadedGameLevel = false;
     bool Initialized = false;
 
+    public List<int> Reliquias; //1 = Vermelho ; 2 = Amarelo; 3 = Azul; 4 = Verde
+    public Image RelicSlot1, RelicSlot2, RelicSlot3, RelicSlot4;
+
+    public Sprite RedRelic, YellowRelic, BlueRelic, GreenRelic, EmptyRelic;
+
     [Command]
     public void Cmd_UpdatePlayerBaseID(int ID)
     {
         PlayerBaseID = ID - GameObject.Find("NetManager").GetComponent<NetworkManager>().numPlayers;
     }
+
     [ClientRpc]
     public void Rpc_UpdatePlayerBaseID(int ID)
     {
@@ -109,6 +116,10 @@ public class PlayerBase : NetworkBehaviour {
         FoodText = GameObject.Find("_Comida").GetComponent<Text>();
         TempoTxt = GameObject.Find("_Tempo").GetComponent<Text>();
         ObjectiveText = GameObject.Find("_ObjectiveText").GetComponent<Text>();
+        RelicSlot1 = GameObject.Find("Relic_Slot_1").GetComponent<Image>();
+        RelicSlot2 = GameObject.Find("Relic_Slot_2").GetComponent<Image>();
+        RelicSlot3 = GameObject.Find("Relic_Slot_3").GetComponent<Image>();
+        RelicSlot4 = GameObject.Find("Relic_Slot_4").GetComponent<Image>();
 
         gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
         playerManager = GameObject.Find("_PlayerManager").GetComponent<PlayerManager>();
@@ -153,6 +164,27 @@ public class PlayerBase : NetworkBehaviour {
 
         PassTurnButton = GameObject.Find("PassTurnBtn").GetComponent<Button>();
         PassTurnButton.onClick.AddListener(() => Cmd_PassTurn(PlayerBaseID));
+
+        GameObject[] AllClearRelicBtns = GameObject.FindGameObjectsWithTag("RemoveRelic");
+        for(int i = 0; i < AllClearRelicBtns.Length; i++)
+        {
+            if (AllClearRelicBtns[i].transform.name == "RemoveRelic_1")
+            {
+                AllClearRelicBtns[i].GetComponent<Button>().onClick.AddListener(() => RemoveRelic(1));
+            }
+            if (AllClearRelicBtns[i].transform.name == "RemoveRelic_2")
+            {
+                AllClearRelicBtns[i].GetComponent<Button>().onClick.AddListener(() => RemoveRelic(2));
+            }
+            if (AllClearRelicBtns[i].transform.name == "RemoveRelic_3")
+            {
+                AllClearRelicBtns[i].GetComponent<Button>().onClick.AddListener(() => RemoveRelic(3));
+            }
+            if (AllClearRelicBtns[i].transform.name == "RemoveRelic_4")
+            {
+                AllClearRelicBtns[i].GetComponent<Button>().onClick.AddListener(() => RemoveRelic(4));
+            }
+        }
 
         Cmd_SpawnExplorer(PlayerBaseID, true);
 
@@ -283,6 +315,102 @@ public class PlayerBase : NetworkBehaviour {
     {
         target.GetComponent<PlayerBase>().Rpc_UpdateWinningPlayer(Pos);
     }
+    public void RemoveRelic(int i)
+    {
+        Reliquias.RemoveAt(i);
+        //Reliquias.Sort();
+        UpdateRelicUI();
+    }
+
+
+    void UpdateRelicUI()
+    {
+        //Clear all Relics
+        RelicSlot1.sprite = EmptyRelic;
+        RelicSlot2.sprite = EmptyRelic;
+        RelicSlot3.sprite = EmptyRelic;
+        RelicSlot4.sprite = EmptyRelic;
+
+        //Add Relics
+        for (int i =0; i< Reliquias.Count; i++)
+        {
+            if(i == 1) {
+                if (Reliquias[i] == 1)
+                {
+                    RelicSlot1.sprite = RedRelic;
+                }
+                else if (Reliquias[i] == 2)
+                {
+                    RelicSlot1.sprite = YellowRelic;
+                }
+                else if (Reliquias[i] == 3)
+                {
+                    RelicSlot1.sprite = BlueRelic;
+                }
+                else if (Reliquias[i] == 4)
+                {
+                    RelicSlot1.sprite = GreenRelic;
+                }
+            }
+            if (i == 2)
+            {
+                if (Reliquias[i] == 1)
+                {
+                    RelicSlot2.sprite = RedRelic;
+                }
+                else if (Reliquias[i] == 2)
+                {
+                    RelicSlot2.sprite = YellowRelic;
+                }
+                else if (Reliquias[i] == 3)
+                {
+                    RelicSlot2.sprite = BlueRelic;
+                }
+                else if (Reliquias[i] == 4)
+                {
+                    RelicSlot2.sprite = GreenRelic;
+                }
+            }
+            if (i == 3)
+            {
+                if (Reliquias[i] == 1)
+                {
+                    RelicSlot3.sprite = RedRelic;
+                }
+                else if (Reliquias[i] == 2)
+                {
+                    RelicSlot3.sprite = YellowRelic;
+                }
+                else if (Reliquias[i] == 3)
+                {
+                    RelicSlot3.sprite = BlueRelic;
+                }
+                else if (Reliquias[i] == 4)
+                {
+                    RelicSlot3.sprite = GreenRelic;
+                }
+            }
+            if (i == 4)
+            {
+                if (Reliquias[i] == 1)
+                {
+                    RelicSlot4.sprite = RedRelic;
+                }
+                else if (Reliquias[i] == 2)
+                {
+                    RelicSlot4.sprite = YellowRelic;
+                }
+                else if (Reliquias[i] == 3)
+                {
+                    RelicSlot4.sprite = BlueRelic;
+                }
+                else if (Reliquias[i] == 4)
+                {
+                    RelicSlot4.sprite = GreenRelic;
+                }
+            }
+        }
+    }
 
     void Update()
     {
@@ -294,6 +422,20 @@ public class PlayerBase : NetworkBehaviour {
                 {
                     StartCoroutine("DelayedStart");
                     Initialized = true;
+                }
+            }
+
+            if (isLocalPlayer)
+            {
+                //Get Relic Debug
+                if (Input.GetKeyDown(KeyCode.T))
+                {
+                    if (Reliquias.Count <= 4)
+                    {
+                        int i = UnityEngine.Random.Range(1, 5);
+                        Reliquias.Add(i);
+                        UpdateRelicUI();
+                    }
                 }
             }
 
