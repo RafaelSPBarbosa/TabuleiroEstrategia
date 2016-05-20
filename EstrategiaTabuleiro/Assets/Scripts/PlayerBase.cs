@@ -317,98 +317,138 @@ public class PlayerBase : NetworkBehaviour {
     }
     public void RemoveRelic(int i)
     {
-        Reliquias.RemoveAt(i);
-        //Reliquias.Sort();
-        UpdateRelicUI();
+        if (isLocalPlayer)
+        {
+            Reliquias.RemoveAt(i);
+            //Reliquias.Sort();
+            UpdateRelicUI();
+
+        }
     }
 
 
     void UpdateRelicUI()
     {
-        //Clear all Relics
-        RelicSlot1.sprite = EmptyRelic;
-        RelicSlot2.sprite = EmptyRelic;
-        RelicSlot3.sprite = EmptyRelic;
-        RelicSlot4.sprite = EmptyRelic;
-
-        //Add Relics
-        for (int i =0; i< Reliquias.Count; i++)
+        if (isLocalPlayer)
         {
-            if(i == 1) {
-                if (Reliquias[i] == 1)
-                {
-                    RelicSlot1.sprite = RedRelic;
-                }
-                else if (Reliquias[i] == 2)
-                {
-                    RelicSlot1.sprite = YellowRelic;
-                }
-                else if (Reliquias[i] == 3)
-                {
-                    RelicSlot1.sprite = BlueRelic;
-                }
-                else if (Reliquias[i] == 4)
-                {
-                    RelicSlot1.sprite = GreenRelic;
-                }
-            }
-            if (i == 2)
+            //Clear all Relics
+            RelicSlot1.sprite = EmptyRelic;
+            RelicSlot2.sprite = EmptyRelic;
+            RelicSlot3.sprite = EmptyRelic;
+            RelicSlot4.sprite = EmptyRelic;
+
+            //Add Relics
+            for (int i = 0; i < Reliquias.Count; i++)
             {
-                if (Reliquias[i] == 1)
+                if (i == 1)
                 {
-                    RelicSlot2.sprite = RedRelic;
+                    if (Reliquias[i] == 1)
+                    {
+                        RelicSlot1.sprite = RedRelic;
+                    }
+                    else if (Reliquias[i] == 2)
+                    {
+                        RelicSlot1.sprite = YellowRelic;
+                    }
+                    else if (Reliquias[i] == 3)
+                    {
+                        RelicSlot1.sprite = BlueRelic;
+                    }
+                    else if (Reliquias[i] == 4)
+                    {
+                        RelicSlot1.sprite = GreenRelic;
+                    }
                 }
-                else if (Reliquias[i] == 2)
+                if (i == 2)
                 {
-                    RelicSlot2.sprite = YellowRelic;
+                    if (Reliquias[i] == 1)
+                    {
+                        RelicSlot2.sprite = RedRelic;
+                    }
+                    else if (Reliquias[i] == 2)
+                    {
+                        RelicSlot2.sprite = YellowRelic;
+                    }
+                    else if (Reliquias[i] == 3)
+                    {
+                        RelicSlot2.sprite = BlueRelic;
+                    }
+                    else if (Reliquias[i] == 4)
+                    {
+                        RelicSlot2.sprite = GreenRelic;
+                    }
                 }
-                else if (Reliquias[i] == 3)
+                if (i == 3)
                 {
-                    RelicSlot2.sprite = BlueRelic;
+                    if (Reliquias[i] == 1)
+                    {
+                        RelicSlot3.sprite = RedRelic;
+                    }
+                    else if (Reliquias[i] == 2)
+                    {
+                        RelicSlot3.sprite = YellowRelic;
+                    }
+                    else if (Reliquias[i] == 3)
+                    {
+                        RelicSlot3.sprite = BlueRelic;
+                    }
+                    else if (Reliquias[i] == 4)
+                    {
+                        RelicSlot3.sprite = GreenRelic;
+                    }
                 }
-                else if (Reliquias[i] == 4)
+                if (i == 4)
                 {
-                    RelicSlot2.sprite = GreenRelic;
+                    if (Reliquias[i] == 1)
+                    {
+                        RelicSlot4.sprite = RedRelic;
+                    }
+                    else if (Reliquias[i] == 2)
+                    {
+                        RelicSlot4.sprite = YellowRelic;
+                    }
+                    else if (Reliquias[i] == 3)
+                    {
+                        RelicSlot4.sprite = BlueRelic;
+                    }
+                    else if (Reliquias[i] == 4)
+                    {
+                        RelicSlot4.sprite = GreenRelic;
+                    }
                 }
             }
-            if (i == 3)
-            {
-                if (Reliquias[i] == 1)
-                {
-                    RelicSlot3.sprite = RedRelic;
-                }
-                else if (Reliquias[i] == 2)
-                {
-                    RelicSlot3.sprite = YellowRelic;
-                }
-                else if (Reliquias[i] == 3)
-                {
-                    RelicSlot3.sprite = BlueRelic;
-                }
-                else if (Reliquias[i] == 4)
-                {
-                    RelicSlot3.sprite = GreenRelic;
-                }
-            }
-            if (i == 4)
-            {
-                if (Reliquias[i] == 1)
-                {
-                    RelicSlot4.sprite = RedRelic;
-                }
-                else if (Reliquias[i] == 2)
-                {
-                    RelicSlot4.sprite = YellowRelic;
-                }
-                else if (Reliquias[i] == 3)
-                {
-                    RelicSlot4.sprite = BlueRelic;
-                }
-                else if (Reliquias[i] == 4)
-                {
-                    RelicSlot4.sprite = GreenRelic;
-                }
-            }
+        }
+    }
+
+    [Command]
+    public void Cmd_GetReliquia()
+    {
+        if (Reliquias.Count <= 4)
+        {
+            int i = UnityEngine.Random.Range(1, 5);
+            Reliquias.Add(i);
+            UpdateRelicUI();
+        }
+    }
+
+    [ClientRpc]
+    public void Rpc_GetReliquia()
+    {
+        if (Reliquias.Count <= 4)
+        {
+            int i = UnityEngine.Random.Range(1, 5);
+            Reliquias.Add(i);
+            UpdateRelicUI();
+        }
+    }
+
+    public void GetRelic()
+    {
+        if (Reliquias.Count <= 4)
+        {
+            int i = UnityEngine.Random.Range(1, 5);
+            Reliquias.Add(i);
+            UpdateRelicUI();
         }
     }
 
@@ -493,8 +533,8 @@ public class PlayerBase : NetworkBehaviour {
             {
 
 
-                GoldText.text = "Gold : " + Gold;
-                FoodText.text = "Food : " + Food;
+                GoldText.text = Gold.ToString();
+                FoodText.text = Food.ToString();
 
                 if (gameManager.curTurn == playerManager.MyTurn && Destroyed == true)
                 {

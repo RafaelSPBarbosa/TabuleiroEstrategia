@@ -665,6 +665,7 @@ public class UnitManager : NetworkBehaviour {
     {
 
         Target.GetComponent<MonsterManager>().curHealth -= Inc_Damage;
+        Target.GetComponent<MonsterManager>().LastAttackingPlayer = PlayerOwner;
 
     }
 
@@ -673,6 +674,7 @@ public class UnitManager : NetworkBehaviour {
     {
 
         Target.GetComponent<MonsterManager>().curHealth -= Inc_Damage;
+        Target.GetComponent<MonsterManager>().LastAttackingPlayer = PlayerOwner;
 
     }
 
