@@ -56,10 +56,8 @@ public class MonsterManager : NetworkBehaviour {
     [ClientRpc]
     public void Rpc_AttackTarget(GameObject Target)
     {
-        if (AnimMesh != null)
-        {
-            AnimMesh.SetTrigger("Attack");
-        }
+        AnimMesh.SetTrigger("Attack");
+
         this.transform.LookAt(Target.transform.position);
         Target.GetComponent<UnitManager>().Cmd_TakeDamage(Target, Damage);
         //Cmd_UpdateAnimation(Target);
@@ -67,10 +65,8 @@ public class MonsterManager : NetworkBehaviour {
     [Command]
     public void Cmd_UpdateAnimation(GameObject Target)
     {
-        if (AnimMesh != null)
-        {
-            AnimMesh.SetTrigger("Attack");
-        }
+        AnimMesh.SetTrigger("Attack");
+
         this.transform.LookAt(Target.transform.position);
     }
 
