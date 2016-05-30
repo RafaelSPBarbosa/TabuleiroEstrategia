@@ -13,6 +13,7 @@ public class PlayerBase : NetworkBehaviour {
     public PlayerManager playerManager;
     NetManager netManager;
 
+   
     Text TempoTxt;
     public GameObject Aguia_Explorer , Cao_Explorer, Rato_Explorer , Gato_Explorer;
     public GameObject Aguia_Warrior, Cao_Warrior , Rato_Warrior , Gato_Warrior;
@@ -120,6 +121,7 @@ public class PlayerBase : NetworkBehaviour {
         RelicSlot2 = GameObject.Find("Relic_Slot_2").GetComponent<Image>();
         RelicSlot3 = GameObject.Find("Relic_Slot_3").GetComponent<Image>();
         RelicSlot4 = GameObject.Find("Relic_Slot_4").GetComponent<Image>();
+        
 
         gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
         playerManager = GameObject.Find("_PlayerManager").GetComponent<PlayerManager>();
@@ -128,26 +130,33 @@ public class PlayerBase : NetworkBehaviour {
         playerManager.PlayerID = PlayerBaseID;
         playerManager.UpdateVariables();
 
+
+    
         if (PlayerBaseID == 4)
+
         {
+            
             // Mat.material = MatBaseCao;
             GameObject CameraRot = GameObject.Find("CameraRotator");
             CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 45, this.transform.eulerAngles.z);
         }
         if (PlayerBaseID == 3)
         {
+           
             // Mat.material = MatBaseGato;
             GameObject CameraRot = GameObject.Find("CameraRotator");
             CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 210, this.transform.eulerAngles.z);
         }
         if (PlayerBaseID == 2)
         {
+            
             // Mat.material = MatBaseRato;
             GameObject CameraRot = GameObject.Find("CameraRotator");
             CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 330, this.transform.eulerAngles.z);
         }
         if (PlayerBaseID == 1)
         {
+           
             // Mat.material = MatBaseAguia;
             GameObject CameraRot = GameObject.Find("CameraRotator");
             CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 135, this.transform.eulerAngles.z);
@@ -534,7 +543,8 @@ public class PlayerBase : NetworkBehaviour {
 
 
                 GoldText.text = Gold.ToString();
-                FoodText.text = Food.ToString();
+                GameObject[] AllFarms = GameObject.FindGameObjectsWithTag("Farm");
+                FoodText.text = Food + "/" + AllFarms.Length + "/20";
 
                 if (gameManager.curTurn == playerManager.MyTurn && Destroyed == true)
                 {

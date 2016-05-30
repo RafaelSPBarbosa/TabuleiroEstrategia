@@ -7,6 +7,9 @@ using System.Collections;
 
 public class GameManager : NetworkBehaviour {
 
+    public Sprite VezCachorro, VezGato, VezRato, VezPassaro;
+    Image PlayerIndicator;
+
     [SyncVar]
     public int curTurn = 1;
     public int MaxTurns = 4;
@@ -17,10 +20,13 @@ public class GameManager : NetworkBehaviour {
     [SerializeField]
     public GameObject TextoChat;
 
-    public Text TurnText;
+    //public Text TurnText;
 
     void Start()
     {
+        PlayerIndicator = GameObject.Find("PlayerIndicator").GetComponent<Image>();
+
+
         /* PlayerManager = GameObject.Find("_PlayerManager");
         GameObject[] AllBases = GameObject.FindGameObjectsWithTag("PlayerBase");
         for (int i = 0; i<AllBases.Length; i++)
@@ -39,7 +45,28 @@ public class GameManager : NetworkBehaviour {
     
     void Update()
     {
-        TurnText.text = "Turn : " + curTurn;
+        if (curTurn == 4)
+
+        {
+            PlayerIndicator.sprite = VezGato;
+           
+        }
+        if (curTurn == 3)
+        {
+            PlayerIndicator.sprite = VezRato;
+          
+        }
+        if (curTurn == 2)
+        {
+            PlayerIndicator.sprite = VezPassaro;
+          
+        }
+        if (curTurn == 1)
+        {
+            PlayerIndicator.sprite = VezCachorro;
+          
+        }
+        // TurnText.text = "Turn : " + curTurn;
 
         MaxTurns = Convert.ToInt32(NetManager.GetComponent<NetManager>().numPlayers);
 

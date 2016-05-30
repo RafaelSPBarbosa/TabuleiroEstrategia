@@ -14,7 +14,7 @@ public class PlayerManager : MonoBehaviour {
 
         //PlayerID = GameObject.FindGameObjectsWithTag("PlayerBase").Length;
         MyTurn = PlayerID;
-        GameObject.Find("PlayerIndicatorText").GetComponent<Text>().text = "Player : " + PlayerID;
+       // GameObject.Find("PlayerIndicatorText").GetComponent<Text>().text = "Player : " + PlayerID;
 
         gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
     }
