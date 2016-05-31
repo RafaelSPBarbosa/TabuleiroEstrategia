@@ -13,6 +13,24 @@ public class PlayerBase : NetworkBehaviour {
     public PlayerManager playerManager;
     NetManager netManager;
 
+    // Interfae //
+
+    public Sprite QuadroCao, QuadroPassaro, QuadroRato, QuadroGato;
+    public Sprite SlotCao, SlotPassaro, SlotRato, SlotGato;
+    public Sprite ExploradorCao, ExploradorPassaro, ExploradorRato, ExploradorGato;
+    public Sprite ArqueiroCao, ArqueiroPassaro, ArqueiroRato, ArqueiroGato;
+    public Sprite GuerreiroCao, GuerreiroPassaro, GuerreiroRato, GuerreiroGato;
+    public Sprite FazendaCao, FazendaPassaro, FazendaRato, FazendaGato;
+    public Sprite StatusCao, StatusPassaro, StatusRato, StatusGato;
+    public Sprite QuantGuerreiroCao, QuantGuerreiroPassaro, QuantGuerreiroRato, QuantGuerreiroGato;
+    public Sprite QuantFazendaCao, QuantFazendaPassaro, QuantFazendaRato, QuantFazendaGato;
+    public Sprite QuantGoldCao, QuantGoldPassaro, QuantGoldRato, QuantGoldGato;
+    public Sprite ObjeCao, ObjePassaro, ObjeRato, ObjeGato;
+    public Sprite PassCao, PassPassaro, PassRato, PassGato;
+    public Sprite ReliCao, ReliPassaro, ReliRato, ReliGato;
+    public Sprite TempoCao, TempoPassaro, TempoRato, TempoGato;
+
+    
    
     Text TempoTxt;
     public GameObject Aguia_Explorer , Cao_Explorer, Rato_Explorer , Gato_Explorer;
@@ -121,6 +139,7 @@ public class PlayerBase : NetworkBehaviour {
         RelicSlot2 = GameObject.Find("Relic_Slot_2").GetComponent<Image>();
         RelicSlot3 = GameObject.Find("Relic_Slot_3").GetComponent<Image>();
         RelicSlot4 = GameObject.Find("Relic_Slot_4").GetComponent<Image>();
+
         
 
         gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
@@ -135,28 +154,85 @@ public class PlayerBase : NetworkBehaviour {
         if (PlayerBaseID == 4)
 
         {
-            
+            GameObject.Find("BasePersonagem").GetComponent<Image>().sprite = QuadroGato;
+            GameObject.Find("Spawn").GetComponent<Image>().sprite = SlotGato;
+            GameObject.Find("SpawnExplorer").GetComponent<Image>().sprite = ExploradorGato;
+            GameObject.Find("SpawnArcher").GetComponent<Image>().sprite = ArqueiroGato;
+            GameObject.Find("SpawnWarrior").GetComponent<Image>().sprite = GuerreiroGato;
+            GameObject.Find("SpawnFarm").GetComponent<Image>().sprite = FazendaGato;
+            GameObject.Find("PainelStatus").GetComponent<Image>().sprite = StatusGato;
+            GameObject.Find("Soldado").GetComponent<Image>().sprite = QuantGuerreiroGato;
+            GameObject.Find("Comida").GetComponent<Image>().sprite = QuantFazendaGato;
+            GameObject.Find("Dinheiro").GetComponent<Image>().sprite = QuantGoldGato;
+            GameObject.Find("ObjectivePanel").GetComponent<Image>().sprite = ObjeGato;
+            GameObject.Find("PassTurnBtn").GetComponent<Image>().sprite = PassGato;
+            GameObject.Find("ReliquiasSlot").GetComponent<Image>().sprite = ReliGato;
+            GameObject.Find("Panel").GetComponent<Image>().sprite = TempoGato;
+
+
             // Mat.material = MatBaseCao;
             GameObject CameraRot = GameObject.Find("CameraRotator");
             CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 45, this.transform.eulerAngles.z);
         }
         if (PlayerBaseID == 3)
         {
-           
+            GameObject.Find("BasePersonagem").GetComponent<Image>().sprite = QuadroRato;
+            GameObject.Find("Spawn").GetComponent<Image>().sprite = SlotRato;
+            GameObject.Find("SpawnExplorer").GetComponent<Image>().sprite = ExploradorRato;
+            GameObject.Find("SpawnArcher").GetComponent<Image>().sprite = ArqueiroRato;
+            GameObject.Find("SpawnWarrior").GetComponent<Image>().sprite = GuerreiroRato;
+            GameObject.Find("SpawnFarm").GetComponent<Image>().sprite = FazendaRato;
+            GameObject.Find("PainelStatus").GetComponent<Image>().sprite = StatusRato;
+            GameObject.Find("Soldado").GetComponent<Image>().sprite = QuantGuerreiroRato;
+            GameObject.Find("Comida").GetComponent<Image>().sprite = QuantFazendaRato;
+            GameObject.Find("Dinheiro").GetComponent<Image>().sprite = QuantGoldRato;
+            GameObject.Find("ObjectivePanel").GetComponent<Image>().sprite = ObjeRato;
+            GameObject.Find("PassTurnBtn").GetComponent<Image>().sprite = PassRato;
+            GameObject.Find("ReliquiasSlot").GetComponent<Image>().sprite = ReliRato;
+            GameObject.Find("Panel").GetComponent<Image>().sprite = TempoRato;
+
             // Mat.material = MatBaseGato;
             GameObject CameraRot = GameObject.Find("CameraRotator");
             CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 210, this.transform.eulerAngles.z);
         }
         if (PlayerBaseID == 2)
         {
-            
+            GameObject.Find("BasePersonagem").GetComponent<Image>().sprite = QuadroPassaro;
+            GameObject.Find("Spawn").GetComponent<Image>().sprite = SlotPassaro;
+            GameObject.Find("SpawnExplorer").GetComponent<Image>().sprite = ExploradorPassaro;
+            GameObject.Find("SpawnArcher").GetComponent<Image>().sprite = ArqueiroPassaro;
+            GameObject.Find("SpawnWarrior").GetComponent<Image>().sprite = GuerreiroPassaro;
+            GameObject.Find("SpawnFarm").GetComponent<Image>().sprite = FazendaPassaro;
+            GameObject.Find("PainelStatus").GetComponent<Image>().sprite = StatusPassaro;
+            GameObject.Find("Soldado").GetComponent<Image>().sprite = QuantGuerreiroPassaro;
+            GameObject.Find("Comida").GetComponent<Image>().sprite = QuantFazendaPassaro;
+            GameObject.Find("Dinheiro").GetComponent<Image>().sprite = QuantGoldPassaro;
+            GameObject.Find("ObjectivePanel").GetComponent<Image>().sprite = ObjePassaro;
+            GameObject.Find("PassTurnBtn").GetComponent<Image>().sprite = PassPassaro;
+            GameObject.Find("ReliquiasSlot").GetComponent<Image>().sprite = ReliPassaro;
+            GameObject.Find("Panel").GetComponent<Image>().sprite = TempoPassaro;
+
             // Mat.material = MatBaseRato;
             GameObject CameraRot = GameObject.Find("CameraRotator");
             CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 330, this.transform.eulerAngles.z);
         }
         if (PlayerBaseID == 1)
         {
-           
+            GameObject.Find("BasePersonagem").GetComponent<Image>().sprite = QuadroCao;
+            GameObject.Find("Spawn").GetComponent<Image>().sprite = SlotCao;
+            GameObject.Find("SpawnExplorer").GetComponent<Image>().sprite = ExploradorCao;
+            GameObject.Find("SpawnArcher").GetComponent<Image>().sprite = ArqueiroCao;
+            GameObject.Find("SpawnWarrior").GetComponent<Image>().sprite = GuerreiroCao;
+            GameObject.Find("SpawnFarm").GetComponent<Image>().sprite = FazendaCao;
+            GameObject.Find("PainelStatus").GetComponent<Image>().sprite = StatusCao;
+            GameObject.Find("Soldado").GetComponent<Image>().sprite = QuantGuerreiroCao;
+            GameObject.Find("Comida").GetComponent<Image>().sprite = QuantFazendaCao;
+            GameObject.Find("Dinheiro").GetComponent<Image>().sprite = QuantGoldCao;
+            GameObject.Find("ObjectivePanel").GetComponent<Image>().sprite = ObjeCao;
+            GameObject.Find("PassTurnBtn").GetComponent<Image>().sprite = PassCao;
+            GameObject.Find("ReliquiasSlot").GetComponent<Image>().sprite = ReliCao;
+            GameObject.Find("Panel").GetComponent<Image>().sprite = TempoCao;
+
             // Mat.material = MatBaseAguia;
             GameObject CameraRot = GameObject.Find("CameraRotator");
             CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 135, this.transform.eulerAngles.z);
