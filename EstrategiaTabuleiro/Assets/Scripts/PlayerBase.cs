@@ -639,7 +639,7 @@ public class PlayerBase : NetworkBehaviour {
                     Amarelos++;
                 }
             }
-            if (Amarelos == 4)
+            if (Amarelos == 3)
             {
                 Cmd_WinMatch(this.gameObject);
                 WinningPlayerPos = this.gameObject.transform.position;
@@ -674,7 +674,7 @@ public class PlayerBase : NetworkBehaviour {
                     Azuis++;
                 }
             }
-            if (Azuis == 4)
+            if (Azuis == 3)
             {
                 Cmd_WinMatch(this.gameObject);
                 WinningPlayerPos = this.gameObject.transform.position;
@@ -706,7 +706,7 @@ public class PlayerBase : NetworkBehaviour {
                     Verdes++;
                 }
             }
-            if (Verdes == 4)
+            if (Verdes == 3)
             {
                 Cmd_WinMatch(this.gameObject);
                 WinningPlayerPos = this.gameObject.transform.position;
@@ -741,7 +741,7 @@ public class PlayerBase : NetworkBehaviour {
                     Amarelos++;
                 }
             }
-            if (Amarelos == 4)
+            if (Amarelos == 3)
             {
                 Cmd_WinMatch(this.gameObject);
                 WinningPlayerPos = this.gameObject.transform.position;
@@ -773,7 +773,7 @@ public class PlayerBase : NetworkBehaviour {
                     Vermelhos++;
                 }
             }
-            if (Vermelhos == 4)
+            if (Vermelhos == 3)
             {
                 Cmd_WinMatch(this.gameObject);
                 WinningPlayerPos = this.gameObject.transform.position;
@@ -808,7 +808,7 @@ public class PlayerBase : NetworkBehaviour {
                     Amarelos++;
                 }
             }
-            if (Amarelos == 4)
+            if (Amarelos == 3)
             {
                 Cmd_WinMatch(this.gameObject);
                 WinningPlayerPos = this.gameObject.transform.position;
@@ -835,7 +835,7 @@ public class PlayerBase : NetworkBehaviour {
             int Verde = 0;
             for (int i = 0; i < Reliquias.Count; i++)
             {
-                if (Reliquias[i] == 4)
+                if (Reliquias[i] == 3)
                 {
                     Verde++;
                 }
@@ -886,22 +886,6 @@ public class PlayerBase : NetworkBehaviour {
                 {
                     StartCoroutine("DelayedStart");
                     Initialized = true;
-                }
-            }
-
-            if (isLocalPlayer)
-            {
-                //Get Relic Debug
-                if (Input.GetKeyDown(KeyCode.T))
-                {
-                    if (Reliquias.Count <= 3)
-                    {
-                        int i = UnityEngine.Random.Range(1, 5);
-                        Reliquias.Add(i);
-                        UpdateRelicUI();
-
-                        CheckRelicCondition();
-                    }
                 }
             }
 

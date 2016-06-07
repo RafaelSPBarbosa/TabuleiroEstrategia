@@ -33,7 +33,12 @@ public class FarmManager : NetworkBehaviour {
         {
             int r = Random.Range(0, MyUnits.Count);
             MyUnits[r].GetComponent<UnitManager>().Cmd_KillUnit();
-            MyUnits[r].GetComponent<UnitManager>().StartCoroutine("HideDeadUnit");
+            if (MyUnits[r].GetComponent<UnitManager>().SteppingTile.GetComponent<TileManager>().PlayerBase != null)
+            {
+                MyUnits[r].GetComponent<UnitManager>().SteppingTile.GetComponent<TileManager>().PlayerBase.GetComponent<PlayerBase>().Cmd_SwitchOccupied();
+                //SteppingTile.GetComponent<TileManager>().PlayerBase.GetComponent<PlayerBase>().Occupied = false;
+            }
+            //MyUnits[r].GetComponent<UnitManager>().StartCoroutine("HideDeadUnit");
         }
         
         PlayerOwner = newOwner;
@@ -79,7 +84,11 @@ public class FarmManager : NetworkBehaviour {
         {
             int r = Random.Range(0, MyUnits.Count);
             MyUnits[r].GetComponent<UnitManager>().Cmd_KillUnit();
-            MyUnits[r].GetComponent<UnitManager>().StartCoroutine("HideDeadUnit");
+            if (MyUnits[r].GetComponent<UnitManager>().SteppingTile.GetComponent<TileManager>().PlayerBase != null)
+            {
+                MyUnits[r].GetComponent<UnitManager>().SteppingTile.GetComponent<TileManager>().PlayerBase.GetComponent<PlayerBase>().Cmd_SwitchOccupied();
+                //SteppingTile.GetComponent<TileManager>().PlayerBase.GetComponent<PlayerBase>().Occupied = false;
+            }
         }
         PlayerOwner = newOwner;
         PlayerOwner.GetComponent<PlayerBase>().Food++;

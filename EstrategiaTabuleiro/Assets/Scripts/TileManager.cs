@@ -81,11 +81,11 @@ public class TileManager : NetworkBehaviour {
     {
         if (isServer)
         {
-            go.GetComponent<MonsterManager>().Rpc_AttackTarget(Target);
+            go.GetComponent<MonsterManager>().Rpc_LookAtTarget(Target);
         }
         else
         {
-            go.GetComponent<MonsterManager>().Cmd_AttackTarget(Target);
+            go.GetComponent<MonsterManager>().Cmd_LookAtTarget(Target);
         }
         go.GetComponent<MonsterManager>().TileSpawner = this;
         CanSpawnMonster = false;
@@ -96,11 +96,11 @@ public class TileManager : NetworkBehaviour {
     {
         if (isServer)
         {
-            go.GetComponent<MonsterManager>().Rpc_AttackTarget(Target);
+            go.GetComponent<MonsterManager>().Rpc_LookAtTarget(Target);
         }
         else
         {
-            go.GetComponent<MonsterManager>().Cmd_AttackTarget(Target);
+            go.GetComponent<MonsterManager>().Cmd_LookAtTarget(Target);
         }
         go.GetComponent<MonsterManager>().TileSpawner = this;
         CanSpawnMonster = false;

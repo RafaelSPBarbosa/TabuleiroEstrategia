@@ -80,14 +80,27 @@ public class MonsterManager : NetworkBehaviour {
     }
 
     [ClientRpc]
-    public void Rpc_AttackTarget(GameObject Target)
+    public void Rpc_UpdateAttackAnim(GameObject Target)
     {
         AnimMesh.SetTrigger("Attack");
 
         this.transform.LookAt(Target.transform.position);
     }
+
     [Command]
-    public void Cmd_UpdateAnimation(GameObject Target)
+    public void Cmd_UpdateGetHit()
+    {
+        AnimMesh.SetTrigger("GetHit");
+    }
+
+    [ClientRpc]
+    public void Rpc_UpdateGetHit()
+    {
+        AnimMesh.SetTrigger("GetHit");
+    }
+
+    [Command]
+    public void Cmd_UpdateAttackAnim(GameObject Target)
     {
         AnimMesh.SetTrigger("Attack");
 
@@ -97,12 +110,23 @@ public class MonsterManager : NetworkBehaviour {
     [Command]
     public void Cmd_AttackTarget(GameObject Target)
     {
-        if (AnimMesh != null)
-        {
-            AnimMesh.SetTrigger("Attack");
-        }
+        AnimMesh.SetTrigger("Attack");
+
         this.transform.LookAt(Target.transform.position);
+        Rpc_UpdateAttackAnim(Target);
         Target.GetComponent<UnitManager>().Rpc_TakeDamage(Target, Damage);
+    }
+
+    [ClientRpc]
+    public void Rpc_LookAtTarget(GameObject Target)
+    {
+        this.transform.LookAt(Target.transform.position);
+    }
+
+    [Command]
+    public void Cmd_LookAtTarget(GameObject Target)
+    {
+        this.transform.LookAt(Target.transform.position);
     }
 
     [ClientRpc]
