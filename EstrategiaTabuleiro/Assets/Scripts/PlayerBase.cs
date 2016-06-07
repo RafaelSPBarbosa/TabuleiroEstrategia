@@ -13,7 +13,7 @@ public class PlayerBase : NetworkBehaviour {
     public PlayerManager playerManager;
     NetManager netManager;
 
-    // Interfae //
+    // Interface //
 
     public Sprite QuadroCao, QuadroPassaro, QuadroRato, QuadroGato;
     public Sprite SlotCao, SlotPassaro, SlotRato, SlotGato;
@@ -29,8 +29,6 @@ public class PlayerBase : NetworkBehaviour {
     public Sprite PassCao, PassPassaro, PassRato, PassGato;
     public Sprite ReliCao, ReliPassaro, ReliRato, ReliGato;
     public Sprite TempoCao, TempoPassaro, TempoRato, TempoGato;
-
-    
    
     Text TempoTxt;
     public GameObject Aguia_Explorer , Cao_Explorer, Rato_Explorer , Gato_Explorer;
@@ -253,21 +251,21 @@ public class PlayerBase : NetworkBehaviour {
         GameObject[] AllClearRelicBtns = GameObject.FindGameObjectsWithTag("RemoveRelic");
         for(int i = 0; i < AllClearRelicBtns.Length; i++)
         {
-            if (AllClearRelicBtns[i].transform.name == "RemoveRelic_1")
+            if (AllClearRelicBtns[i].transform.name == "Relic_Slot_1")
+            {
+                AllClearRelicBtns[i].GetComponent<Button>().onClick.AddListener(() => RemoveRelic(0));
+            }
+            if (AllClearRelicBtns[i].transform.name == "Relic_Slot_2")
             {
                 AllClearRelicBtns[i].GetComponent<Button>().onClick.AddListener(() => RemoveRelic(1));
             }
-            if (AllClearRelicBtns[i].transform.name == "RemoveRelic_2")
+            if (AllClearRelicBtns[i].transform.name == "Relic_Slot_3")
             {
                 AllClearRelicBtns[i].GetComponent<Button>().onClick.AddListener(() => RemoveRelic(2));
             }
-            if (AllClearRelicBtns[i].transform.name == "RemoveRelic_3")
+            if (AllClearRelicBtns[i].transform.name == "Relic_Slot_4")
             {
                 AllClearRelicBtns[i].GetComponent<Button>().onClick.AddListener(() => RemoveRelic(3));
-            }
-            if (AllClearRelicBtns[i].transform.name == "RemoveRelic_4")
-            {
-                AllClearRelicBtns[i].GetComponent<Button>().onClick.AddListener(() => RemoveRelic(4));
             }
         }
 
@@ -287,12 +285,12 @@ public class PlayerBase : NetworkBehaviour {
         List<int> UsedIds = new List<int>();
         for (int i = 0; i < AllPlayers.Length; i++)
         {
-            int id = UnityEngine.Random.Range(1, 6);
-            if (UsedIds.Count != 6)
+            int id = UnityEngine.Random.Range(1, 9);
+            if (UsedIds.Count != 9)
             {
                 while (UsedIds.Contains(id))
                 {
-                    id = UnityEngine.Random.Range(1, 6);
+                    id = UnityEngine.Random.Range(1, 9);
                 }
             }
             
@@ -332,24 +330,28 @@ public class PlayerBase : NetworkBehaviour {
             switch (MyObjective)
             {
                 case 1:
-                    //print("Elimine o Jogador Vermelho");
-                    ObjectiveText.text = "Eliminate the Red Player";
+                    ObjectiveText.text = "Eliminate the Red Player or gather 3 Green Relics";
                     break;
                 case 2:
-                    //print("Elimine o Jogador Amarelo");
-                    ObjectiveText.text = "Elminate the Yellow Player";
+                    ObjectiveText.text = "Elminate the Yellow Player or gather 3 Red Relics";
                     break;
                 case 3:
-                    //print("Elimine o Jogador Verde");
-                    ObjectiveText.text = "Eliminate the Green Player";
+                    ObjectiveText.text = "Eliminate the Green Player or gather 3 Blue Relics";
                     break;
                 case 4:
-                    //print("Elimine o Jogador Azul");
-                    ObjectiveText.text = "Eliminate the Blue Player";
+                    ObjectiveText.text = "Eliminate the Blue Player or gather 3 Yellow Relics";
                     break;
                 case 5:
-                    //print("Possua 10 Plantações e 2 Minas de Ouro");
                     ObjectiveText.text = "Possess 10 Farms and 2 Gold Mines";
+                    break;
+                case 6:
+                    ObjectiveText.text = "Gather 3 Green Relics OR Gather 3 Blue Relics";
+                    break;
+                case 7:
+                    ObjectiveText.text = "Gather 3 Yellow Relics or Gather 3 Red Relics";
+                    break;
+                case 8:
+                    ObjectiveText.text = "Gather 3 Green Relics OR Gather 3 Yellow Relics";
                     break;
             }
         }
@@ -359,20 +361,6 @@ public class PlayerBase : NetworkBehaviour {
     {
         Cmd_UpdatePlayerBaseID(Convert.ToInt32(GetComponent<NetworkIdentity>().netId.Value));
         DontDestroyOnLoad(this.gameObject);
-        // PlayerString = Guid.NewGuid().ToString();
-        /* netManager = GameObject.Find("NetManager").GetComponent<NetManager>();
-         //netManager.storage.Rpc_GetPlayerNumber(netManager.net_Guid);
-         for (int x = 0; x < netManager.storage.ids.Count; x++)
-         {
-             if (netManager.storage.ids[x] == netManager.net_Guid)
-             {
-                 //Found the client, so X + 1 is equal to their player number.
-                 PlayerBaseID = x + 1;
-                 break;
-             }
-         }
-         */
-        //PlayerBaseID = netManager.storage.my_Player_Number;
 
     }
 
@@ -400,6 +388,7 @@ public class PlayerBase : NetworkBehaviour {
     {
         target.GetComponent<PlayerBase>().Rpc_UpdateWinningPlayer(Pos);
     }
+
     public void RemoveRelic(int i)
     {
         if (isLocalPlayer)
@@ -425,7 +414,7 @@ public class PlayerBase : NetworkBehaviour {
             //Add Relics
             for (int i = 0; i < Reliquias.Count; i++)
             {
-                if (i == 1)
+                if (i == 0)
                 {
                     if (Reliquias[i] == 1)
                     {
@@ -444,7 +433,7 @@ public class PlayerBase : NetworkBehaviour {
                         RelicSlot1.sprite = GreenRelic;
                     }
                 }
-                if (i == 2)
+                if (i == 1)
                 {
                     if (Reliquias[i] == 1)
                     {
@@ -463,7 +452,7 @@ public class PlayerBase : NetworkBehaviour {
                         RelicSlot2.sprite = GreenRelic;
                     }
                 }
-                if (i == 3)
+                if (i == 2)
                 {
                     if (Reliquias[i] == 1)
                     {
@@ -482,7 +471,7 @@ public class PlayerBase : NetworkBehaviour {
                         RelicSlot3.sprite = GreenRelic;
                     }
                 }
-                if (i == 4)
+                if (i == 3)
                 {
                     if (Reliquias[i] == 1)
                     {
@@ -505,35 +494,385 @@ public class PlayerBase : NetworkBehaviour {
         }
     }
 
-    [Command]
+    //[Command]
     public void Cmd_GetReliquia()
     {
-        if (Reliquias.Count <= 4)
+        if (Reliquias.Count <= 3)
         {
             int i = UnityEngine.Random.Range(1, 5);
             Reliquias.Add(i);
             UpdateRelicUI();
+
+            CheckRelicCondition();
         }
     }
 
     [ClientRpc]
     public void Rpc_GetReliquia()
     {
-        if (Reliquias.Count <= 4)
+        if (Reliquias.Count <= 3)
         {
             int i = UnityEngine.Random.Range(1, 5);
             Reliquias.Add(i);
             UpdateRelicUI();
+
+            CheckRelicCondition();
+        }
+    }
+
+
+    void CheckRelicCondition()
+    {
+        if (MyObjective == 1)
+        {
+            //Verdes
+            int Verdes = 0;
+            for(int i = 0; i < Reliquias.Count; i++)
+            {
+                if(Reliquias[i] == 4)
+                {
+                    Verdes++;
+                }
+            }
+            if(Verdes == 3)
+            {
+                Cmd_WinMatch(this.gameObject);
+                WinningPlayerPos = this.gameObject.transform.position;
+                GameObject[] AllPlayers = GameObject.FindGameObjectsWithTag("PlayerBase");
+                for (int i = 0; i < AllPlayers.Length; i++)
+                {
+                    if (AllPlayers[i] != this.gameObject)
+                    {
+
+                        if (isServer)
+                        {
+                            AllPlayers[i].GetComponent<PlayerBase>().Rpc_UpdateWinningPlayer(this.transform.position);
+                            AllPlayers[i].GetComponent<PlayerBase>().Rpc_LooseMatch();
+                        }
+                        else {
+                            Cmd_UpdateWinningPlayer(this.transform.position, AllPlayers[i]);
+                            Cmd_LooseMatch(AllPlayers[i]);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (MyObjective == 2)
+        {
+            //Vermelhos
+            int Vermelhos = 0;
+            for (int i = 0; i < Reliquias.Count; i++)
+            {
+                if (Reliquias[i] == 1)
+                {
+                    Vermelhos++;
+                }
+            }
+            if (Vermelhos == 3)
+            {
+                Cmd_WinMatch(this.gameObject);
+                WinningPlayerPos = this.gameObject.transform.position;
+                GameObject[] AllPlayers = GameObject.FindGameObjectsWithTag("PlayerBase");
+                for (int i = 0; i < AllPlayers.Length; i++)
+                {
+                    if (AllPlayers[i] != this.gameObject)
+                    {
+
+                        if (isServer)
+                        {
+                            AllPlayers[i].GetComponent<PlayerBase>().Rpc_UpdateWinningPlayer(this.transform.position);
+                            AllPlayers[i].GetComponent<PlayerBase>().Rpc_LooseMatch();
+                        }
+                        else {
+                            Cmd_UpdateWinningPlayer(this.transform.position, AllPlayers[i]);
+                            Cmd_LooseMatch(AllPlayers[i]);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (MyObjective == 3)
+        {
+            //Azuius
+            int Azuis = 0;
+            for (int i = 0; i < Reliquias.Count; i++)
+            {
+                if (Reliquias[i] == 3)
+                {
+                    Azuis++;
+                }
+            }
+            if (Azuis == 3)
+            {
+                Cmd_WinMatch(this.gameObject);
+                WinningPlayerPos = this.gameObject.transform.position;
+                GameObject[] AllPlayers = GameObject.FindGameObjectsWithTag("PlayerBase");
+                for (int i = 0; i < AllPlayers.Length; i++)
+                {
+                    if (AllPlayers[i] != this.gameObject)
+                    {
+
+                        if (isServer)
+                        {
+                            AllPlayers[i].GetComponent<PlayerBase>().Rpc_UpdateWinningPlayer(this.transform.position);
+                            AllPlayers[i].GetComponent<PlayerBase>().Rpc_LooseMatch();
+                        }
+                        else {
+                            Cmd_UpdateWinningPlayer(this.transform.position, AllPlayers[i]);
+                            Cmd_LooseMatch(AllPlayers[i]);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (MyObjective == 4)
+        {
+            //Amarelos
+            int Amarelos = 0;
+            for (int i = 0; i < Reliquias.Count; i++)
+            {
+                if (Reliquias[i] == 2)
+                {
+                    Amarelos++;
+                }
+            }
+            if (Amarelos == 4)
+            {
+                Cmd_WinMatch(this.gameObject);
+                WinningPlayerPos = this.gameObject.transform.position;
+                GameObject[] AllPlayers = GameObject.FindGameObjectsWithTag("PlayerBase");
+                for (int i = 0; i < AllPlayers.Length; i++)
+                {
+                    if (AllPlayers[i] != this.gameObject)
+                    {
+
+                        if (isServer)
+                        {
+                            AllPlayers[i].GetComponent<PlayerBase>().Rpc_UpdateWinningPlayer(this.transform.position);
+                            AllPlayers[i].GetComponent<PlayerBase>().Rpc_LooseMatch();
+                        }
+                        else {
+                            Cmd_UpdateWinningPlayer(this.transform.position, AllPlayers[i]);
+                            Cmd_LooseMatch(AllPlayers[i]);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (MyObjective == 6)
+        {
+            //Azuis
+            int Azuis = 0;
+            for (int i = 0; i < Reliquias.Count; i++)
+            {
+                if (Reliquias[i] == 3)
+                {
+                    Azuis++;
+                }
+            }
+            if (Azuis == 4)
+            {
+                Cmd_WinMatch(this.gameObject);
+                WinningPlayerPos = this.gameObject.transform.position;
+                GameObject[] AllPlayers = GameObject.FindGameObjectsWithTag("PlayerBase");
+                for (int i = 0; i < AllPlayers.Length; i++)
+                {
+                    if (AllPlayers[i] != this.gameObject)
+                    {
+
+                        if (isServer)
+                        {
+                            AllPlayers[i].GetComponent<PlayerBase>().Rpc_UpdateWinningPlayer(this.transform.position);
+                            AllPlayers[i].GetComponent<PlayerBase>().Rpc_LooseMatch();
+                        }
+                        else {
+                            Cmd_UpdateWinningPlayer(this.transform.position, AllPlayers[i]);
+                            Cmd_LooseMatch(AllPlayers[i]);
+                        }
+                    }
+                }
+            }
+
+            //Verdes
+            int Verdes = 0;
+            for (int i = 0; i < Reliquias.Count; i++)
+            {
+                if (Reliquias[i] == 4)
+                {
+                    Verdes++;
+                }
+            }
+            if (Verdes == 4)
+            {
+                Cmd_WinMatch(this.gameObject);
+                WinningPlayerPos = this.gameObject.transform.position;
+                GameObject[] AllPlayers = GameObject.FindGameObjectsWithTag("PlayerBase");
+                for (int i = 0; i < AllPlayers.Length; i++)
+                {
+                    if (AllPlayers[i] != this.gameObject)
+                    {
+
+                        if (isServer)
+                        {
+                            AllPlayers[i].GetComponent<PlayerBase>().Rpc_UpdateWinningPlayer(this.transform.position);
+                            AllPlayers[i].GetComponent<PlayerBase>().Rpc_LooseMatch();
+                        }
+                        else {
+                            Cmd_UpdateWinningPlayer(this.transform.position, AllPlayers[i]);
+                            Cmd_LooseMatch(AllPlayers[i]);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (MyObjective == 7)
+        {
+            //Amarelos
+            int Amarelos = 0;
+            for (int i = 0; i < Reliquias.Count; i++)
+            {
+                if (Reliquias[i] == 2)
+                {
+                    Amarelos++;
+                }
+            }
+            if (Amarelos == 4)
+            {
+                Cmd_WinMatch(this.gameObject);
+                WinningPlayerPos = this.gameObject.transform.position;
+                GameObject[] AllPlayers = GameObject.FindGameObjectsWithTag("PlayerBase");
+                for (int i = 0; i < AllPlayers.Length; i++)
+                {
+                    if (AllPlayers[i] != this.gameObject)
+                    {
+
+                        if (isServer)
+                        {
+                            AllPlayers[i].GetComponent<PlayerBase>().Rpc_UpdateWinningPlayer(this.transform.position);
+                            AllPlayers[i].GetComponent<PlayerBase>().Rpc_LooseMatch();
+                        }
+                        else {
+                            Cmd_UpdateWinningPlayer(this.transform.position, AllPlayers[i]);
+                            Cmd_LooseMatch(AllPlayers[i]);
+                        }
+                    }
+                }
+            }
+
+            //Vermelhos
+            int Vermelhos = 0;
+            for (int i = 0; i < Reliquias.Count; i++)
+            {
+                if (Reliquias[i] == 1)
+                {
+                    Vermelhos++;
+                }
+            }
+            if (Vermelhos == 4)
+            {
+                Cmd_WinMatch(this.gameObject);
+                WinningPlayerPos = this.gameObject.transform.position;
+                GameObject[] AllPlayers = GameObject.FindGameObjectsWithTag("PlayerBase");
+                for (int i = 0; i < AllPlayers.Length; i++)
+                {
+                    if (AllPlayers[i] != this.gameObject)
+                    {
+
+                        if (isServer)
+                        {
+                            AllPlayers[i].GetComponent<PlayerBase>().Rpc_UpdateWinningPlayer(this.transform.position);
+                            AllPlayers[i].GetComponent<PlayerBase>().Rpc_LooseMatch();
+                        }
+                        else {
+                            Cmd_UpdateWinningPlayer(this.transform.position, AllPlayers[i]);
+                            Cmd_LooseMatch(AllPlayers[i]);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (MyObjective == 8)
+        {
+            //Amarelos
+            int Amarelos = 0;
+            for (int i = 0; i < Reliquias.Count; i++)
+            {
+                if (Reliquias[i] == 2)
+                {
+                    Amarelos++;
+                }
+            }
+            if (Amarelos == 4)
+            {
+                Cmd_WinMatch(this.gameObject);
+                WinningPlayerPos = this.gameObject.transform.position;
+                GameObject[] AllPlayers = GameObject.FindGameObjectsWithTag("PlayerBase");
+                for (int i = 0; i < AllPlayers.Length; i++)
+                {
+                    if (AllPlayers[i] != this.gameObject)
+                    {
+
+                        if (isServer)
+                        {
+                            AllPlayers[i].GetComponent<PlayerBase>().Rpc_UpdateWinningPlayer(this.transform.position);
+                            AllPlayers[i].GetComponent<PlayerBase>().Rpc_LooseMatch();
+                        }
+                        else {
+                            Cmd_UpdateWinningPlayer(this.transform.position, AllPlayers[i]);
+                            Cmd_LooseMatch(AllPlayers[i]);
+                        }
+                    }
+                }
+            }
+
+            //Verdes
+            int Verde = 0;
+            for (int i = 0; i < Reliquias.Count; i++)
+            {
+                if (Reliquias[i] == 4)
+                {
+                    Verde++;
+                }
+            }
+            if (Verde == 4)
+            {
+                Cmd_WinMatch(this.gameObject);
+                WinningPlayerPos = this.gameObject.transform.position;
+                GameObject[] AllPlayers = GameObject.FindGameObjectsWithTag("PlayerBase");
+                for (int i = 0; i < AllPlayers.Length; i++)
+                {
+                    if (AllPlayers[i] != this.gameObject)
+                    {
+
+                        if (isServer)
+                        {
+                            AllPlayers[i].GetComponent<PlayerBase>().Rpc_UpdateWinningPlayer(this.transform.position);
+                            AllPlayers[i].GetComponent<PlayerBase>().Rpc_LooseMatch();
+                        }
+                        else {
+                            Cmd_UpdateWinningPlayer(this.transform.position, AllPlayers[i]);
+                            Cmd_LooseMatch(AllPlayers[i]);
+                        }
+                    }
+                }
+            }
         }
     }
 
     public void GetRelic()
     {
-        if (Reliquias.Count <= 4)
+        if (Reliquias.Count <= 3)
         {
             int i = UnityEngine.Random.Range(1, 5);
             Reliquias.Add(i);
             UpdateRelicUI();
+            CheckRelicCondition();
         }
     }
 
@@ -555,11 +894,13 @@ public class PlayerBase : NetworkBehaviour {
                 //Get Relic Debug
                 if (Input.GetKeyDown(KeyCode.T))
                 {
-                    if (Reliquias.Count <= 4)
+                    if (Reliquias.Count <= 3)
                     {
                         int i = UnityEngine.Random.Range(1, 5);
                         Reliquias.Add(i);
                         UpdateRelicUI();
+
+                        CheckRelicCondition();
                     }
                 }
             }

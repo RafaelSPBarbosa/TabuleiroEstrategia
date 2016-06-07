@@ -10,9 +10,16 @@ public class MonsterManager : NetworkBehaviour {
     public int Damage;
     public bool isAlive = true;
     public TileManager TileSpawner;
-    public GameObject LastAttackingPlayer;
+	[SyncVar]
+    public int LastAttackingPlayerID;
 
     public Animator AnimMesh;
+
+	[Command]
+	public void Cmd_GetLastPlayerID(int ID){
+
+		LastAttackingPlayerID = ID;
+	}
 
     void Update()
     {
@@ -20,6 +27,16 @@ public class MonsterManager : NetworkBehaviour {
         {
             if (curHealth <= 0)
             {
+
+                if (LastAttackingPlayerID == 1)
+                {
+                    Cmd_GetReliquia(LastAttackingPlayerID);
+                }
+                else
+                {
+                    Rpc_GetReliquia(LastAttackingPlayerID);
+                }
+
                 if (isServer)
                 {
                     Rpc_Die();
@@ -27,30 +44,39 @@ public class MonsterManager : NetworkBehaviour {
                 }
                 else
                 {
-                    Cmd_Die();
-                }
-                if (LastAttackingPlayer.GetComponent<NetworkIdentity>().isServer)
-                {
-                    Cmd_GetReliquia(LastAttackingPlayer);
-                }
-                else
-                {
-                    Rpc_GetReliquia(LastAttackingPlayer);
+                    Cmd_Die();  
                 }
             }
         }
     }
 
-    [Command]
-    void Cmd_GetReliquia(GameObject Target)
+   // [Command]
+    void Cmd_GetReliquia(int TargetID)
     {
-        Target.GetComponent<PlayerBase>().GetRelic();
+		GameObject[] Bases = GameObject.FindGameObjectsWithTag ("PlayerBase");
+
+		for (int i = 0; i < Bases.Length; i++) {
+
+			if (Bases[i].GetComponent<PlayerBase> ().PlayerBaseID == TargetID) {
+				Bases[i].GetComponent<PlayerBase>().GetRelic();
+				break;
+			}
+		}
+
     }
 
     [ClientRpc]
-    void Rpc_GetReliquia(GameObject Target)
+    void Rpc_GetReliquia(int TargetID)
     {
-        Target.GetComponent<PlayerBase>().GetRelic();
+		GameObject[] Bases = GameObject.FindGameObjectsWithTag ("PlayerBase");
+
+		for (int i = 0; i < Bases.Length; i++) {
+
+			if (Bases [i].GetComponent<PlayerBase> ().PlayerBaseID == TargetID) {
+				Bases[i].GetComponent<PlayerBase>().GetRelic();
+				break;
+			}
+		}
     }
 
     [ClientRpc]
@@ -59,8 +85,6 @@ public class MonsterManager : NetworkBehaviour {
         AnimMesh.SetTrigger("Attack");
 
         this.transform.LookAt(Target.transform.position);
-        Target.GetComponent<UnitManager>().Cmd_TakeDamage(Target, Damage);
-        //Cmd_UpdateAnimation(Target);
     }
     [Command]
     public void Cmd_UpdateAnimation(GameObject Target)
@@ -84,23 +108,12 @@ public class MonsterManager : NetworkBehaviour {
     [ClientRpc]
     public void Rpc_Die()
     {
-        TileSpawner.CanSpawnMonster = true;
+        //TileSpawner.CanSpawnMonster = true;
 
         if(AnimMesh != null)
             AnimMesh.SetTrigger("Die");
 
         isAlive = false;
-
-        //print("Morreu");
-        //print("Dar Relíquia ao jogador");
-        if (LastAttackingPlayer.GetComponent<NetworkIdentity>().isServer)
-        {
-            LastAttackingPlayer.GetComponent<PlayerBase>().Cmd_GetReliquia();
-        }
-        else
-        {
-            LastAttackingPlayer.GetComponent<PlayerBase>().Rpc_GetReliquia();
-        }
         
         NetworkServer.Destroy(this.gameObject);
     }
@@ -108,17 +121,11 @@ public class MonsterManager : NetworkBehaviour {
     [Command]
     public void Cmd_Die()
     {
-        //TileSpawner.CanSpawnMonster = true;
 
         if (AnimMesh != null)
             AnimMesh.SetTrigger("Die");
 
         isAlive = false;
-
-        print("Morreu");
-        print("Dar Relíquia ao jogador");
-
-
 
         NetworkServer.Destroy(this.gameObject);
     }

@@ -1,16 +1,35 @@
 fileFormatVersion: 2
-guid: e9341507a8b5f104ab43764da64cee0a
-timeCreated: 1464552384
+guid: 17a1dbbbefa702747917b6c388c6d7a9
+timeCreated: 1464732401
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
+    100002: Plane
+    100004: Plane.001
+    100006: Plane.001_MeshPart0
+    100008: Plane.001_MeshPart1
+    100010: Plane_MeshPart0
+    100012: Plane_MeshPart1
     400000: //RootNode
-    4300000: Plane
-    7400000: Default Take
+    400002: Plane
+    400004: Plane.001
+    400006: Plane.001_MeshPart0
+    400008: Plane.001_MeshPart1
+    400010: Plane_MeshPart0
+    400012: Plane_MeshPart1
+    2300000: Plane.001_MeshPart0
+    2300002: Plane.001_MeshPart1
+    3300000: Plane.001_MeshPart0
+    3300002: Plane.001_MeshPart1
+    4300000: Plane.001_MeshPart0
+    4300002: Plane.001_MeshPart1
+    4300004: Plane_MeshPart0
+    4300006: Plane_MeshPart1
     9500000: //RootNode
-    13700000: //RootNode
+    13700000: Plane_MeshPart0
+    13700002: Plane_MeshPart1
   materials:
     importMaterials: 1
     materialName: 0
@@ -31,41 +50,11 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations:
-    - serializedVersion: 16
-      name: Default Take
-      takeName: Default Take
-      firstFrame: 0
-      lastFrame: 139
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      maskType: 0
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 1
+    clipAnimations: []
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 2000
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1
