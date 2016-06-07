@@ -29,13 +29,14 @@ public class PlayerBase : NetworkBehaviour {
     public Sprite PassCao, PassPassaro, PassRato, PassGato;
     public Sprite ReliCao, ReliPassaro, ReliRato, ReliGato;
     public Sprite TempoCao, TempoPassaro, TempoRato, TempoGato;
-   
+
+
     Text TempoTxt;
     public GameObject Aguia_Explorer , Cao_Explorer, Rato_Explorer , Gato_Explorer;
     public GameObject Aguia_Warrior, Cao_Warrior , Rato_Warrior , Gato_Warrior;
     public GameObject Aguia_Archer, Cao_Archer , Rato_Archer , Gato_Archer;
 
-    Button SpawnExplorerBtn, PassTurnButton, SpawnGuerreiroBtn, SpawnArqueiroBtn;
+    Button SpawnExplorerBtn, PassTurnButton, SpawnGuerreiroBtn, SpawnArqueiroBtn, SpawnFarmBtn;
     [SyncVar]
     public string test="test";
     [SyncVar]
@@ -137,7 +138,6 @@ public class PlayerBase : NetworkBehaviour {
         RelicSlot2 = GameObject.Find("Relic_Slot_2").GetComponent<Image>();
         RelicSlot3 = GameObject.Find("Relic_Slot_3").GetComponent<Image>();
         RelicSlot4 = GameObject.Find("Relic_Slot_4").GetComponent<Image>();
-
         
 
         gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
@@ -146,8 +146,6 @@ public class PlayerBase : NetworkBehaviour {
         gameManager.MyPlayerBase = this.gameObject;
         playerManager.PlayerID = PlayerBaseID;
         playerManager.UpdateVariables();
-
-
     
         if (PlayerBaseID == 4)
 
@@ -166,7 +164,6 @@ public class PlayerBase : NetworkBehaviour {
             GameObject.Find("PassTurnBtn").GetComponent<Image>().sprite = PassGato;
             GameObject.Find("ReliquiasSlot").GetComponent<Image>().sprite = ReliGato;
             GameObject.Find("Panel").GetComponent<Image>().sprite = TempoGato;
-
 
             // Mat.material = MatBaseCao;
             GameObject CameraRot = GameObject.Find("CameraRotator");
@@ -247,6 +244,9 @@ public class PlayerBase : NetworkBehaviour {
 
         PassTurnButton = GameObject.Find("PassTurnBtn").GetComponent<Button>();
         PassTurnButton.onClick.AddListener(() => Cmd_PassTurn(PlayerBaseID));
+
+        SpawnFarmBtn = GameObject.Find("SpawnFarm").GetComponent<Button>();
+        SpawnFarmBtn.onClick.AddListener(() => Cmd_RequestBuildFarm());
 
         GameObject[] AllClearRelicBtns = GameObject.FindGameObjectsWithTag("RemoveRelic");
         for(int i = 0; i < AllClearRelicBtns.Length; i++)
@@ -976,10 +976,12 @@ public class PlayerBase : NetworkBehaviour {
                         if (Gold >= 2)
                         {
                             SpawnExplorerBtn.interactable = true;
+                            SpawnFarmBtn.interactable = true;
                         }
                         else
                         {
                             SpawnExplorerBtn.interactable = false;
+                            SpawnFarmBtn.interactable = false;
                         }
 
                         //Guerreiro
@@ -1007,6 +1009,7 @@ public class PlayerBase : NetworkBehaviour {
                         SpawnExplorerBtn.interactable = false;
                         SpawnGuerreiroBtn.interactable = false;
                         SpawnArqueiroBtn.interactable = false;
+                        SpawnFarmBtn.interactable = false;
                     }
 
                 }
@@ -1016,6 +1019,7 @@ public class PlayerBase : NetworkBehaviour {
                     SpawnExplorerBtn.interactable = false;
                     SpawnGuerreiroBtn.interactable = false;
                     SpawnArqueiroBtn.interactable = false;
+                    SpawnFarmBtn.interactable = false;
                 }
 
                 if (curHealth <= 0 && Destroyed == false)
@@ -1360,9 +1364,11 @@ public class PlayerBase : NetworkBehaviour {
     }
 
     [Command]
-    public void Cmd_BuildFarm(Vector3 UnitPos)
+    public void Cmd_BuildFarm(Vector3 TargetPos)
     {
-        GameObject go = (GameObject)Instantiate(Farm, UnitPos, Quaternion.identity);
+
+
+        GameObject go = (GameObject)Instantiate(Farm, TargetPos, Quaternion.identity);
         NetworkServer.Spawn(go);
         if (isServer)
         {
@@ -1373,7 +1379,25 @@ public class PlayerBase : NetworkBehaviour {
         {
             go.GetComponent<FarmManager>().Cmd_SetInitialOwner(this.gameObject);
         }
-        
+
+
+    }
+
+    [Command]
+    public void Cmd_RequestBuildFarm()
+    {
+        var AllUnits = GameObject.FindGameObjectsWithTag("Unit");
+        for (int i = 0; i < AllUnits.Length; i++)
+        {
+            if (AllUnits[i].gameObject.GetComponent<UnitManager>().PlayerOwner == this.gameObject)
+            {
+                if (AllUnits[i].GetComponent<UnitManager>().Selected == true)
+                {
+
+                    AllUnits[i].GetComponent<UnitManager>().Cmd_SpawnFarm();
+                }
+            }
+        }
     }
 
 

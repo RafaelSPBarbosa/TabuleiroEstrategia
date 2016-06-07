@@ -13,8 +13,7 @@ public class UnitManager : NetworkBehaviour {
     public GameManager gameManager;
     public GameObject PlayerOwner;
     GameObject Farm;
-    [SerializeField]
-    Canvas FarmCanvas;
+    Button FarmSpawnBtn;
     [SyncVar]
     public int curHealth = 1;
     public int MaxHealth = 1; 
@@ -45,6 +44,7 @@ public class UnitManager : NetworkBehaviour {
         LookAtPos = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z + 1);
         playerManager = GameObject.Find("_PlayerManager").GetComponent<PlayerManager>();
         gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
+        
     }
 
     void OnMouseDown()
@@ -210,19 +210,6 @@ public class UnitManager : NetworkBehaviour {
                 }
             }
             
-            if(UnitType == 0)
-            {
-                FarmCanvas.transform.rotation = Camera.main.transform.rotation;
-                if(Selected == true)
-                {
-                    FarmCanvas.enabled = true;
-                }
-                else
-                {
-                    FarmCanvas.enabled = false;
-                }
-                    
-            }
            
             if (curHealth <= 0)
             {
