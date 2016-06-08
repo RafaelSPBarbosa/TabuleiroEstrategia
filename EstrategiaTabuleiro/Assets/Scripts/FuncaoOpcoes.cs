@@ -118,7 +118,7 @@ public class FuncaoOpcoes : MonoBehaviour
     private void AplicarPreferencias()
     {
        // VOLUME = PlayerPrefs.GetFloat("VOLUME");
-        GameObject.Find("MusicManager").GetComponent<MusicManager>().UpdateVolume();
+        GameObject.Find("ConfigManager").GetComponent<MusicManager>().UpdateVolume();
         Screen.SetResolution(resolucoesSuportadas[resolucaoSalveIndex].width, resolucoesSuportadas[resolucaoSalveIndex].height, telaCheiaAtivada);
     }
 }

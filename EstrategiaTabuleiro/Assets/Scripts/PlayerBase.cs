@@ -118,21 +118,46 @@ public class PlayerBase : NetworkBehaviour {
     public void Cmd_AdicionaChat(string texto)
     {
         Text ChatOutput = GameObject.Find("TextChat").GetComponent<Text>();
-
-        switch (PlayerBaseID)
+        //Chat Global
+        if (texto.Substring(0, 2) != "/w")
         {
-            case 1:
-                ChatOutput.text += "\n <color=red>[Dogs]</color> " + texto;
-                break;
-            case 2:
-                ChatOutput.text += "\n <color=orange>[Birds]</color> " + texto;
-                break;
-            case 3:
-                ChatOutput.text += "\n <color=green>[Rats]</color> " + texto;
-                break;
-            case 4:
-                ChatOutput.text += "\n <color=blue>[Cats]</color> " + texto;
-                break;
+            switch (PlayerBaseID)
+            {
+                case 1:
+                    ChatOutput.text += "\n <color=red>[Dogs]</color> " + texto;
+                    break;
+                case 2:
+                    ChatOutput.text += "\n <color=orange>[Birds]</color> " + texto;
+                    break;
+                case 3:
+                    ChatOutput.text += "\n <color=green>[Rats]</color> " + texto;
+                    break;
+                case 4:
+                    ChatOutput.text += "\n <color=blue>[Cats]</color> " + texto;
+                    break;
+            }
+        }
+        //Chat Particular
+        else
+        {
+            texto = texto.Remove(0, 3);
+
+
+            switch (PlayerBaseID)
+            {
+                case 1:
+                    ChatOutput.text += "\n <color=purple>Whisper [Dogs] " + texto + "</color>";
+                    break;
+                case 2:
+                    ChatOutput.text += "\n <color=purple>Whisper [Birds] " + texto + "</color>";
+                    break;
+                case 3:
+                    ChatOutput.text += "\n <color=purple>Whisper [Rats] " + texto + "</color>";
+                    break;
+                case 4:
+                    ChatOutput.text += "\n <color=purple>Whisper [Cats] " + texto + "</color>";
+                    break;
+            }
         }
         Rpc_UpdateChat(GameObject.Find("TextChat").GetComponent<Text>().text);
     }
