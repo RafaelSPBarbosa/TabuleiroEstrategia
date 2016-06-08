@@ -180,7 +180,15 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.54012346
+        functionName: AttackSFX
+        data: 
+        objectReferenceParameter: {fileID: 8300000, guid: f58684b788b4295479919aa30a5b7f89,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1

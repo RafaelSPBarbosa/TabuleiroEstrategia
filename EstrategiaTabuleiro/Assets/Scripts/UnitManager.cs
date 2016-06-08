@@ -168,28 +168,33 @@ public class UnitManager : NetworkBehaviour {
         Destroy(this.gameObject);
     }
 
-
+    [Command]
     public void Cmd_SpawnFarm()
     {
-        if (!Busy) { 
-        GameObject[] AllFarms = GameObject.FindGameObjectsWithTag("Farm");
-            if (AllFarms.Length < 20)
+        if (!Busy) {
+            if (UnitType == 0)
             {
-                if (PlayerOwner.GetComponent<PlayerBase>().Gold >= 2)
+                GameObject[] AllFarms = GameObject.FindGameObjectsWithTag("Farm");
+                if (AllFarms.Length < 20)
                 {
-                    if (SteppingTile.GetComponent<TileManager>().SteppingObject == null || SteppingTile.GetComponent<TileManager>().SteppingObject == this.gameObject && SteppingTile.GetComponent<TileManager>().Construction == null)
+                    if (PlayerOwner.GetComponent<PlayerBase>().Gold >= 2)
                     {
-                        if (SteppingTile.GetComponent<TileManager>().PlayerBase == null)
+                        if (SteppingTile.GetComponent<TileManager>().SteppingObject == null || SteppingTile.GetComponent<TileManager>().SteppingObject == this.gameObject && SteppingTile.GetComponent<TileManager>().Construction == null)
                         {
-                            PlayerOwner.GetComponent<PlayerBase>().Gold -= 2;
-                            curActions--;
-                            PlayerOwner.GetComponent<PlayerBase>().Cmd_BuildFarm(this.transform.position);
+                            if (SteppingTile.GetComponent<TileManager>().PlayerBase == null)
+                            {
+                                PlayerOwner.GetComponent<PlayerBase>().Gold -= 2;
+                                curActions--;
+                                PlayerOwner.GetComponent<PlayerBase>().Cmd_BuildFarm(this.gameObject , SteppingTile);
+                            }
                         }
                     }
                 }
             }
         }
     }
+
+
 
     void Update()
     {
@@ -443,6 +448,11 @@ public class UnitManager : NetworkBehaviour {
             Cmd_UnitAttack(Target);
 
             yield return new WaitForSeconds(0.9f);
+
+           // if(UnitType == 2)
+           // {
+               // transform.FindChild("AttackSFX").GetComponent<AudioSource>().Play();
+            //}
 
             if (Target.transform.tag == "Unit")
             {

@@ -13,6 +13,9 @@ public class PlayerBase : NetworkBehaviour {
     public PlayerManager playerManager;
     NetManager netManager;
 
+    public Mesh FarmTileMesh;
+    public Material FarmTileMat;
+
     // Interface //
 
     public Sprite QuadroCao, QuadroPassaro, QuadroRato, QuadroGato;
@@ -1363,13 +1366,33 @@ public class PlayerBase : NetworkBehaviour {
         }
     }
 
+    [ClientRpc]
+    public void Rpc_UpdateFarmVisuals(GameObject Tile , GameObject Farm)
+    {
+        Material[] temp = new Material[1];
+        Tile.transform.GetChild(0).GetComponent<MeshRenderer>().materials = temp;
+        Tile.transform.GetChild(0).GetComponent<MeshFilter>().mesh = FarmTileMesh;
+        Tile.transform.GetChild(0).GetComponent<MeshRenderer>().material = FarmTileMat;
+
+        Farm.transform.parent = Tile.transform;
+    }
+
     [Command]
-    public void Cmd_BuildFarm(Vector3 TargetPos)
+    public void Cmd_BuildFarm(GameObject Target, GameObject Tile)
     {
 
+        Material[] temp = new Material[1];
+        Tile.transform.GetChild(0).GetComponent<MeshRenderer>().materials = temp;
+        Tile.transform.GetChild(0).GetComponent<MeshFilter>().mesh = FarmTileMesh;
+        Tile.transform.GetChild(0).GetComponent<MeshRenderer>().material = FarmTileMat;
 
-        GameObject go = (GameObject)Instantiate(Farm, TargetPos, Quaternion.identity);
+        GameObject go = (GameObject)Instantiate(Farm, Target.transform.position, Quaternion.identity);
         NetworkServer.Spawn(go);
+
+        go.transform.parent = Tile.transform;
+
+        Rpc_UpdateFarmVisuals(Tile, go);
+
         if (isServer)
         {
             go.GetComponent<FarmManager>().Rpc_SetInitialOwner(this.gameObject);
@@ -1380,10 +1403,9 @@ public class PlayerBase : NetworkBehaviour {
             go.GetComponent<FarmManager>().Cmd_SetInitialOwner(this.gameObject);
         }
 
-
     }
 
-    [Command]
+    
     public void Cmd_RequestBuildFarm()
     {
         var AllUnits = GameObject.FindGameObjectsWithTag("Unit");

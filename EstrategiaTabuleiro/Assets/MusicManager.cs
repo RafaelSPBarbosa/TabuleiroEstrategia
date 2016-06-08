@@ -15,6 +15,7 @@ public class MusicManager : MonoBehaviour {
         {
             if (AS.clip != MenuMusic)
             {
+                AS.volume = 0.3f;
                 AS.clip = MenuMusic;
                 AS.Play();
             }
@@ -23,6 +24,7 @@ public class MusicManager : MonoBehaviour {
         {
             if (AS.clip != GameMusic)
             {
+                AS.volume = 0.05f;
                 AS.clip = GameMusic;
                 AS.Play();
             }
