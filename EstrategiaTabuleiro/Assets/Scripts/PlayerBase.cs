@@ -114,6 +114,35 @@ public class PlayerBase : NetworkBehaviour {
         }
     }
 
+    [Command]
+    public void Cmd_AdicionaChat(string texto)
+    {
+        Text ChatOutput = GameObject.Find("TextChat").GetComponent<Text>();
+
+        switch (PlayerBaseID)
+        {
+            case 1:
+                ChatOutput.text += "\n <color=red>[Dogs]</color> " + texto;
+                break;
+            case 2:
+                ChatOutput.text += "\n <color=orange>[Birds]</color> " + texto;
+                break;
+            case 3:
+                ChatOutput.text += "\n <color=green>[Rats]</color> " + texto;
+                break;
+            case 4:
+                ChatOutput.text += "\n <color=blue>[Cats]</color> " + texto;
+                break;
+        }
+        Rpc_UpdateChat(GameObject.Find("TextChat").GetComponent<Text>().text);
+    }
+
+    [ClientRpc]
+    void Rpc_UpdateChat(string newText)
+    {
+        GameObject.Find("TextChat").GetComponent<Text>().text = newText;
+    }
+
     [ClientRpc]
     public void Rpc_UpdateGoldMineAmmount(bool isIncreasing)
     {
@@ -141,7 +170,7 @@ public class PlayerBase : NetworkBehaviour {
         RelicSlot2 = GameObject.Find("Relic_Slot_2").GetComponent<Image>();
         RelicSlot3 = GameObject.Find("Relic_Slot_3").GetComponent<Image>();
         RelicSlot4 = GameObject.Find("Relic_Slot_4").GetComponent<Image>();
-        
+        GameObject.Find("Chat").GetComponent<controlaChat>().PlayerOwner = this;
 
         gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
         playerManager = GameObject.Find("_PlayerManager").GetComponent<PlayerManager>();

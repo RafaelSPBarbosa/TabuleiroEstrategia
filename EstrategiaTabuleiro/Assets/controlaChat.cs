@@ -3,37 +3,19 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class controlaChat : MonoBehaviour {
+   
+    public InputField campoChat;
+    public Scrollbar Scroll;
+    public GameManager gameManager = null;
+    public PlayerBase PlayerOwner;
 
-    //Serealizei pra pegar o objeto mais fácilmente pelo script
-    //Serealiza o rolo de texto do chat
-    [SerializeField]
-    GameObject textoChat;
-
-    //Serealiza o campo aonde se escreve no chat
-    [SerializeField]
-    GameObject campoChat;
-
-    [SerializeField]
-    GameManager gameManager = null;
-
-    // Use this for initialization
-    void Start () {
-        textoChat.GetComponent<Text>().text = "teste"; //aleluia!!!!kkk
-        
-    }
-	
-	// Update is called once per frame
 	void Update () {
-        gameManager.TextoChat = textoChat;
-        if (campoChat.GetComponent<InputField>().text != "" && Input.GetKey(KeyCode.Return))
+
+        if (campoChat.text != "" && Input.GetKey(KeyCode.Return))
         {
-            adicionaChat(campoChat.GetComponent<InputField>().text);
-            campoChat.GetComponent<InputField>().text = "";
+            PlayerOwner.Cmd_AdicionaChat(campoChat.GetComponent<InputField>().text);
+            campoChat.text = "";
+            Scroll.value = 0;
         }
-
-    }
-
-    void adicionaChat(string texto) {
-        textoChat.GetComponent<Text>().text += "\nl" + texto;
     }
 }
