@@ -8,6 +8,19 @@ public class MusicManager : MonoBehaviour {
 
     public AudioSource AS;
 
+    void Start()
+    {
+        if (PlayerPrefs.HasKey("VOLUME"))
+        {
+            float VOLUME = PlayerPrefs.GetFloat("VOLUME");
+            AS.volume = VOLUME;
+        }
+        else {
+            PlayerPrefs.SetFloat("VOLUME", 1);
+            AS.volume = 0.3f;
+        }
+    }
+
 	// Update is called once per frame
 	void Update () {
 
@@ -15,7 +28,8 @@ public class MusicManager : MonoBehaviour {
         {
             if (AS.clip != MenuMusic)
             {
-                AS.volume = 0.3f;
+                float VOLUME = PlayerPrefs.GetFloat("VOLUME");
+                AS.volume = VOLUME;
                 AS.clip = MenuMusic;
                 AS.Play();
             }
@@ -24,10 +38,25 @@ public class MusicManager : MonoBehaviour {
         {
             if (AS.clip != GameMusic)
             {
-                AS.volume = 0.05f;
+                float VOLUME = PlayerPrefs.GetFloat("VOLUME");
+                AS.volume = VOLUME * 0.3f;
                 AS.clip = GameMusic;
                 AS.Play();
             }
         }
 	}
+
+    public void UpdateVolume()
+    {
+        if (SceneManager.GetActiveScene().name == "Menu")
+        {
+            float VOLUME = PlayerPrefs.GetFloat("VOLUME");
+            AS.volume = VOLUME;
+        }
+        else if (SceneManager.GetActiveScene().name == "Game")
+        {
+            float VOLUME = PlayerPrefs.GetFloat("VOLUME");
+            AS.volume = VOLUME * 0.3f;
+        }
+    }
 }

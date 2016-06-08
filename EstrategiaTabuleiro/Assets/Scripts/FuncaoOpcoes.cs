@@ -30,9 +30,6 @@ public class FuncaoOpcoes : MonoBehaviour
         //
         Cursor.visible = true;
         Time.timeScale = 1;
-        //
-        BarraVolume.minValue = 0;
-        BarraVolume.maxValue = 1;
 
         //=============== SAVES===========//
         if (PlayerPrefs.HasKey("VOLUME"))
@@ -41,8 +38,8 @@ public class FuncaoOpcoes : MonoBehaviour
             BarraVolume.value = VOLUME;
         }
         else {
-            PlayerPrefs.SetFloat("VOLUME", 1);
-            BarraVolume.value = 1;
+            PlayerPrefs.SetFloat("VOLUME", 0.3f);
+            BarraVolume.value = 0.3f;
         }
         //=============MODO JANELA===========//
         if (PlayerPrefs.HasKey("modoJanela"))
@@ -115,11 +112,13 @@ public class FuncaoOpcoes : MonoBehaviour
         PlayerPrefs.SetInt("modoJanela", modoJanelaAtivo);
         PlayerPrefs.SetInt("RESOLUCAO", Resolucoes.value);
         resolucaoSalveIndex = Resolucoes.value;
+        PlayerPrefs.Save();
         AplicarPreferencias();
     }
     private void AplicarPreferencias()
     {
-        VOLUME = PlayerPrefs.GetFloat("VOLUME");
+       // VOLUME = PlayerPrefs.GetFloat("VOLUME");
+        GameObject.Find("MusicManager").GetComponent<MusicManager>().UpdateVolume();
         Screen.SetResolution(resolucoesSuportadas[resolucaoSalveIndex].width, resolucoesSuportadas[resolucaoSalveIndex].height, telaCheiaAtivada);
     }
 }
