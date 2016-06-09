@@ -15,7 +15,11 @@ public class controlaChat : MonoBehaviour {
         {
             PlayerOwner.Cmd_AdicionaChat(campoChat.GetComponent<InputField>().text);
             campoChat.text = "";
-            Scroll.value = 0;
+            
+        }
+        if(campoChat.text != "" && Input.GetKey(KeyCode.Escape))
+        {
+            campoChat.text = "";
         }
     }
 }

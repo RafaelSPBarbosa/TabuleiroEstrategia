@@ -58,6 +58,8 @@ public class PlayerBase : NetworkBehaviour {
     public int LastAttackingPlayerId ;
     public Text GoldText, FoodText;
 
+    InputField InputText;
+
     public Vector3 WinningPlayerPos;
 
     public int GoldMineAmmount = 0;
@@ -119,53 +121,119 @@ public class PlayerBase : NetworkBehaviour {
     {
         Text ChatOutput = GameObject.Find("TextChat").GetComponent<Text>();
         //Chat Global
-        if (texto.Substring(0, 2) != "/w")
+        int PrivatePlayerID = 0;
+        string newText = null;
+
+        if (texto.Length > 2)
         {
-            switch (PlayerBaseID)
+            if (texto.Substring(0, 2) != "/w")
             {
-                case 1:
-                    ChatOutput.text += "\n <color=red>[Dogs]</color> " + texto;
-                    break;
-                case 2:
-                    ChatOutput.text += "\n <color=orange>[Birds]</color> " + texto;
-                    break;
-                case 3:
-                    ChatOutput.text += "\n <color=green>[Rats]</color> " + texto;
-                    break;
-                case 4:
-                    ChatOutput.text += "\n <color=blue>[Cats]</color> " + texto;
-                    break;
+                switch (PlayerBaseID)
+                {
+                    case 1:
+                        newText = "\n <color=red>[Dogs]</color> " + texto;
+                        break;
+                    case 2:
+                        newText = "\n <color=orange>[Birds]</color> " + texto;
+                        break;
+                    case 3:
+                        newText = "\n <color=green>[Rats]</color> " + texto;
+                        break;
+                    case 4:
+                        newText = "\n <color=blue>[Cats]</color> " + texto;
+                        break;
+                }
+            }
+            //Chat Particular
+            else
+            {
+                texto = texto.Remove(0, 3);
+                string tempText = "";
+                if(ChatOutput.text.Substring(0,4) == "Dogs" || ChatOutput.text.Substring(0, 4) == "dogs")
+                {
+                    tempText = "[Dogs]";
+                    PrivatePlayerID = 1;
+                }
+                else if(ChatOutput.text.Substring(0, 5) == "Birds" || ChatOutput.text.Substring(0, 5) == "birds")
+                {
+                    tempText = "[Birds]";
+                    PrivatePlayerID = 2;
+                }
+                else if (ChatOutput.text.Substring(0, 4) == "Rats" || ChatOutput.text.Substring(0, 4) == "rats")
+                {
+                    tempText = "[Rats]";
+                    PrivatePlayerID = 3;
+                }
+                else if (ChatOutput.text.Substring(0, 4) == "Cats" || ChatOutput.text.Substring(0, 4) == "cats")
+                {
+                    tempText = "[Cats]";
+                    PrivatePlayerID = 4;
+                }
+
+
+                switch (PlayerBaseID)
+                {
+                    case 1:
+                        newText = "\n <color=purple>Whisper [Dogs] to [" +tempText + "]:" + texto + "</color>";
+                        break;
+                    case 2:
+                        newText = "\n <color=purple>Whisper [Birds] to [" + tempText + "]:" + texto + "</color>";
+                        break;
+                    case 3:
+                        newText = "\n <color=purple>Whisper [Rats] to [" + tempText + "]:" + texto + "</color>";
+                        break;
+                    case 4:
+                        newText = "\n <color=purple>Whisper [Cats] to [" + tempText + "]:" + texto + "</color>";
+                        break;
+                }
             }
         }
-        //Chat Particular
         else
         {
-            texto = texto.Remove(0, 3);
-
-
             switch (PlayerBaseID)
             {
                 case 1:
-                    ChatOutput.text += "\n <color=purple>Whisper [Dogs] " + texto + "</color>";
+                    newText = "\n <color=red>[Dogs]</color> " + texto;
                     break;
                 case 2:
-                    ChatOutput.text += "\n <color=purple>Whisper [Birds] " + texto + "</color>";
+                    newText = "\n <color=orange>[Birds]</color> " + texto;
                     break;
                 case 3:
-                    ChatOutput.text += "\n <color=purple>Whisper [Rats] " + texto + "</color>";
+                    newText = "\n <color=green>[Rats]</color> " + texto;
                     break;
                 case 4:
-                    ChatOutput.text += "\n <color=purple>Whisper [Cats] " + texto + "</color>";
+                    newText = "\n <color=blue>[Cats]</color> " + texto;
                     break;
             }
         }
-        Rpc_UpdateChat(GameObject.Find("TextChat").GetComponent<Text>().text);
+        if(ChatOutput.cachedTextGenerator.lineCount > 30)
+        {
+            ChatOutput.text = ChatOutput.text.Substring(ChatOutput.text.IndexOf('\n') + 1);
+        }
+
+        if (PrivatePlayerID == 0)
+        {
+            ChatOutput.text += newText;
+        }
+        else if (PrivatePlayerID == PlayerBaseID)
+        {
+            ChatOutput.text += newText;
+        }
+
+        Rpc_UpdateChat(GameObject.Find("TextChat").GetComponent<Text>().text , PrivatePlayerID);
     }
 
     [ClientRpc]
-    void Rpc_UpdateChat(string newText)
+    void Rpc_UpdateChat(string newText , int PrivatePlayerID)
     {
-        GameObject.Find("TextChat").GetComponent<Text>().text = newText;
+        if (PrivatePlayerID == 0)
+        {
+            GameObject.Find("TextChat").GetComponent<Text>().text = newText;
+        }
+        else if(PrivatePlayerID == PlayerBaseID)
+        {
+            GameObject.Find("TextChat").GetComponent<Text>().text = newText;
+        }
     }
 
     [ClientRpc]
@@ -196,6 +264,7 @@ public class PlayerBase : NetworkBehaviour {
         RelicSlot3 = GameObject.Find("Relic_Slot_3").GetComponent<Image>();
         RelicSlot4 = GameObject.Find("Relic_Slot_4").GetComponent<Image>();
         GameObject.Find("Chat").GetComponent<controlaChat>().PlayerOwner = this;
+        InputText = GameObject.Find("ChatInputField").GetComponent<InputField>();
 
         gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
         playerManager = GameObject.Find("_PlayerManager").GetComponent<PlayerManager>();
@@ -263,6 +332,7 @@ public class PlayerBase : NetworkBehaviour {
             GameObject.Find("PassTurnBtn").GetComponent<Image>().sprite = PassPassaro;
             GameObject.Find("ReliquiasSlot").GetComponent<Image>().sprite = ReliPassaro;
             GameObject.Find("Panel").GetComponent<Image>().sprite = TempoPassaro;
+            
 
             // Mat.material = MatBaseRato;
             GameObject CameraRot = GameObject.Find("CameraRotator");
@@ -945,7 +1015,14 @@ public class PlayerBase : NetworkBehaviour {
                     Initialized = true;
                 }
             }
-
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                if (!InputText.isFocused)
+                {
+                    InputText.Select();
+                    InputText.ActivateInputField();
+                }
+            }
             // if (gameManager == null)
             //  gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
             //if (playerManager == null)
@@ -998,7 +1075,6 @@ public class PlayerBase : NetworkBehaviour {
             }*/
             if (ReadyToPlay == true)
             {
-
 
                 GoldText.text = Gold.ToString();
                 GameObject[] AllFarms = GameObject.FindGameObjectsWithTag("Farm");
