@@ -118,6 +118,7 @@ public class UnitManager : NetworkBehaviour {
         GetComponent<BoxCollider>().enabled = false;
         Rpc_KillUnit();
         DeSelectUnit();
+        transform.tag = "Null";
         StartCoroutine(HideDeadUnit());
     }
 
