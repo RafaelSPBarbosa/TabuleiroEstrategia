@@ -117,7 +117,7 @@ public class PlayerBase : NetworkBehaviour {
     }
 
     [Command]
-    public void Cmd_AdicionaChat(string texto)
+    public void Cmd_AdicionaChat(string texto, int SendingPlayerID)
     {
         Text ChatOutput = GameObject.Find("TextChat").GetComponent<Text>();
         //Chat Global
@@ -145,45 +145,49 @@ public class PlayerBase : NetworkBehaviour {
                 }
             }
             //Chat Particular
-            else
+            else if(texto.Substring(0, 2) == "/w")
             {
                 texto = texto.Remove(0, 3);
                 string tempText = "";
-                if(ChatOutput.text.Substring(0,4) == "Dogs" || ChatOutput.text.Substring(0, 4) == "dogs")
+                if(texto.Substring(0,4) == "Dogs" || texto.Substring(0, 4) == "dogs")
                 {
                     tempText = "[Dogs]";
                     PrivatePlayerID = 1;
+                    texto = texto.Remove(0, 4);
                 }
-                else if(ChatOutput.text.Substring(0, 5) == "Birds" || ChatOutput.text.Substring(0, 5) == "birds")
+                else if(texto.Substring(0, 5) == "Birds" || texto.Substring(0, 5) == "birds")
                 {
                     tempText = "[Birds]";
                     PrivatePlayerID = 2;
+                    texto = texto.Remove(0, 5);
                 }
-                else if (ChatOutput.text.Substring(0, 4) == "Rats" || ChatOutput.text.Substring(0, 4) == "rats")
+                else if (texto.Substring(0, 4) == "Rats" || texto.Substring(0, 4) == "rats")
                 {
                     tempText = "[Rats]";
                     PrivatePlayerID = 3;
+                    texto = texto.Remove(0, 4);
                 }
-                else if (ChatOutput.text.Substring(0, 4) == "Cats" || ChatOutput.text.Substring(0, 4) == "cats")
+                else if (texto.Substring(0, 4) == "Cats" || texto.Substring(0, 4) == "cats")
                 {
                     tempText = "[Cats]";
                     PrivatePlayerID = 4;
+                    texto = texto.Remove(0, 4);
                 }
 
 
                 switch (PlayerBaseID)
                 {
                     case 1:
-                        newText = "\n <color=purple>Whisper [Dogs] to [" +tempText + "]:" + texto + "</color>";
+                        newText = "\n <color=purple>Whisper [Dogs] to " +tempText + ":" + texto + "</color>";
                         break;
                     case 2:
-                        newText = "\n <color=purple>Whisper [Birds] to [" + tempText + "]:" + texto + "</color>";
+                        newText = "\n <color=purple>Whisper [Birds] to " + tempText + ":" + texto + "</color>";
                         break;
                     case 3:
-                        newText = "\n <color=purple>Whisper [Rats] to [" + tempText + "]:" + texto + "</color>";
+                        newText = "\n <color=purple>Whisper [Rats] to " + tempText + ":" + texto + "</color>";
                         break;
                     case 4:
-                        newText = "\n <color=purple>Whisper [Cats] to [" + tempText + "]:" + texto + "</color>";
+                        newText = "\n <color=purple>Whisper [Cats] to " + tempText + ":" + texto + "</color>";
                         break;
                 }
             }
@@ -211,28 +215,33 @@ public class PlayerBase : NetworkBehaviour {
             ChatOutput.text = ChatOutput.text.Substring(ChatOutput.text.IndexOf('\n') + 1);
         }
 
-        if (PrivatePlayerID == 0)
-        {
-            ChatOutput.text += newText;
-        }
-        else if (PrivatePlayerID == PlayerBaseID)
-        {
-            ChatOutput.text += newText;
-        }
-
-        Rpc_UpdateChat(GameObject.Find("TextChat").GetComponent<Text>().text , PrivatePlayerID);
+        Rpc_UpdateChat(newText , PrivatePlayerID, SendingPlayerID);
     }
 
     [ClientRpc]
-    void Rpc_UpdateChat(string newText , int PrivatePlayerID)
+    void Rpc_UpdateChat(string newText , int PrivatePlayerID, int SendingPlayerID)
     {
+
         if (PrivatePlayerID == 0)
         {
-            GameObject.Find("TextChat").GetComponent<Text>().text = newText;
+            GameObject.Find("TextChat").GetComponent<Text>().text += newText;
+
         }
-        else if(PrivatePlayerID == PlayerBaseID)
+        else
         {
-            GameObject.Find("TextChat").GetComponent<Text>().text = newText;
+
+            GameObject[] Bases = GameObject.FindGameObjectsWithTag("PlayerBase");
+            for (int i = 0; i < Bases.Length; i++)
+            {
+                PlayerBase Script = Bases[i].GetComponent<PlayerBase>();
+                if (Script.enabled == true)
+                {
+                    if (PrivatePlayerID == Script.PlayerBaseID || SendingPlayerID == Script.PlayerBaseID)
+                    {
+                        GameObject.Find("TextChat").GetComponent<Text>().text += newText;
+                    }
+                }
+            }
         }
     }
 
