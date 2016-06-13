@@ -11,6 +11,8 @@ public class GameManager : NetworkBehaviour {
     Image PlayerIndicator;
 
     [SyncVar]
+    public int ActualCurTurn = 1;
+    [SyncVar]
     public int curTurn = 1;
     public int MaxTurns = 4;
     public GameObject MyPlayerBase;
@@ -54,14 +56,14 @@ public class GameManager : NetworkBehaviour {
     [Command]
     public void Cmd_PassTurn()
     {
-        
+
+        ActualCurTurn++;
         curTurn++;
         if (curTurn > MaxTurns)
             curTurn = 1;
 
         Rpc_UpdateTurn(curTurn);
         
-
     }
 
     [ClientRpc]

@@ -33,8 +33,6 @@ public class PlayerBase : NetworkBehaviour {
     public Sprite ReliCao, ReliPassaro, ReliRato, ReliGato;
     public Sprite TempoCao, TempoPassaro, TempoRato, TempoGato;
     public Sprite OpcoesCao, OpcoesPassaro, OpcoesRato, OpcoesGato;
-    public Sprite SairCao, SairPassaro, SairRato, SairGato;
-
 
     Text TempoTxt;
     public GameObject Aguia_Explorer , Cao_Explorer, Rato_Explorer , Gato_Explorer;
@@ -73,7 +71,7 @@ public class PlayerBase : NetworkBehaviour {
     bool CanMoveCamera = false;
 
     string PlayerString;
-    //Váriaveis da gambiarra
+    
     [SyncVar]
     float tempoTurno = 45;
 
@@ -83,13 +81,16 @@ public class PlayerBase : NetworkBehaviour {
 
     public bool GameOver = false;
 
-    bool loadedGameLevel = false;
     bool Initialized = false;
 
     public List<int> Reliquias; //1 = Vermelho ; 2 = Amarelo; 3 = Azul; 4 = Verde
     public Image RelicSlot1, RelicSlot2, RelicSlot3, RelicSlot4;
 
     public Sprite RedRelic, YellowRelic, BlueRelic, GreenRelic, EmptyRelic;
+
+    public AudioClip NarratorYourTurn;
+    public AudioClip[] VictoryVoiceLine;
+    public AudioClip[] DefeatVoiceLine;
 
     [Command]
     public void Cmd_UpdatePlayerBaseID(int ID)
@@ -302,8 +303,6 @@ public class PlayerBase : NetworkBehaviour {
             GameObject.Find("ReliquiasSlot").GetComponent<Image>().sprite = ReliGato;
             GameObject.Find("Panel").GetComponent<Image>().sprite = TempoGato;
             GameObject.Find("Opcoes").GetComponent<Image>().sprite = OpcoesGato;
-            GameObject.Find("Sair").GetComponent<Image>().sprite = SairGato;
-
 
             // Mat.material = MatBaseCao;
             GameObject CameraRot = GameObject.Find("CameraRotator");
@@ -326,7 +325,6 @@ public class PlayerBase : NetworkBehaviour {
             GameObject.Find("ReliquiasSlot").GetComponent<Image>().sprite = ReliRato;
             GameObject.Find("Panel").GetComponent<Image>().sprite = TempoRato;
             GameObject.Find("Opcoes").GetComponent<Image>().sprite = OpcoesRato;
-            GameObject.Find("Sair").GetComponent<Image>().sprite = SairRato;
 
             // Mat.material = MatBaseGato;
             GameObject CameraRot = GameObject.Find("CameraRotator");
@@ -349,7 +347,6 @@ public class PlayerBase : NetworkBehaviour {
             GameObject.Find("ReliquiasSlot").GetComponent<Image>().sprite = ReliPassaro;
             GameObject.Find("Panel").GetComponent<Image>().sprite = TempoPassaro;
             GameObject.Find("Opcoes").GetComponent<Image>().sprite = OpcoesPassaro;
-            GameObject.Find("Sair").GetComponent<Image>().sprite = SairPassaro;
 
 
             // Mat.material = MatBaseRato;
@@ -373,7 +370,6 @@ public class PlayerBase : NetworkBehaviour {
             GameObject.Find("ReliquiasSlot").GetComponent<Image>().sprite = ReliCao;
             GameObject.Find("Panel").GetComponent<Image>().sprite = TempoCao;
             GameObject.Find("Opcoes").GetComponent<Image>().sprite = OpcoesCao;
-          
 
             // Mat.material = MatBaseAguia;
             GameObject CameraRot = GameObject.Find("CameraRotator");
@@ -422,8 +418,10 @@ public class PlayerBase : NetworkBehaviour {
             DistributeObjectives();
 
         Destroy(GameObject.Find("Background"));
+        //Cmd_ControlaTempoTurno();
 
         ReadyToPlay = true;
+       // StartCoroutine("MatchStartVoiceLine");
     }
 
     void DistributeObjectives()
@@ -1023,6 +1021,8 @@ public class PlayerBase : NetworkBehaviour {
         }
     }
 
+    bool TurnStart = true;
+
     void Update()
     {
         if (SceneManager.GetActiveScene().name == "Game")
@@ -1032,6 +1032,7 @@ public class PlayerBase : NetworkBehaviour {
                 if (isLocalPlayer)
                 {
                     StartCoroutine("DelayedStart");
+                    
                     Initialized = true;
                 }
             }
@@ -1043,10 +1044,7 @@ public class PlayerBase : NetworkBehaviour {
                     InputText.ActivateInputField();
                 }
             }
-            // if (gameManager == null)
-            //  gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
-            //if (playerManager == null)
-            // playerManager = GameObject.Find("_PlayerManager").GetComponent<PlayerManager>();
+
             if (GameOver == true)
             {
                 Camera.main.transform.parent.transform.position = Vector3.Lerp(Camera.main.transform.parent.transform.position, new Vector3(WinningPlayerPos.x, 7.1f, WinningPlayerPos.z), Time.deltaTime * 2);
@@ -1057,45 +1055,9 @@ public class PlayerBase : NetworkBehaviour {
                 GameObject.Find("CameraRotator").transform.position = Vector3.Lerp(GameObject.Find("CameraRotator").transform.position, new Vector3(WinningPlayerPos.x, 0, WinningPlayerPos.z), Time.deltaTime * 2);
             }
 
-           /* if (Input.GetKeyDown(KeyCode.T))
-            {
-
-                GameObject[] AllPlayers = GameObject.FindGameObjectsWithTag("PlayerBase");
-                for (int i = 0; i < AllPlayers.Length; i++)
-                {
-                    if (AllPlayers[i] != this.gameObject)
-                    {
-
-                        if (isServer)
-                        {
-                            AllPlayers[i].GetComponent<PlayerBase>().Rpc_UpdateWinningPlayer(this.transform.position);
-                            AllPlayers[i].GetComponent<PlayerBase>().Rpc_LooseMatch();
-                        }
-                        else {
-                            Cmd_UpdateWinningPlayer(this.transform.position, AllPlayers[i]);
-                            Cmd_LooseMatch( AllPlayers[i]);
-                        }
-                    }
-                }
-
-                //Rpc_UpdateWinningPlayer(this.transform.position);
-                if (isLocalPlayer)
-                {
-                    if (isServer)
-                    {
-                        //Rpc_UpdateWinningPlayer(this.transform.position);
-                        WinMatch();
-                    }
-                    else
-                    {
-                        //Rpc_UpdateWinningPlayer(this.transform.position);
-                        WinMatch();
-                    }
-                }
-            }*/
             if (ReadyToPlay == true)
             {
-
+                
                 GoldText.text = Gold.ToString();
                 GameObject[] AllFarms = GameObject.FindGameObjectsWithTag("Farm");
                 FoodText.text = Food + "/" + AllFarms.Length + "/20";
@@ -1113,14 +1075,19 @@ public class PlayerBase : NetworkBehaviour {
 
                 }
 
-                // if (isServer)
-                //  {
-                // ControlaTempoTurno();
-                // }
+                ControlaTempoTurno();
 
 
                 if (gameManager.curTurn == playerManager.MyTurn && Destroyed == false)
                 {
+                    if (TurnStart == true)
+                    {
+                        AudioSource As = GetComponent<AudioSource>();
+                        As.clip = NarratorYourTurn;
+                        As.Play();
+                        TurnStart = false;
+                    }
+
                     PassTurnButton.interactable = true;
 
                     if (Occupied == false)
@@ -1173,6 +1140,7 @@ public class PlayerBase : NetworkBehaviour {
                     SpawnGuerreiroBtn.interactable = false;
                     SpawnArqueiroBtn.interactable = false;
                     SpawnFarmBtn.interactable = false;
+                    TurnStart = true;
                 }
 
                 if (curHealth <= 0 && Destroyed == false)
@@ -1225,6 +1193,7 @@ public class PlayerBase : NetworkBehaviour {
 
     public void WinMatch()
     {
+        StartCoroutine("VictoryLine");
         ObjectiveText.text = "YOU WON THE GAME!!";
         WinningPlayerPos = this.transform.position;
         StartCoroutine("RepositionCamera");
@@ -1233,7 +1202,7 @@ public class PlayerBase : NetworkBehaviour {
     [Command]
     public void Cmd_WinMatch(GameObject target)
     {
-        target.GetComponent<PlayerBase>(). Rpc_WinMatch();
+        target.GetComponent<PlayerBase>().Rpc_WinMatch();
     }
 
     [ClientRpc]
@@ -1255,9 +1224,26 @@ public class PlayerBase : NetworkBehaviour {
     {
         if (isLocalPlayer)
         {
+            StartCoroutine("DefeatLine");
             ObjectiveText.text = "YOU LOST THE GAME!!";
             StartCoroutine("RepositionCamera");
         }
+    }
+
+    public IEnumerator VictoryLine()
+    {
+        yield return new WaitForSeconds(2.5f);
+        AudioSource As = GetComponent<AudioSource>();
+        As.clip = VictoryVoiceLine[PlayerBaseID - 1];
+        As.Play();
+    }
+
+    public IEnumerator DefeatLine()
+    {
+        yield return new WaitForSeconds(2.5f);
+        AudioSource As = GetComponent<AudioSource>();
+        As.clip = DefeatVoiceLine[PlayerBaseID - 1];
+        As.Play();
     }
 
     public IEnumerator RepositionCamera()
@@ -1618,6 +1604,8 @@ public class PlayerBase : NetworkBehaviour {
         }
     }
 
+
+
     [ClientRpc]
     public void Rpc_SetObjectOwner(GameObject LastCreatedObject)
     {
@@ -1632,7 +1620,8 @@ public class PlayerBase : NetworkBehaviour {
         if (TempGameManager.curTurn == ID)
         {
             TempGameManager.curTurn++;
-            //tempoTurno = 45;
+            tempoTurno = 45;
+            Rpc_UpdateTempoTurno();
 
             int GoldToGive = 1;
             GameObject[] AllGoldMines = GameObject.FindGameObjectsWithTag("GoldMine");
@@ -1661,17 +1650,48 @@ public class PlayerBase : NetworkBehaviour {
                 AllFriendlyUnits[i].GetComponent<UnitManager>().HasAttacked = false;
             }
 
-            if (isServer)
-            {
-                ResetTimer();
-            }
-            else
-            {
-                Cmd_ResetTimer();
-            }
-
             Rpc_PassTurn();
         }
+
+    }
+
+    [Command]
+    public void Cmd_ForcePassTurn()
+    {
+        GameManager TempGameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
+
+        TempGameManager.curTurn++;
+        tempoTurno = 45;
+        Rpc_UpdateTempoTurno();
+
+        int GoldToGive = 1;
+        GameObject[] AllGoldMines = GameObject.FindGameObjectsWithTag("GoldMine");
+        for (int i = 0; i < AllGoldMines.Length; i++)
+        {
+            if (AllGoldMines[i].GetComponent<GoldMineManager>().PlayerOwner != null)
+            {
+                if (AllGoldMines[i].GetComponent<GoldMineManager>().PlayerOwner == this.gameObject)
+                {
+                    GoldToGive++;
+                }
+            }
+        }
+        Gold += GoldToGive;
+
+        if (TempGameManager.curTurn > TempGameManager.MaxTurns)
+            TempGameManager.curTurn = 1;
+
+        //Aqui carrego a variável com todos os objetos da cena que possuem o Tag "Unit"
+        GameObject[] AllFriendlyUnits = GameObject.FindGameObjectsWithTag("Unit");
+
+        //Este For loop, é para identificar qual das unidades do jogador que está atualmente selecionado e salvá-lo na variável "SelectedUnit"
+        for (int i = 0; i < AllFriendlyUnits.Length; i++)
+        {
+            AllFriendlyUnits[i].GetComponent<UnitManager>().curActions = AllFriendlyUnits[i].GetComponent<UnitManager>().MaxActions;
+            AllFriendlyUnits[i].GetComponent<UnitManager>().HasAttacked = false;
+        }
+
+        Rpc_PassTurn();
 
     }
 
@@ -1689,14 +1709,7 @@ public class PlayerBase : NetworkBehaviour {
             AllFriendlyUnits[i].GetComponent<UnitManager>().curActions = AllFriendlyUnits[i].GetComponent<UnitManager>().MaxActions;
             AllFriendlyUnits[i].GetComponent<UnitManager>().HasAttacked = false;
         }
-        if (isServer)
-        {
-            ResetTimer();
-        }
-        else
-        {
-            Cmd_ResetTimer();
-        }
+        
     }
 
     [Command]
@@ -1743,23 +1756,29 @@ public class PlayerBase : NetworkBehaviour {
         tile.GetComponent<TileManager>().SteppingObject = Obj;
     }
 
+    [ClientRpc]
+    public void Rpc_UpdateTempoTurno()
+    {
+        GameObject[] AllBases = GameObject.FindGameObjectsWithTag("PlayerBase");
+        for(int i = 0; i < AllBases.Length; i++)
+        {
+            AllBases[i].GetComponent<PlayerBase>().tempoTurno = 45;
+        }
+    }
+
+    
     public void ControlaTempoTurno() {
         
-        //Crio uma variável que guarda o tempo em segundos
         tempoTurno = tempoTurno - Time.deltaTime;
         TempoTxt.text = Convert.ToInt32(tempoTurno).ToString();
-        if (tempoTurno <= 0)
+        if (isServer)
         {
-            Cmd_PassTurn(PlayerBaseID); 
-            if (isServer)
+            if (tempoTurno <= 0)
             {
-                ResetTimer(); // CRIARAM UMA FUNÇÃO PRA CONTROLAR O TEMPO USAM A BASE QUE FIZ MAS MUDARAM ;/ DAI NEM ROLA, SE FOR PRA MUDAR O CARA LEVA TEMPO PRA ENTENDER ENTÃO ELE PODE FAZER :S
+                Cmd_ForcePassTurn();
+                tempoTurno = 45;
+                Rpc_UpdateTempoTurno();
             }
-            else
-            {
-                Cmd_ResetTimer(); //MEXERAM AQUI!!! EU TO FAZENDO DE FORMA PRIMITIVA, NUNCA TRAMPEI COM SERVER MUITO MENOS NETWORK PRA UM GAME
-            }
-            tempoTurno = 45;
         }
     }
 }

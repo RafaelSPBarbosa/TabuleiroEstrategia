@@ -18,6 +18,7 @@ public class TileManager : NetworkBehaviour {
     public GameObject CurrentMonster;
     public TileManager MonsterSpawner;
     public GameObject[] Monsters;
+    public int TurnToSpawnMonster;
 
     //Definição de variáveis
 
@@ -29,7 +30,6 @@ public class TileManager : NetworkBehaviour {
 
         //Como o código é baseado na cor atual do material, estou colocando todas as tiles no inicio do jogo na cor Idle para depois poder verificar se esta é a cor atual sem ter conflitos
         GetComponent<MeshRenderer>().material.color = Idle;
-
         
     }
 
@@ -109,7 +109,6 @@ public class TileManager : NetworkBehaviour {
     void Update()
     {
 
-
         if (gameManager != null && playerManager != null)
         {
             //Aqui carrego a variável com todos os objetos da cena que possuem o Tag "Unit"
@@ -156,6 +155,11 @@ public class TileManager : NetworkBehaviour {
                     GetComponent<MeshRenderer>().material.color = Idle;
                     this.transform.position = NormalPosition;
                 }
+            }
+
+            if(gameManager.ActualCurTurn == TurnToSpawnMonster)
+            {
+                CanSpawnMonster = true;
             }
         }
         else

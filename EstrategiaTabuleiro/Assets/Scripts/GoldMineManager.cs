@@ -9,6 +9,8 @@ public class GoldMineManager : NetworkBehaviour {
 
     public MeshRenderer Flag;
 
+    public AudioClip[] CapturePointVoices;
+
     [SyncVar]
     public GameObject PlayerOwner;
 
@@ -22,6 +24,7 @@ public class GoldMineManager : NetworkBehaviour {
         PlayerOwner = newOwner;
 
         PlayerOwner.GetComponent<PlayerBase>().Cmd_UpdateGoldMineAmmount(true);
+
 
         if (PlayerOwner.GetComponent<PlayerBase>().PlayerBaseID == 1)
         {
@@ -74,6 +77,10 @@ public class GoldMineManager : NetworkBehaviour {
         {
             Flag.material = Azul;
         }
+
+        AudioSource As = GetComponent<AudioSource>();
+        As.clip = CapturePointVoices[PlayerOwner.GetComponent<PlayerBase>().PlayerBaseID - 1];
+        As.Play();
     }
 
     void OnTriggerEnter(Collider other)

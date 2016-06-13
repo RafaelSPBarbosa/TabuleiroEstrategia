@@ -30,6 +30,8 @@ public class UnitManager : NetworkBehaviour {
     public bool HasAttacked = false;
     bool hasMoved = false;
 
+    public AudioClip[] AttackVoices;
+    public AudioClip[] MovingVoices;
     //Definição de Variáveis
 
     public void ReloadActions()
@@ -257,6 +259,7 @@ public class UnitManager : NetworkBehaviour {
                                                         StartCoroutine(LocalAttackUnit(hit.transform.gameObject));
                                                         curActions--;
                                                         HasAttacked = true;
+                                                        
                                                     }
                                                 }
                                             }
@@ -376,8 +379,18 @@ public class UnitManager : NetworkBehaviour {
             this.transform.LookAt(Target.transform.position);
             if (AnimatedMesh != null)
                 AnimatedMesh.SetTrigger("Attack");
+
+            if (AttackVoices.Length > 0)
+            {
+                if (curHealth > 0)
+                {
+                    AudioSource As = GetComponent<AudioSource>();
+                    As.clip = AttackVoices[Random.Range(0, AttackVoices.Length)];
+                    As.Play();
+                }
+            }
         }
-       
+
     }
 
     [Command]
@@ -394,6 +407,17 @@ public class UnitManager : NetworkBehaviour {
 
             Target.transform.gameObject.GetComponent<MonsterManager>().Rpc_UpdateGetHit();
         }
+
+        if (AttackVoices.Length > 0)
+        {
+            if (curHealth > 0)
+            {
+                AudioSource As = GetComponent<AudioSource>();
+                As.clip = AttackVoices[Random.Range(0, AttackVoices.Length)];
+                As.Play();
+            }
+        }
+
     }
 
     [Command]
@@ -449,11 +473,6 @@ public class UnitManager : NetworkBehaviour {
             Cmd_UnitAttack(Target);
 
             yield return new WaitForSeconds(0.9f);
-
-           // if(UnitType == 2)
-           // {
-               // transform.FindChild("AttackSFX").GetComponent<AudioSource>().Play();
-            //}
 
             if (Target.transform.tag == "Unit")
             {
@@ -702,17 +721,6 @@ public class UnitManager : NetworkBehaviour {
         }
     }
 
-    [Command]
-    void Cmd_DestroyCloud(GameObject target)
-    {
-        Destroy(target);
-    }
-    [ClientRpc]
-    void Rpc_DestroyCloud(GameObject target)
-    {
-        Destroy(target);
-    }
-
     public IEnumerator StopRunning()
     {
         yield return new WaitForSeconds(0.8f);
@@ -742,6 +750,18 @@ public class UnitManager : NetworkBehaviour {
 
         Rpc_MakeUnitRun(true);
         Busy = true;
+
+        if (MovingVoices.Length > 0)
+        {
+            int r = Random.Range(0, 10);
+
+            if (r >= 6)
+            {
+                AudioSource As = GetComponent<AudioSource>();
+                As.clip = MovingVoices[Random.Range(0, MovingVoices.Length)];
+                As.Play();
+            }
+        }
     }
 
  }
