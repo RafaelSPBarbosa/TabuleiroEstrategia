@@ -32,6 +32,8 @@ public class PlayerBase : NetworkBehaviour {
     public Sprite PassCao, PassPassaro, PassRato, PassGato;
     public Sprite ReliCao, ReliPassaro, ReliRato, ReliGato;
     public Sprite TempoCao, TempoPassaro, TempoRato, TempoGato;
+    public Sprite OpcoesCao, OpcoesPassaro, OpcoesRato, OpcoesGato;
+    public Sprite SairCao, SairPassaro, SairRato, SairGato;
 
 
     Text TempoTxt;
@@ -299,6 +301,9 @@ public class PlayerBase : NetworkBehaviour {
             GameObject.Find("PassTurnBtn").GetComponent<Image>().sprite = PassGato;
             GameObject.Find("ReliquiasSlot").GetComponent<Image>().sprite = ReliGato;
             GameObject.Find("Panel").GetComponent<Image>().sprite = TempoGato;
+            GameObject.Find("Opcoes").GetComponent<Image>().sprite = OpcoesGato;
+            GameObject.Find("Sair").GetComponent<Image>().sprite = SairGato;
+
 
             // Mat.material = MatBaseCao;
             GameObject CameraRot = GameObject.Find("CameraRotator");
@@ -320,6 +325,8 @@ public class PlayerBase : NetworkBehaviour {
             GameObject.Find("PassTurnBtn").GetComponent<Image>().sprite = PassRato;
             GameObject.Find("ReliquiasSlot").GetComponent<Image>().sprite = ReliRato;
             GameObject.Find("Panel").GetComponent<Image>().sprite = TempoRato;
+            GameObject.Find("Opcoes").GetComponent<Image>().sprite = OpcoesRato;
+            GameObject.Find("Sair").GetComponent<Image>().sprite = SairRato;
 
             // Mat.material = MatBaseGato;
             GameObject CameraRot = GameObject.Find("CameraRotator");
@@ -341,7 +348,9 @@ public class PlayerBase : NetworkBehaviour {
             GameObject.Find("PassTurnBtn").GetComponent<Image>().sprite = PassPassaro;
             GameObject.Find("ReliquiasSlot").GetComponent<Image>().sprite = ReliPassaro;
             GameObject.Find("Panel").GetComponent<Image>().sprite = TempoPassaro;
-            
+            GameObject.Find("Opcoes").GetComponent<Image>().sprite = OpcoesPassaro;
+            GameObject.Find("Sair").GetComponent<Image>().sprite = SairPassaro;
+
 
             // Mat.material = MatBaseRato;
             GameObject CameraRot = GameObject.Find("CameraRotator");
@@ -363,6 +372,8 @@ public class PlayerBase : NetworkBehaviour {
             GameObject.Find("PassTurnBtn").GetComponent<Image>().sprite = PassCao;
             GameObject.Find("ReliquiasSlot").GetComponent<Image>().sprite = ReliCao;
             GameObject.Find("Panel").GetComponent<Image>().sprite = TempoCao;
+            GameObject.Find("Opcoes").GetComponent<Image>().sprite = OpcoesCao;
+          
 
             // Mat.material = MatBaseAguia;
             GameObject CameraRot = GameObject.Find("CameraRotator");
