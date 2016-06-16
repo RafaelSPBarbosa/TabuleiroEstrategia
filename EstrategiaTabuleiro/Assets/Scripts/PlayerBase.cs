@@ -14,7 +14,7 @@ public class PlayerBase : NetworkBehaviour {
     NetManager netManager;
 
     public Mesh FarmTileMesh;
-    public Material FarmTileMat;
+    public Material[] FarmTileMat;
 
     // Interface //
 
@@ -33,6 +33,8 @@ public class PlayerBase : NetworkBehaviour {
     public Sprite ReliCao, ReliPassaro, ReliRato, ReliGato;
     public Sprite TempoCao, TempoPassaro, TempoRato, TempoGato;
     public Sprite OpcoesCao, OpcoesPassaro, OpcoesRato, OpcoesGato;
+
+    Text UnitsAmmountText;
 
     Text TempoTxt;
     public GameObject Aguia_Explorer , Cao_Explorer, Rato_Explorer , Gato_Explorer;
@@ -91,6 +93,10 @@ public class PlayerBase : NetworkBehaviour {
     public AudioClip NarratorYourTurn;
     public AudioClip[] VictoryVoiceLine;
     public AudioClip[] DefeatVoiceLine;
+
+    public int UnitAmmount;
+
+    List<GameObject> ConfirmationScreens = new List<GameObject>();
 
     [Command]
     public void Cmd_UpdatePlayerBaseID(int ID)
@@ -277,6 +283,7 @@ public class PlayerBase : NetworkBehaviour {
         RelicSlot4 = GameObject.Find("Relic_Slot_4").GetComponent<Image>();
         GameObject.Find("Chat").GetComponent<controlaChat>().PlayerOwner = this;
         InputText = GameObject.Find("ChatInputField").GetComponent<InputField>();
+        UnitsAmmountText = GameObject.Find("_Soldado").GetComponent<Text>();
 
         gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
         playerManager = GameObject.Find("_PlayerManager").GetComponent<PlayerManager>();
@@ -392,25 +399,32 @@ public class PlayerBase : NetworkBehaviour {
         SpawnFarmBtn.onClick.AddListener(() => Cmd_RequestBuildFarm());
 
         GameObject[] AllClearRelicBtns = GameObject.FindGameObjectsWithTag("RemoveRelic");
-        for(int i = 0; i < AllClearRelicBtns.Length; i++)
-        {
-            if (AllClearRelicBtns[i].transform.name == "Relic_Slot_1")
-            {
-                AllClearRelicBtns[i].GetComponent<Button>().onClick.AddListener(() => RemoveRelic(0));
-            }
-            if (AllClearRelicBtns[i].transform.name == "Relic_Slot_2")
-            {
-                AllClearRelicBtns[i].GetComponent<Button>().onClick.AddListener(() => RemoveRelic(1));
-            }
-            if (AllClearRelicBtns[i].transform.name == "Relic_Slot_3")
-            {
-                AllClearRelicBtns[i].GetComponent<Button>().onClick.AddListener(() => RemoveRelic(2));
-            }
-            if (AllClearRelicBtns[i].transform.name == "Relic_Slot_4")
-            {
-                AllClearRelicBtns[i].GetComponent<Button>().onClick.AddListener(() => RemoveRelic(3));
-            }
-        }
+
+        AllClearRelicBtns[0].GetComponent<Button>().onClick.AddListener(() => OpenConfirmation(0));
+        GameObject.Find("Confirm01").GetComponent<Button>().onClick.AddListener(() => RemoveRelic(0));
+        GameObject.Find("Cancel01").GetComponent<Button>().onClick.AddListener(() => CloseConfirmation(0));
+        ConfirmationScreens.Add(GameObject.Find("Confirmacao01"));
+        ConfirmationScreens[0].SetActive(false);
+
+        AllClearRelicBtns[1].GetComponent<Button>().onClick.AddListener(() => OpenConfirmation(1));
+        GameObject.Find("Confirm02").GetComponent<Button>().onClick.AddListener(() => RemoveRelic(1));
+        GameObject.Find("Cancel02").GetComponent<Button>().onClick.AddListener(() => CloseConfirmation(1));
+        ConfirmationScreens.Add(GameObject.Find("Confirmacao02"));
+        ConfirmationScreens[1].SetActive(false);
+
+        AllClearRelicBtns[2].GetComponent<Button>().onClick.AddListener(() => OpenConfirmation(2));
+        GameObject.Find("Confirm03").GetComponent<Button>().onClick.AddListener(() => RemoveRelic(3));
+        GameObject.Find("Cancel03").GetComponent<Button>().onClick.AddListener(() => CloseConfirmation(2));
+        ConfirmationScreens.Add(GameObject.Find("Confirmacao03"));
+        ConfirmationScreens[2].SetActive(false);
+
+        AllClearRelicBtns[3].GetComponent<Button>().onClick.AddListener(() => OpenConfirmation(3));
+        GameObject.Find("Confirm04").GetComponent<Button>().onClick.AddListener(() => RemoveRelic(2));
+        GameObject.Find("Cancel04").GetComponent<Button>().onClick.AddListener(() => CloseConfirmation(3));
+        ConfirmationScreens.Add(GameObject.Find("Confirmacao04"));
+        ConfirmationScreens[3].SetActive(false);
+
+        GetComponent<SoundVolumeFix>().enabled = true;
 
         Cmd_SpawnExplorer(PlayerBaseID, true);
 
@@ -422,6 +436,16 @@ public class PlayerBase : NetworkBehaviour {
 
         ReadyToPlay = true;
        // StartCoroutine("MatchStartVoiceLine");
+    }
+
+    public void OpenConfirmation(int id)
+    {
+        ConfirmationScreens[id].SetActive(true);
+    }
+
+    public void CloseConfirmation (int id)
+    {
+        ConfirmationScreens[id].SetActive(false);
     }
 
     void DistributeObjectives()
@@ -1027,6 +1051,11 @@ public class PlayerBase : NetworkBehaviour {
     {
         if (SceneManager.GetActiveScene().name == "Game")
         {
+
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                Cmd_SpawnArqueiro(2);
+            }
             if(Initialized == false)
             {
                 if (isLocalPlayer)
@@ -1057,7 +1086,7 @@ public class PlayerBase : NetworkBehaviour {
 
             if (ReadyToPlay == true)
             {
-                
+                UnitsAmmountText.text = UnitAmmount.ToString();
                 GoldText.text = Gold.ToString();
                 GameObject[] AllFarms = GameObject.FindGameObjectsWithTag("Farm");
                 FoodText.text = Food + "/" + AllFarms.Length + "/20";
@@ -1383,6 +1412,12 @@ public class PlayerBase : NetworkBehaviour {
         Occupied = false;
     }
 
+    [ClientRpc]
+    void Rpc_UpdateUnitAmmount(int Count)
+    {
+        UnitAmmount = Count;
+    }
+
     [Command]
     public void Cmd_SpawnExplorer( int ExplorerID , bool isFirst )
     {
@@ -1401,6 +1436,8 @@ public class PlayerBase : NetworkBehaviour {
                 if (Gold >= 2)
                 {
                     Gold -= 2;
+                    UnitAmmount++;
+                    Rpc_UpdateUnitAmmount(UnitAmmount);
 
                     if (ExplorerID == 1)
                     {
@@ -1430,6 +1467,9 @@ public class PlayerBase : NetworkBehaviour {
             }
             else
             {
+
+                UnitAmmount++;
+                Rpc_UpdateUnitAmmount(UnitAmmount);
                 if (ExplorerID == 1)
                 {
                     Explorer = Cao_Explorer;
@@ -1474,6 +1514,8 @@ public class PlayerBase : NetworkBehaviour {
 
             if (Gold >= 5)
             {
+                UnitAmmount++;
+                Rpc_UpdateUnitAmmount(UnitAmmount);
                 Gold -= 5;
 
                 if (WarriorID == 1)
@@ -1508,7 +1550,25 @@ public class PlayerBase : NetworkBehaviour {
         Material[] temp = new Material[1];
         Tile.transform.GetChild(0).GetComponent<MeshRenderer>().materials = temp;
         Tile.transform.GetChild(0).GetComponent<MeshFilter>().mesh = FarmTileMesh;
-        Tile.transform.GetChild(0).GetComponent<MeshRenderer>().material = FarmTileMat;
+        switch (Tile.transform.tag)
+        {
+            case "GrassTile":
+                Tile.transform.GetChild(0).GetComponent<MeshRenderer>().material = FarmTileMat[0];
+                break;
+            case "SandTile":
+                Tile.transform.GetChild(0).GetComponent<MeshRenderer>().material = FarmTileMat[1];
+                break;
+            case "DirtTile":
+                Tile.transform.GetChild(0).GetComponent<MeshRenderer>().material = FarmTileMat[2];
+                break;
+            case "SnowTile":
+                Tile.transform.GetChild(0).GetComponent<MeshRenderer>().material = FarmTileMat[3];
+                break;
+            default:
+                Tile.transform.GetChild(0).GetComponent<MeshRenderer>().material = FarmTileMat[0];
+                break;
+        }
+        
 
         Farm.transform.parent = Tile.transform;
     }
@@ -1520,7 +1580,24 @@ public class PlayerBase : NetworkBehaviour {
         Material[] temp = new Material[1];
         Tile.transform.GetChild(0).GetComponent<MeshRenderer>().materials = temp;
         Tile.transform.GetChild(0).GetComponent<MeshFilter>().mesh = FarmTileMesh;
-        Tile.transform.GetChild(0).GetComponent<MeshRenderer>().material = FarmTileMat;
+        switch (Tile.transform.tag)
+        {
+            case "GrassTile":
+                Tile.transform.GetChild(0).GetComponent<MeshRenderer>().material = FarmTileMat[0];
+                break;
+            case "SandTile":
+                Tile.transform.GetChild(0).GetComponent<MeshRenderer>().material = FarmTileMat[1];
+                break;
+            case "DirtTile":
+                Tile.transform.GetChild(0).GetComponent<MeshRenderer>().material = FarmTileMat[2];
+                break;
+            case "SnowTile":
+                Tile.transform.GetChild(0).GetComponent<MeshRenderer>().material = FarmTileMat[3];
+                break;
+            default:
+                Tile.transform.GetChild(0).GetComponent<MeshRenderer>().material = FarmTileMat[0];
+                break;
+        }
 
         GameObject go = (GameObject)Instantiate(Farm, Target.transform.position, Quaternion.identity);
         NetworkServer.Spawn(go);
@@ -1576,7 +1653,8 @@ public class PlayerBase : NetworkBehaviour {
             if (Gold >= 7)
             {
                 Gold -= 7;
-
+                UnitAmmount++;
+                Rpc_UpdateUnitAmmount(UnitAmmount);
 
                 if (ArcherID == 1)
                 {
@@ -1700,6 +1778,15 @@ public class PlayerBase : NetworkBehaviour {
     {
         //tempoTurno = 45;
         //Gold++;
+        GameObject[] AllFarms = GameObject.FindGameObjectsWithTag("Farm");
+        for(int i = 0; i < AllFarms.Length; i++)
+        {
+            FarmManager FarmMg = AllFarms[i].GetComponent<FarmManager>();
+
+            if (FarmMg.PlayerOwner == this.gameObject)
+                FarmMg.Cmd_healUnit();
+        }
+
         //Aqui carrego a variável com todos os objetos da cena que possuem o Tag "Unit"
         GameObject[] AllFriendlyUnits = GameObject.FindGameObjectsWithTag("Unit");
 

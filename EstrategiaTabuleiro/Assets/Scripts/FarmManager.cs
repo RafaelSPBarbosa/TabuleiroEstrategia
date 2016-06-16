@@ -9,6 +9,10 @@ public class FarmManager : NetworkBehaviour {
 
     public MeshRenderer Flag;
 
+    public AudioClip[] CapturePointVoices;
+
+    public GameObject SteppingUnit;
+
     [SyncVar]
     public GameObject PlayerOwner;
 
@@ -109,6 +113,10 @@ public class FarmManager : NetworkBehaviour {
         {
             Flag.material = Azul;
         }
+
+        AudioSource As = GetComponent<AudioSource>();
+        As.clip = CapturePointVoices[PlayerOwner.GetComponent<PlayerBase>().PlayerBaseID - 1];
+        As.Play();
     }
 
     [Command]
@@ -159,10 +167,21 @@ public class FarmManager : NetworkBehaviour {
         }
     }
 
+    [Command]
+    public void Cmd_healUnit()
+    {
+        if(SteppingUnit != null)
+        {
+            SteppingUnit.GetComponent<UnitManager>().curHealth += 5;
+        }
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if(other.transform.tag == "Unit")
         {
+
+            SteppingUnit = other.transform.gameObject;
             UnitManager otherScript = other.gameObject.GetComponent<UnitManager>();
             if (otherScript.UnitType == 0)
             {
@@ -178,6 +197,13 @@ public class FarmManager : NetworkBehaviour {
                     
                 }
             }
+        }
+    }
+    void OnTriggerExit(Collider other)
+    {
+        if(other.transform.tag == "Unit")
+        {
+            SteppingUnit = null;
         }
     }
 }

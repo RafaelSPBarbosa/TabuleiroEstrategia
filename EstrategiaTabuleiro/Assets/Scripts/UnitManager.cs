@@ -16,10 +16,12 @@ public class UnitManager : NetworkBehaviour {
     Button FarmSpawnBtn;
     [SyncVar]
     public int curHealth = 1;
+    [SyncVar]
     public int MaxHealth = 1; 
     [SyncVar]
     public int Damage = 0;
-    int SkillPoints = 20;
+    [SyncVar]
+    public int SkillPoints = 20;
     public int UnitType = 0;
     public Animator AnimatedMesh;
     public Vector3 GoToPos, LookAtPos;
@@ -29,7 +31,10 @@ public class UnitManager : NetworkBehaviour {
     public GameObject SteppingTile;
     public bool HasAttacked = false;
     bool hasMoved = false;
+    public GameObject PontosDistribuicao;
+    public Text Titulo, ValorFinalVida, ValorFinalDano;
 
+    
     public AudioClip[] AttackVoices;
     public AudioClip[] MovingVoices;
     //Definição de Variáveis
@@ -46,7 +51,16 @@ public class UnitManager : NetworkBehaviour {
         LookAtPos = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z + 1);
         playerManager = GameObject.Find("_PlayerManager").GetComponent<PlayerManager>();
         gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
-        
+        if (PlayerOwner.GetComponent<PlayerBase>().isLocalPlayer)
+        {
+            PontosDistribuicao.transform.parent = GameObject.Find("MainCanvas").transform;
+            PontosDistribuicao.GetComponent<RectTransform>().localScale = new Vector3(0.21f, 0.21f, 0.21f);
+            PontosDistribuicao.GetComponent<RectTransform>().anchoredPosition = new Vector2(0.5f, 0.5f);
+        }
+        else
+        {
+            DestroyPontosDistribuicao();
+        }
     }
 
     void OnMouseDown()
@@ -105,6 +119,60 @@ public class UnitManager : NetworkBehaviour {
     }
 
     [Command]
+    public void Cmd_IncrementarVida()
+    {
+        if (SkillPoints > 0)
+        {
+
+            MaxHealth++;
+            curHealth = MaxHealth;
+            SkillPoints--;
+        }
+    }
+
+    [Command]
+    public void Cmd_IncrementarDano()
+    {
+        if (SkillPoints > 0)
+        {
+
+            Damage++;           
+            SkillPoints--;
+        }
+    }
+
+    [Command]
+    public void Cmd_RetirarVida()
+    {
+
+        if (MaxHealth > 1)
+        {
+            MaxHealth--;
+            curHealth = MaxHealth;
+            SkillPoints++;
+        }
+        
+    }
+
+    public void DestroyPontosDistribuicao()
+    {
+        if(SkillPoints == 0)
+            Destroy(PontosDistribuicao);
+    }
+
+    [Command]
+    public void Cmd_RetirarDano()
+    {
+
+        if (Damage > 1)
+        {
+            Damage--;
+            SkillPoints++;
+        }
+
+    }
+
+    [Command]
     public void Cmd_KillUnit()
     {
         isAlive = false;
@@ -118,6 +186,7 @@ public class UnitManager : NetworkBehaviour {
         }
 
         GetComponent<BoxCollider>().enabled = false;
+        
         Rpc_KillUnit();
         DeSelectUnit();
         transform.tag = "Null";
@@ -129,6 +198,8 @@ public class UnitManager : NetworkBehaviour {
     {
         isAlive = false;
         GetComponent<BoxCollider>().enabled = false;
+
+        PlayerOwner.GetComponent<PlayerBase>().UnitAmmount--;
 
         if (SteppingTile != null)
         {
@@ -197,13 +268,26 @@ public class UnitManager : NetworkBehaviour {
         }
     }
 
-
+    [Command]
+    void Cmd_UpdateHealth()
+    {
+        curHealth = MaxHealth;
+    }
 
     void Update()
     {
+        if (PontosDistribuicao != null)
+        {
+            Titulo.text = SkillPoints + " Points Remaining";
+            ValorFinalDano.text = Damage.ToString();
+            ValorFinalVida.text = MaxHealth.ToString();
+        }
         if (isAlive == true)
         {
-
+            if(curHealth > MaxHealth)
+            {
+                Cmd_UpdateHealth();
+            }
             if (Input.GetKeyDown(KeyCode.Delete))
             {
                 if(Selected == true)
