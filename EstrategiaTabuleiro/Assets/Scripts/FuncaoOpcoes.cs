@@ -21,12 +21,18 @@ public class FuncaoOpcoes : MonoBehaviour
 
     void Awake()
     {
-        resolucoesSuportadas = Screen.resolutions;
+        if (!Application.isEditor)
+        {
+            resolucoesSuportadas = Screen.resolutions;
+        }
     }
 
     void Start()
     {
-        ChecarResolucoes();
+        if (!Application.isEditor)
+        {
+            ChecarResolucoes();
+        }
         //
         Cursor.visible = true;
         Time.timeScale = 1;
@@ -42,46 +48,49 @@ public class FuncaoOpcoes : MonoBehaviour
             BarraVolume.value = 0.3f;
         }
         //=============MODO JANELA===========//
-        if (PlayerPrefs.HasKey("modoJanela"))
+        if (!Application.isEditor)
         {
-            modoJanelaAtivo = PlayerPrefs.GetInt("modoJanela");
-            if (modoJanelaAtivo == 1)
+            if (PlayerPrefs.HasKey("modoJanela"))
             {
-                Screen.fullScreen = false;
-                CaixaModoJanela.isOn = true;
+                modoJanelaAtivo = PlayerPrefs.GetInt("modoJanela");
+                if (modoJanelaAtivo == 1)
+                {
+                    Screen.fullScreen = false;
+                    CaixaModoJanela.isOn = true;
+                }
+                else {
+                    Screen.fullScreen = true;
+                    CaixaModoJanela.isOn = false;
+                }
             }
             else {
-                Screen.fullScreen = true;
+                modoJanelaAtivo = 0;
+                PlayerPrefs.SetInt("modoJanela", modoJanelaAtivo);
                 CaixaModoJanela.isOn = false;
+                Screen.fullScreen = true;
+            }
+
+            //========RESOLUCOES========//
+            if (modoJanelaAtivo == 1)
+            {
+                telaCheiaAtivada = false;
+            }
+            else {
+                telaCheiaAtivada = true;
+            }
+            if (PlayerPrefs.HasKey("RESOLUCAO"))
+            {
+                resolucaoSalveIndex = PlayerPrefs.GetInt("RESOLUCAO");
+                Screen.SetResolution(resolucoesSuportadas[resolucaoSalveIndex].width, resolucoesSuportadas[resolucaoSalveIndex].height, telaCheiaAtivada);
+                Resolucoes.value = resolucaoSalveIndex;
+            }
+            else {
+                resolucaoSalveIndex = (resolucoesSuportadas.Length - 1);
+                Screen.SetResolution(resolucoesSuportadas[resolucaoSalveIndex].width, resolucoesSuportadas[resolucaoSalveIndex].height, telaCheiaAtivada);
+                PlayerPrefs.SetInt("RESOLUCAO", resolucaoSalveIndex);
+                Resolucoes.value = resolucaoSalveIndex;
             }
         }
-        else {
-            modoJanelaAtivo = 0;
-            PlayerPrefs.SetInt("modoJanela", modoJanelaAtivo);
-            CaixaModoJanela.isOn = false;
-            Screen.fullScreen = true;
-        }
-        //========RESOLUCOES========//
-        if (modoJanelaAtivo == 1)
-        {
-            telaCheiaAtivada = false;
-        }
-        else {
-            telaCheiaAtivada = true;
-        }
-        if (PlayerPrefs.HasKey("RESOLUCAO"))
-        {
-            resolucaoSalveIndex = PlayerPrefs.GetInt("RESOLUCAO");
-            Screen.SetResolution(resolucoesSuportadas[resolucaoSalveIndex].width, resolucoesSuportadas[resolucaoSalveIndex].height, telaCheiaAtivada);
-            Resolucoes.value = resolucaoSalveIndex;
-        }
-        else {
-            resolucaoSalveIndex = (resolucoesSuportadas.Length - 1);
-            Screen.SetResolution(resolucoesSuportadas[resolucaoSalveIndex].width, resolucoesSuportadas[resolucaoSalveIndex].height, telaCheiaAtivada);
-            PlayerPrefs.SetInt("RESOLUCAO", resolucaoSalveIndex);
-            Resolucoes.value = resolucaoSalveIndex;
-        }
-
         // =========SETAR BOTOES==========//
         BotaoSalvarPref.onClick.AddListener(() => SalvarPreferencias());
     }
@@ -99,19 +108,25 @@ public class FuncaoOpcoes : MonoBehaviour
     //=========VOIDS DE SALVAMENTO==========//
     private void SalvarPreferencias()
     {
-        if (CaixaModoJanela.isOn == true)
+        if (!Application.isEditor)
         {
-            modoJanelaAtivo = 1;
-            telaCheiaAtivada = false;
-        }
-        else {
-            modoJanelaAtivo = 0;
-            telaCheiaAtivada = true;
+            if (CaixaModoJanela.isOn == true)
+            {
+                modoJanelaAtivo = 1;
+                telaCheiaAtivada = false;
+            }
+            else {
+                modoJanelaAtivo = 0;
+                telaCheiaAtivada = true;
+            }
         }
         PlayerPrefs.SetFloat("VOLUME", BarraVolume.value);
-        PlayerPrefs.SetInt("modoJanela", modoJanelaAtivo);
-        PlayerPrefs.SetInt("RESOLUCAO", Resolucoes.value);
-        resolucaoSalveIndex = Resolucoes.value;
+        if (!Application.isEditor)
+        {
+            PlayerPrefs.SetInt("modoJanela", modoJanelaAtivo);
+            PlayerPrefs.SetInt("RESOLUCAO", Resolucoes.value);
+            resolucaoSalveIndex = Resolucoes.value;
+        }
         PlayerPrefs.Save();
         AplicarPreferencias();
     }
@@ -119,6 +134,9 @@ public class FuncaoOpcoes : MonoBehaviour
     {
        // VOLUME = PlayerPrefs.GetFloat("VOLUME");
         GameObject.Find("ConfigManager").GetComponent<MusicManager>().UpdateVolume();
-        Screen.SetResolution(resolucoesSuportadas[resolucaoSalveIndex].width, resolucoesSuportadas[resolucaoSalveIndex].height, telaCheiaAtivada);
+        if (!Application.isEditor)
+        {
+            Screen.SetResolution(resolucoesSuportadas[resolucaoSalveIndex].width, resolucoesSuportadas[resolucaoSalveIndex].height, telaCheiaAtivada);
+        }
     }
 }

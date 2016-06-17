@@ -19,6 +19,7 @@ public class TileManager : NetworkBehaviour {
     public TileManager MonsterSpawner;
     public GameObject[] Monsters;
     public int TurnToSpawnMonster;
+    public AudioClip MouseOverSFX;
 
     //Definição de variáveis
 
@@ -30,7 +31,6 @@ public class TileManager : NetworkBehaviour {
 
         //Como o código é baseado na cor atual do material, estou colocando todas as tiles no inicio do jogo na cor Idle para depois poder verificar se esta é a cor atual sem ter conflitos
         GetComponent<MeshRenderer>().material.color = Idle;
-        
     }
 
     void OnMouseEnter()
@@ -42,7 +42,10 @@ public class TileManager : NetworkBehaviour {
 
         // Aqui aumento e coloco este tile acima do resto para que se sobresaia
         this.transform.localScale = TargetScale;
-        this.transform.position = new Vector3( NormalPosition.x , TargetYPos , NormalPosition.z ); 
+        this.transform.position = new Vector3( NormalPosition.x , TargetYPos , NormalPosition.z );
+        AudioSource As = GetComponent<AudioSource>();
+        As.clip = MouseOverSFX;
+        As.Play();
     }
 
     void OnMouseExit()

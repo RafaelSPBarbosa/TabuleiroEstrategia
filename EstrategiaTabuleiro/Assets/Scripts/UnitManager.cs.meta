@@ -1,10 +1,22 @@
 fileFormatVersion: 2
 guid: 50b399da7aeb87c41816f841cfe0224e
-timeCreated: 1459012318
+timeCreated: 1466189924
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - UnitSelectedIndicator: {instanceID: 0}
+  - playerManager: {instanceID: 0}
+  - gameManager: {instanceID: 0}
+  - PlayerOwner: {instanceID: 0}
+  - AnimatedMesh: {instanceID: 0}
+  - SteppingTile: {instanceID: 0}
+  - PontosDistribuicao: {instanceID: 0}
+  - Titulo: {instanceID: 0}
+  - ValorFinalVida: {instanceID: 0}
+  - ValorFinalDano: {instanceID: 0}
+  - SelectUnit: {fileID: 8300000, guid: 76c365aa47363e24a85f5ddd18817296, type: 3}
+  - DeselectUnit: {fileID: 8300000, guid: fe1edea2fad96714f96411c32967cfdd, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -33,7 +33,7 @@ public class UnitManager : NetworkBehaviour {
     bool hasMoved = false;
     public GameObject PontosDistribuicao;
     public Text Titulo, ValorFinalVida, ValorFinalDano;
-
+    public AudioClip SelectUnitSFX, DeselectUnitSFX;
     
     public AudioClip[] AttackVoices;
     public AudioClip[] MovingVoices;
@@ -51,15 +51,18 @@ public class UnitManager : NetworkBehaviour {
         LookAtPos = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z + 1);
         playerManager = GameObject.Find("_PlayerManager").GetComponent<PlayerManager>();
         gameManager = GameObject.Find("_GameManager").GetComponent<GameManager>();
-        if (PlayerOwner.GetComponent<PlayerBase>().isLocalPlayer)
+        if (UnitType != 0)
         {
-            PontosDistribuicao.transform.parent = GameObject.Find("MainCanvas").transform;
-            PontosDistribuicao.GetComponent<RectTransform>().localScale = new Vector3(0.21f, 0.21f, 0.21f);
-            PontosDistribuicao.GetComponent<RectTransform>().anchoredPosition = new Vector2(0.5f, 0.5f);
-        }
-        else
-        {
-            DestroyPontosDistribuicao();
+            if (PlayerOwner.GetComponent<PlayerBase>().isLocalPlayer)
+            {
+                PontosDistribuicao.transform.parent = GameObject.Find("MainCanvas").transform;
+                PontosDistribuicao.GetComponent<RectTransform>().localScale = new Vector3(0.21f, 0.21f, 0.21f);
+                PontosDistribuicao.GetComponent<RectTransform>().anchoredPosition = new Vector2(0.5f, 0.5f);
+            }
+            else
+            {
+                DestroyPontosDistribuicao();
+            }
         }
     }
 
@@ -88,6 +91,9 @@ public class UnitManager : NetworkBehaviour {
 
                         //Com nenhuma outra unidade selecionada, seleciono agora esta unidade sem risco de ter 2 unidades selecionadas ao mesmo tempo.
                         Selected = true;
+                        AudioSource As = GetComponent<AudioSource>();
+                        As.clip = SelectUnitSFX;
+                        As.Play();
                     }
                 }
             }
@@ -97,16 +103,23 @@ public class UnitManager : NetworkBehaviour {
     void DeSelectUnit()
     {
         if (isAlive == true) {
-            //Caso o player seja selecionado e "Selected" seja verdadeiro, tornar falso,
-            Selected = false;
-
-            // Então encontro e coloco todas os objetos com tag "Tile" dentro da variavel AllTiles
-            GameObject[] AllTiles = GameObject.FindGameObjectsWithTag("Tile");
-
-            // Com um For Loop eu entro no script "TileManager" de cada um dos objetos dentro de "AllTiles" e torno a variável "SelectedUnit" deles igual a nullo ( Nada )
-            for (int i = 0; i < AllTiles.Length; i++)
+            if (Selected == true)
             {
-                AllTiles[i].GetComponent<TileManager>().SelectedUnit = null;
+                //Caso o player seja selecionado e "Selected" seja verdadeiro, tornar falso,
+                Selected = false;
+
+                // Então encontro e coloco todas os objetos com tag "Tile" dentro da variavel AllTiles
+                GameObject[] AllTiles = GameObject.FindGameObjectsWithTag("Tile");
+
+                // Com um For Loop eu entro no script "TileManager" de cada um dos objetos dentro de "AllTiles" e torno a variável "SelectedUnit" deles igual a nullo ( Nada )
+                for (int i = 0; i < AllTiles.Length; i++)
+                {
+                    AllTiles[i].GetComponent<TileManager>().SelectedUnit = null;
+                }
+
+                AudioSource As = GetComponent<AudioSource>();
+                As.clip = DeselectUnitSFX;
+                As.Play();
             }
         }
     }
@@ -156,7 +169,7 @@ public class UnitManager : NetworkBehaviour {
 
     public void DestroyPontosDistribuicao()
     {
-        if(SkillPoints == 0)
+        if(SkillPoints <= 0)
             Destroy(PontosDistribuicao);
     }
 

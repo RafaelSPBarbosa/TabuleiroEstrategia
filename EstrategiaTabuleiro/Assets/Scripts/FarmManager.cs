@@ -10,11 +10,19 @@ public class FarmManager : NetworkBehaviour {
     public MeshRenderer Flag;
 
     public AudioClip[] CapturePointVoices;
+    public AudioClip ConstructionSound;
 
     public GameObject SteppingUnit;
 
     [SyncVar]
     public GameObject PlayerOwner;
+
+    void Start()
+    {
+        AudioSource As = GetComponent<AudioSource>();
+        As.clip = ConstructionSound;
+        As.Play();
+    }
 
     [Command]
     public void Cmd_ChangeOwner(GameObject newOwner)
