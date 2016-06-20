@@ -19,7 +19,6 @@ public class TileManager : NetworkBehaviour {
     public TileManager MonsterSpawner;
     public GameObject[] Monsters;
     public int TurnToSpawnMonster;
-    public AudioClip MouseOverSFX;
 
     //Definição de variáveis
 
@@ -43,9 +42,7 @@ public class TileManager : NetworkBehaviour {
         // Aqui aumento e coloco este tile acima do resto para que se sobresaia
         this.transform.localScale = TargetScale;
         this.transform.position = new Vector3( NormalPosition.x , TargetYPos , NormalPosition.z );
-        AudioSource As = GetComponent<AudioSource>();
-        As.clip = MouseOverSFX;
-        As.Play();
+
     }
 
     void OnMouseExit()
@@ -67,6 +64,7 @@ public class TileManager : NetworkBehaviour {
             {
                 GameObject go = (GameObject)Instantiate(Monsters[Random.Range(0, Monsters.Length)], new Vector3(this.transform.position.x, this.transform.position.y + 0.25f, this.transform.position.z), this.transform.rotation);
                 NetworkServer.Spawn(go);
+
                 if (isServer)
                 {
                     Rpc_SpawnMonster(go, Target);
@@ -82,31 +80,37 @@ public class TileManager : NetworkBehaviour {
     [Command]
     public void Cmd_SpawnMonster(GameObject go , GameObject Target)
     {
-        if (isServer)
+        if (TurnToSpawnMonster >= gameManager.ActualCurTurn || TurnToSpawnMonster == 0)
         {
-            go.GetComponent<MonsterManager>().Rpc_LookAtTarget(Target);
+            if (isServer)
+            {
+                go.GetComponent<MonsterManager>().Rpc_LookAtTarget(Target);
+            }
+            else
+            {
+                go.GetComponent<MonsterManager>().Cmd_LookAtTarget(Target);
+            }
+            go.GetComponent<MonsterManager>().TileSpawner = this;
+            CanSpawnMonster = false;
         }
-        else
-        {
-            go.GetComponent<MonsterManager>().Cmd_LookAtTarget(Target);
-        }
-        go.GetComponent<MonsterManager>().TileSpawner = this;
-        CanSpawnMonster = false;
     }
 
     [ClientRpc]
     public void Rpc_SpawnMonster(GameObject go, GameObject Target)
     {
-        if (isServer)
+        if (TurnToSpawnMonster >= gameManager.ActualCurTurn || TurnToSpawnMonster == 0)
         {
-            go.GetComponent<MonsterManager>().Rpc_LookAtTarget(Target);
+            if (isServer)
+            {
+                go.GetComponent<MonsterManager>().Rpc_LookAtTarget(Target);
+            }
+            else
+            {
+                go.GetComponent<MonsterManager>().Cmd_LookAtTarget(Target);
+            }
+            go.GetComponent<MonsterManager>().TileSpawner = this;
+            CanSpawnMonster = false;
         }
-        else
-        {
-            go.GetComponent<MonsterManager>().Cmd_LookAtTarget(Target);
-        }
-        go.GetComponent<MonsterManager>().TileSpawner = this;
-        CanSpawnMonster = false;
     }
 
     void Update()
@@ -218,7 +222,6 @@ public class TileManager : NetworkBehaviour {
                 MonsterSpawner.SpawnMonster(other.gameObject);
             }
         }
-        
     }
     void OnTriggerStay(Collider other)
     {

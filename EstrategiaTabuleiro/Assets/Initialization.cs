@@ -15,7 +15,7 @@ public class Initialization : MonoBehaviour {
 
     IEnumerator LoadMenu()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(4);
         SceneManager.LoadScene("Menu");
     }
 }

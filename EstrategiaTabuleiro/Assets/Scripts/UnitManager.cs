@@ -255,7 +255,7 @@ public class UnitManager : NetworkBehaviour {
         Destroy(this.gameObject);
     }
 
-    [Command]
+    //[Command]
     public void Cmd_SpawnFarm()
     {
         if (!Busy) {
@@ -269,7 +269,7 @@ public class UnitManager : NetworkBehaviour {
                         if (SteppingTile.GetComponent<TileManager>().SteppingObject == null || SteppingTile.GetComponent<TileManager>().SteppingObject == this.gameObject && SteppingTile.GetComponent<TileManager>().Construction == null)
                         {
                             if (SteppingTile.GetComponent<TileManager>().PlayerBase == null)
-                            {
+                            {  
                                 PlayerOwner.GetComponent<PlayerBase>().Gold -= 2;
                                 curActions--;
                                 PlayerOwner.GetComponent<PlayerBase>().Cmd_BuildFarm(this.gameObject , SteppingTile);

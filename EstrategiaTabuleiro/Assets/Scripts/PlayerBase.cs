@@ -313,7 +313,7 @@ public class PlayerBase : NetworkBehaviour {
 
             // Mat.material = MatBaseCao;
             GameObject CameraRot = GameObject.Find("CameraRotator");
-            CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 45, this.transform.eulerAngles.z);
+            CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 310, this.transform.eulerAngles.z);
         }
         if (PlayerBaseID == 3)
         {
@@ -335,7 +335,7 @@ public class PlayerBase : NetworkBehaviour {
 
             // Mat.material = MatBaseGato;
             GameObject CameraRot = GameObject.Find("CameraRotator");
-            CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 210, this.transform.eulerAngles.z);
+            CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 45, this.transform.eulerAngles.z);
         }
         if (PlayerBaseID == 2)
         {
@@ -358,7 +358,7 @@ public class PlayerBase : NetworkBehaviour {
 
             // Mat.material = MatBaseRato;
             GameObject CameraRot = GameObject.Find("CameraRotator");
-            CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 330, this.transform.eulerAngles.z);
+            CameraRot.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 210, this.transform.eulerAngles.z);
         }
         if (PlayerBaseID == 1)
         {
@@ -1114,6 +1114,19 @@ public class PlayerBase : NetworkBehaviour {
                         AudioSource As = GetComponent<AudioSource>();
                         As.clip = NarratorYourTurn;
                         As.Play();
+                        int GoldToGive = 1;
+                        GameObject[] AllGoldMines = GameObject.FindGameObjectsWithTag("GoldMine");
+                        for (int i = 0; i < AllGoldMines.Length; i++)
+                        {
+                            if (AllGoldMines[i].GetComponent<GoldMineManager>().PlayerOwner != null)
+                            {
+                                if (AllGoldMines[i].GetComponent<GoldMineManager>().PlayerOwner == this.gameObject)
+                                {
+                                    GoldToGive++;
+                                }
+                            }
+                        }
+                        Cmd_GiveGold(GoldToGive);
                         TurnStart = false;
                     }
 
@@ -1218,6 +1231,12 @@ public class PlayerBase : NetworkBehaviour {
                 }
             }
         }
+    }
+
+    [Command]
+    public void Cmd_GiveGold(int GoldToGive)
+    {
+        Gold += GoldToGive;
     }
 
     public void WinMatch()
@@ -1550,7 +1569,7 @@ public class PlayerBase : NetworkBehaviour {
         Material[] temp = new Material[1];
         Tile.transform.GetChild(0).GetComponent<MeshRenderer>().materials = temp;
         Tile.transform.GetChild(0).GetComponent<MeshFilter>().mesh = FarmTileMesh;
-        switch (Tile.transform.tag)
+        switch (Tile.transform.GetChild(0).transform.tag)
         {
             case "GrassTile":
                 Tile.transform.GetChild(0).GetComponent<MeshRenderer>().material = FarmTileMat[0];
@@ -1569,18 +1588,16 @@ public class PlayerBase : NetworkBehaviour {
                 break;
         }
         
-
         Farm.transform.parent = Tile.transform;
     }
 
     [Command]
     public void Cmd_BuildFarm(GameObject Target, GameObject Tile)
     {
-
         Material[] temp = new Material[1];
         Tile.transform.GetChild(0).GetComponent<MeshRenderer>().materials = temp;
         Tile.transform.GetChild(0).GetComponent<MeshFilter>().mesh = FarmTileMesh;
-        switch (Tile.transform.tag)
+        switch (Tile.transform.GetChild(0).transform.tag)
         {
             case "GrassTile":
                 Tile.transform.GetChild(0).GetComponent<MeshRenderer>().material = FarmTileMat[0];
@@ -1682,8 +1699,6 @@ public class PlayerBase : NetworkBehaviour {
         }
     }
 
-
-
     [ClientRpc]
     public void Rpc_SetObjectOwner(GameObject LastCreatedObject)
     {
@@ -1700,20 +1715,7 @@ public class PlayerBase : NetworkBehaviour {
             TempGameManager.curTurn++;
             tempoTurno = 45;
             Rpc_UpdateTempoTurno();
-
-            int GoldToGive = 1;
-            GameObject[] AllGoldMines = GameObject.FindGameObjectsWithTag("GoldMine");
-            for (int i = 0; i < AllGoldMines.Length; i++)
-            {
-                if (AllGoldMines[i].GetComponent<GoldMineManager>().PlayerOwner != null)
-                {
-                    if (AllGoldMines[i].GetComponent<GoldMineManager>().PlayerOwner == this.gameObject)
-                    {
-                        GoldToGive++;
-                    }
-                }
-            }
-            Gold += GoldToGive;
+            TempGameManager.ActualCurTurn++;
 
             if (TempGameManager.curTurn > TempGameManager.MaxTurns)
                 TempGameManager.curTurn = 1;
@@ -1741,20 +1743,6 @@ public class PlayerBase : NetworkBehaviour {
         TempGameManager.curTurn++;
         tempoTurno = 45;
         Rpc_UpdateTempoTurno();
-
-        int GoldToGive = 1;
-        GameObject[] AllGoldMines = GameObject.FindGameObjectsWithTag("GoldMine");
-        for (int i = 0; i < AllGoldMines.Length; i++)
-        {
-            if (AllGoldMines[i].GetComponent<GoldMineManager>().PlayerOwner != null)
-            {
-                if (AllGoldMines[i].GetComponent<GoldMineManager>().PlayerOwner == this.gameObject)
-                {
-                    GoldToGive++;
-                }
-            }
-        }
-        Gold += GoldToGive;
 
         if (TempGameManager.curTurn > TempGameManager.MaxTurns)
             TempGameManager.curTurn = 1;

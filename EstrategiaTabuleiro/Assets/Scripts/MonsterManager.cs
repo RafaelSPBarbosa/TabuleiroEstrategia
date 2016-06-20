@@ -138,7 +138,9 @@ public class MonsterManager : NetworkBehaviour {
             AnimMesh.SetTrigger("Die");
 
         isAlive = false;
-        
+
+        TileSpawner.TurnToSpawnMonster = TileSpawner.gameManager.ActualCurTurn + 32;
+
         NetworkServer.Destroy(this.gameObject);
     }
 
