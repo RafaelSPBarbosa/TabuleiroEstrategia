@@ -64,6 +64,8 @@ public class TileManager : NetworkBehaviour {
             {
                 GameObject go = (GameObject)Instantiate(Monsters[Random.Range(0, Monsters.Length)], new Vector3(this.transform.position.x, this.transform.position.y + 0.25f, this.transform.position.z), this.transform.rotation);
                 NetworkServer.Spawn(go);
+                CurrentMonster = go.gameObject;
+                go.GetComponent<MonsterManager>().TileSpawner = this;
 
                 if (isServer)
                 {
@@ -80,37 +82,33 @@ public class TileManager : NetworkBehaviour {
     [Command]
     public void Cmd_SpawnMonster(GameObject go , GameObject Target)
     {
-        if (TurnToSpawnMonster >= gameManager.ActualCurTurn || TurnToSpawnMonster == 0)
+        if (isServer)
         {
-            if (isServer)
-            {
-                go.GetComponent<MonsterManager>().Rpc_LookAtTarget(Target);
-            }
-            else
-            {
-                go.GetComponent<MonsterManager>().Cmd_LookAtTarget(Target);
-            }
-            go.GetComponent<MonsterManager>().TileSpawner = this;
-            CanSpawnMonster = false;
+            go.GetComponent<MonsterManager>().Rpc_LookAtTarget(Target);
         }
+        else
+        {
+            go.GetComponent<MonsterManager>().Cmd_LookAtTarget(Target);
+        }
+        CurrentMonster = go.gameObject;
+        go.GetComponent<MonsterManager>().TileSpawner = this;
+        CanSpawnMonster = false;
     }
 
     [ClientRpc]
     public void Rpc_SpawnMonster(GameObject go, GameObject Target)
     {
-        if (TurnToSpawnMonster >= gameManager.ActualCurTurn || TurnToSpawnMonster == 0)
+        if (isServer)
         {
-            if (isServer)
-            {
-                go.GetComponent<MonsterManager>().Rpc_LookAtTarget(Target);
-            }
-            else
-            {
-                go.GetComponent<MonsterManager>().Cmd_LookAtTarget(Target);
-            }
-            go.GetComponent<MonsterManager>().TileSpawner = this;
-            CanSpawnMonster = false;
+            go.GetComponent<MonsterManager>().Rpc_LookAtTarget(Target);
         }
+        else
+        {
+            go.GetComponent<MonsterManager>().Cmd_LookAtTarget(Target);
+        }
+        CurrentMonster = go.gameObject;
+        go.GetComponent<MonsterManager>().TileSpawner = this;
+        CanSpawnMonster = false;
     }
 
     void Update()
@@ -166,7 +164,8 @@ public class TileManager : NetworkBehaviour {
 
             if(gameManager.ActualCurTurn == TurnToSpawnMonster)
             {
-                CanSpawnMonster = true;
+                if (CurrentMonster == null)
+                    CanSpawnMonster = true;
             }
         }
         else

@@ -138,8 +138,9 @@ public class MonsterManager : NetworkBehaviour {
             AnimMesh.SetTrigger("Die");
 
         isAlive = false;
-
-        TileSpawner.TurnToSpawnMonster = TileSpawner.gameManager.ActualCurTurn + 32;
+        
+        TileSpawner.TurnToSpawnMonster = TileSpawner.gameManager.ActualCurTurn + 12;
+        TileSpawner.CurrentMonster = null;
 
         NetworkServer.Destroy(this.gameObject);
     }
@@ -153,7 +154,8 @@ public class MonsterManager : NetworkBehaviour {
 
         isAlive = false;
 
-        TileSpawner.TurnToSpawnMonster = TileSpawner.gameManager.ActualCurTurn + 32;
+        TileSpawner.TurnToSpawnMonster = TileSpawner.gameManager.ActualCurTurn + 12;
+        TileSpawner.CurrentMonster = null;
 
         NetworkServer.Destroy(this.gameObject);
     }
