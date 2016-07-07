@@ -1,7 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 //$ip = $HTTP_SERVER_VARS["REMOTE_ADDR"]; // Get players IP
 
 $db = new mysqli("localhost", "autem", "rPL5yaatPGxSw69h", "autem");
@@ -10,7 +7,7 @@ if ($db->connect_errno) {
   die('{"result": false}');
 }
 
-$sql = "SELECT `unique_id` , `name`, `max_players`, `current_players`, `is_full`, `is_password`, `never_true`, `in_progress` FROM `servers` WHERE never_true='0' ";
+$sql = "SELECT `matchmaking_id` , `name`, `max_players`, `current_players`, `is_full`, `is_password`, `never_true`, `in_progress` , `ip` FROM `servers` WHERE never_true='0' ";
 
 if(isset($_GET['name']))
 {
@@ -51,20 +48,19 @@ else
 }
 
 $result = $db->query($sql);
-echo $sql;
 $json = "";
 $num = 0;
 if ($result->num_rows > 0) {
 	//Set up JSON to support success.
-	$json = '{"result": true,"servers": {';
+	$json = '{"result": true,"servers": [';
     while($row = $result->fetch_assoc()) {
        //Generate JSON list to return.
 	   //$json .= '"' . $row['name'] . '":{"max_players":"' . $row['max_players'] . '", "current_players" : "' . $row['current_players'] . '", "is_full" : "' . $row['is_full'] . ;
-	   $json .= '"' . $num . '":' . json_encode($row) . ',';
+	   $json .= json_encode($row) . ',';
     }
 	//End Json.
 	$json = rtrim($json, ",");
-	$json .= '}}';
+	$json .= ']}';
 } else {
    //generate no server message.
      die('{"result": false}');

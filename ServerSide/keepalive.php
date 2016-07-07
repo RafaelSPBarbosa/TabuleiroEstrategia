@@ -1,5 +1,6 @@
 <?php
 //Stops the server from being deleted from the list. Gets pinged by the host every 10 seconds. Daemon checks to see if each uploaded host has been pinged recently.
+//Should also let the host keep the information up to date.
 
 //IP and unique_id are both used to authenticate the user when trying to keep a server open.
 $ip = $_SERVER['REMOTE_ADDR'];

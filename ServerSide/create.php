@@ -15,7 +15,7 @@ if(!isset($ip))
 	die("error");
 }
 
-$sql = "INSERT INTO servers (creation_date,ip,name,max_players,is_password,password,unique_id) VALUES('" . time() . "','" . $ip . "',";
+$sql = "INSERT INTO servers (creation_date,ip,name,max_players,is_password,password,unique_id,matchmaking_id) VALUES('" . time() . "','" . $ip . "',";
 
 if(isset($_GET['name']))
 {
@@ -53,7 +53,9 @@ else
 }
 
 $unique = md5($sql . time());
-$sql .= "'" . $unique . "');";
+$matchmaking_unique = md5(time() + $sql);
+$sql .= "'" . $unique . "',";
+$sql .= "'" . $matchmaking_unique . "');";
 
 //Insert into the list.
 $db->query($sql);
