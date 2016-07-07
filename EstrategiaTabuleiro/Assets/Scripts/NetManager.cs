@@ -71,6 +71,14 @@ public class NetManager : NetworkLobbyManager {
        networkAddress = ip;
     }
 
+    public void MatchMakingConnect(string ip)
+    {
+        networkAddress = ip;
+        StartClient();
+        SceneManager.LoadScene("Lobby");
+
+    }
+
     public void SetPort(string port)
     {
         networkPort = Convert.ToInt32(port);
