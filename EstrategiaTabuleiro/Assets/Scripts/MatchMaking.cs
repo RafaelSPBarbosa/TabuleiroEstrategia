@@ -4,6 +4,9 @@ using System.Collections;
 public class MatchMaking : MonoBehaviour {
 
     public string www_data = "";
+    public MatchMakingData data;
+
+    public GameObject[] DataDisplay;
 
 	// Use this for initialization
 	void Start () {
@@ -22,9 +25,14 @@ public class MatchMaking : MonoBehaviour {
         WWW www = new WWW(url);
         yield return www;
         www_data = www.text;
-        Debug.Log(www.text);
+        //Debug.Log(www.text);
         //Convert JSON into unity useable array
-       // JsonUtility.FromJson(www.text, MatchMakingData);
+        data = MatchMakingData.CreateFromJSON(www.text);
+        Debug.Log(data.servers[0].name);
+
+        //Generate list.
+
+
         yield return null;
     }
 }

@@ -1,15 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
-public class MatchMakingData : MonoBehaviour {
+[Serializable]
+public class MatchMakingData
+{
+    public bool result;
+    public ServerData[] servers;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    public static MatchMakingData CreateFromJSON(string jsonString)
+    {
+        return JsonUtility.FromJson<MatchMakingData>(jsonString);
+    }
+}
+
+[Serializable]
+public class ServerData
+{
+    public string matchmaking_id;
+    public string name;
+    public int max_players;
+    public int current_players;
+    public bool is_full;
+    public bool is_password;
+    public bool never_true;
+    public bool in_progress;
 }
