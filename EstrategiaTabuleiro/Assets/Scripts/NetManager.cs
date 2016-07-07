@@ -122,6 +122,11 @@ public class NetManager : NetworkLobbyManager {
 
     }
 
+    public void ShowServers()
+    {
+        SceneManager.LoadScene("MatchMaking");
+    }
+
     //public override void OnServerConnect(NetworkConnection conn)
    // {
         //if (conn.address == "localServer" && conn.connectionId == 0 )
