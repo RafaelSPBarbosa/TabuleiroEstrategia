@@ -19,6 +19,10 @@ if ($db->connect_errno) {
   die();
 }
 $sql = "UPDATE servers SET creation_date='" . time() . "' WHERE `unique_id`='" . $db->real_escape_string($_GET['unique_id']) . "' AND `ip`='" . $ip . "';";
-$db->query($sql);
+if ($db->query($sql) === TRUE) {
+    echo "1";
+} else {
+    echo "0";
+}
 $db->close();
 ?>

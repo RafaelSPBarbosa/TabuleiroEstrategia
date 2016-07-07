@@ -13,6 +13,7 @@ public class NetManager : NetworkLobbyManager {
     public TempStorage storage;
 
     public string net_Guid;
+    public string unique_id = "";
 
     bool loadedGameLevel = false;
 
@@ -77,8 +78,36 @@ public class NetManager : NetworkLobbyManager {
 
     public override void OnStartHost()
     {
+        //Add server to the matchmaking system.
+        StartCoroutine("SendMatchmaking");
         SceneManager.LoadScene("Lobby");
-        
+    }
+
+    IEnumerator SendMatchmaking()
+    {
+        string url = "http://www.jaytechmedia.com/autem/create.php";
+        WWW www = new WWW(url);
+        yield return www;
+        unique_id = www.text;
+        //Start Keepalive function
+        StartCoroutine("MatchmakingKeepalive");
+        yield return null;
+    }
+
+    IEnumerator MatchmakingKeepalive()
+    {
+        string url = "http://www.jaytechmedia.com/autem/keepalive.php?unique_id=" + unique_id;
+        while (true)
+        {
+            //execute code here.
+            WWW www = new WWW(url);
+            yield return www;
+            if (www.text == "0")
+            {
+                Debug.Log("A matchmaking error occured.");
+            }
+            yield return new WaitForSeconds(5);
+        }
     }
 
     public override void OnClientConnect(NetworkConnection conn)

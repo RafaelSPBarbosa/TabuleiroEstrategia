@@ -27,6 +27,15 @@ else
 }
 if(isset($_GET['max_players']))
 {
+	if($_GET['max_players'] > 4)
+	{
+		$_GET['max_players'] = 4;
+	}
+	
+	if($_GET['max_players'] < 1)
+	{
+		$_GET['max_players'] = 1;
+	}
 	$sql .= "'" . $db->real_escape_string($_GET['max_players']) . "',";
 }
 else
