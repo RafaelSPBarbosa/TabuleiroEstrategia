@@ -8,23 +8,25 @@ using UnityEngine.SceneManagement;
 public class NetManager : NetworkLobbyManager {
 
     public int player_Count;
-
+    //AllLobbyPlayers will be used by the server to allow reconnects.
+    GameObject[] AllLobbyPlayers;
     public TempStorage storage;
 
     public string net_Guid;
 
     bool loadedGameLevel = false;
 
+    //Called when changing to the game scene. - At the possibility of adding different levels to the game, this may require changed.
     IEnumerator LoadGameLevel()
     {
         yield return new WaitForSeconds(3);
-        //SceneManager.LoadScene("Game");
         ServerChangeScene("Game");
     }
 
+    //Called on the server everytime a client connects
     public override void OnLobbyServerConnect(NetworkConnection conn)
     {
-        GameObject[] AllLobbyPlayers = GameObject.FindGameObjectsWithTag("LobbyPlayer");
+        AllLobbyPlayers = GameObject.FindGameObjectsWithTag("LobbyPlayer");
         GameObject TargetPlayer = null;
         for(int a = 0; a < AllLobbyPlayers.Length; a++)
         {

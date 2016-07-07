@@ -22,7 +22,6 @@ public class LobbyPlayerUpdate : NetworkBehaviour {
         {
             isMine = true;
             //Cmd_UpdatePlayerId( GameObject.FindGameObjectsWithTag("LobbyPlayer").Length);
-
         }
 
 
@@ -177,6 +176,7 @@ public class LobbyPlayerUpdate : NetworkBehaviour {
         StartCoroutine("DelayedUpdate");
     }
 
+    //Just code for changing the graphics on the clients side.
     IEnumerator DelayedUpdate()
     {
         yield return new WaitForSeconds(0.5f);
@@ -189,9 +189,10 @@ public class LobbyPlayerUpdate : NetworkBehaviour {
             }
             else
             {
-
                 Rpc_UpdateIlustration(i, false);
             }
         }
+
+        yield return null;
     }
 }
