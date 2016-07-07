@@ -25,4 +25,5 @@ public class ServerData
     public bool is_password;
     public bool never_true;
     public bool in_progress;
+    public string ip;
 }
