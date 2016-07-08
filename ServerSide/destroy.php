@@ -17,6 +17,7 @@ if ($db->connect_errno) {
   die();
 }
 $sql = "DELETE FROM servers WHERE `unique_id`='" . $db->real_escape_string($_GET['unique_id']) . "' AND `ip`='" . $ip . "';";
+echo $sql;
 $db->query($sql);
 $db->close();
 ?>
