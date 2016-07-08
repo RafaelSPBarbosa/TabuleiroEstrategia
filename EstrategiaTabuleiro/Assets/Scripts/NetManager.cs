@@ -71,6 +71,7 @@ public class NetManager : NetworkLobbyManager {
        networkAddress = ip;
     }
 
+    //Called when conencting to something from the matchmaking list.
     public void MatchMakingConnect(string ip)
     {
         networkAddress = ip;
@@ -89,6 +90,16 @@ public class NetManager : NetworkLobbyManager {
         //Add server to the matchmaking system.
         StartCoroutine("SendMatchmaking");
         SceneManager.LoadScene("Lobby");
+    }
+
+    public override void OnStopHost()
+    {
+        
+        //Tell clients that the host quit, send them to the main menu for now (Untill I program host migration)
+        //Need to program a Call on the client side for quitting and displaying a message?
+
+        //Loop through 
+        base.OnStopHost();
     }
 
     IEnumerator SendMatchmaking()
@@ -116,6 +127,31 @@ public class NetManager : NetworkLobbyManager {
             }
             yield return new WaitForSeconds(5);
         }
+    }
+
+    //For when the user closes the game during hosting a matchmaking game.
+    IEnumerator DeleteMatchmaking()
+    {
+        string url = "http://www.jaytechmedia.com/autem/destroy.php?unique_id=" + unique_id;
+            //Tells the matchmaking client to delete the game.
+        WWW www = new WWW(url);
+        yield return www;
+        Debug.Log(www.text);
+        yield return null;
+    }
+
+    //For random quitters.
+    IEnumerator OnApplicationQuit()
+    {
+        if (unique_id != "")
+        {
+            string url = "http://www.jaytechmedia.com/autem/destroy.php?unique_id=" + unique_id;
+            //Tells the matchmaking client to delete the game.
+            WWW www = new WWW(url);
+            yield return www;
+            Debug.Log(www.text);
+        }
+        yield return null;
     }
 
     public override void OnClientConnect(NetworkConnection conn)
