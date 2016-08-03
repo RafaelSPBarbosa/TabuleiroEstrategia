@@ -5,16 +5,18 @@ using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System.Linq;
 
+//Function to change options in the menu
+
 public class FuncaoOpcoes : MonoBehaviour
 {
 
     [Space(20)]
-    public Slider BarraVolume;
-    public Toggle CaixaModoJanela;
-    public Dropdown Resolucoes;
-    public Button BotaoSalvarPref;
+    public Slider BarraVolume;  //Volume bar
+    public Toggle CaixaModoJanela;  //Window mode
+    public Dropdown Resolucoes;     //Resolution    
+    public Button BotaoSalvarPref;  //Save preferences
     [Space(20)]
-    private float VOLUME;
+    private float VOLUME; //:^)
     private int modoJanelaAtivo, resolucaoSalveIndex;
     private bool telaCheiaAtivada;
     private Resolution[] resolucoesSuportadas;
@@ -47,7 +49,7 @@ public class FuncaoOpcoes : MonoBehaviour
             PlayerPrefs.SetFloat("VOLUME", 0.3f);
             BarraVolume.value = 0.3f;
         }
-        //=============MODO JANELA===========//
+        //=============MODO JANELA===========//                     //WINDOW MODE
         if (!Application.isEditor)
         {
             if (PlayerPrefs.HasKey("modoJanela"))
@@ -70,7 +72,7 @@ public class FuncaoOpcoes : MonoBehaviour
                 Screen.fullScreen = true;
             }
 
-            //========RESOLUCOES========//
+            //========RESOLUCOES========//                           //RESOLUTION
             if (modoJanelaAtivo == 1)
             {
                 telaCheiaAtivada = false;
@@ -94,7 +96,7 @@ public class FuncaoOpcoes : MonoBehaviour
         // =========SETAR BOTOES==========//
         BotaoSalvarPref.onClick.AddListener(() => SalvarPreferencias());
     }
-    //=========VOIDS DE CHECAGEM==========//
+    //=========VOIDS DE CHECAGEM==========//                    //Check available resolutions
     private void ChecarResolucoes()
     {
         Resolution[] resolucoesSuportadas = Screen.resolutions;
@@ -105,7 +107,7 @@ public class FuncaoOpcoes : MonoBehaviour
         }
         Resolucoes.captionText.text = "Resolution";
     }
-    //=========VOIDS DE SALVAMENTO==========//
+    //=========VOIDS DE SALVAMENTO==========//                  //Saves preferences
     private void SalvarPreferencias()
     {
         if (!Application.isEditor)

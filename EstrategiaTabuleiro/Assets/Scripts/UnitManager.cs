@@ -5,7 +5,7 @@ using System.Collections;
 
 public class UnitManager : NetworkBehaviour {
 
-    //Definição de Variáveis
+    //Definição de Variáveis - Define the variables?
     public int MaxActions, curActions;
     public bool Selected;
     public GameObject UnitSelectedIndicator;
@@ -32,13 +32,14 @@ public class UnitManager : NetworkBehaviour {
     public bool HasAttacked = false;
     bool hasMoved = false;
     public GameObject PontosDistribuicao;
-    public Text Titulo, ValorFinalVida, ValorFinalDano;
+    public Text Titulo, ValorFinalVida, ValorFinalDano; // Title , Max Life? Max Dano
     public AudioClip SelectUnitSFX, DeselectUnitSFX;
     
     public AudioClip[] AttackVoices;
     public AudioClip[] MovingVoices;
     //Definição de Variáveis
 
+        // Looks like some kind of hack to make the game change current action.
     public void ReloadActions()
     {
         if(isAlive == true)

@@ -2,6 +2,7 @@
 using UnityEngine.Networking;
 using System.Collections;
 
+//Probably never used.
 public class UpdatePlayerBaseId : NetworkBehaviour {
 
 	[Command]

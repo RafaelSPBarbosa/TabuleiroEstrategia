@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//Switches from page 3 to page 1
 public class VoltarMenu : MonoBehaviour {
 
     public GameObject Pagina1, Pagina3;

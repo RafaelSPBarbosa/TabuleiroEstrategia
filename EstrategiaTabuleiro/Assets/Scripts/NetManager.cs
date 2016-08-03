@@ -183,6 +183,7 @@ public class NetManager : NetworkLobbyManager {
         //}
     //}
 
+        //Look into what this does?
     void Update()
     {
         //if (GameObject.Find("Storage") != null)
@@ -202,6 +203,5 @@ public class NetManager : NetworkLobbyManager {
                 StartCoroutine("LoadGameLevel");
             }
         }
-
     }
 }

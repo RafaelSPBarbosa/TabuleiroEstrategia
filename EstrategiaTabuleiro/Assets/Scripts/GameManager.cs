@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 using System.Collections;
 
 
+
 public class GameManager : NetworkBehaviour {
 
     public Sprite VezCachorro, VezGato, VezRato, VezPassaro;
@@ -24,6 +25,7 @@ public class GameManager : NetworkBehaviour {
     {
         PlayerIndicator = GameObject.Find("PlayerIndicator").GetComponent<Image>();
         NetManager = GameObject.Find("NetManager");
+        MaxTurns = Convert.ToInt32(NetManager.GetComponent<NetManager>().numPlayers);
     }
     
     void Update()
@@ -50,7 +52,7 @@ public class GameManager : NetworkBehaviour {
           
         }
 
-        MaxTurns = Convert.ToInt32(NetManager.GetComponent<NetManager>().numPlayers);
+        //MaxTurns = Convert.ToInt32(NetManager.GetComponent<NetManager>().numPlayers);
     }
 
     [Command]

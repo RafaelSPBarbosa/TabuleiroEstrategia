@@ -12,6 +12,6 @@ public class SoundVolumeFix : MonoBehaviour {
     {
         yield return null;
         GameObject ConfigManager = GameObject.Find("ConfigManager");
-        GetComponent<AudioSource>().volume = ConfigManager.GetComponent<AudioSource>().volume * 3;
+        GetComponent<AudioSource>().volume = ConfigManager.GetComponent<AudioSource>().volume * 2;
     }
 }

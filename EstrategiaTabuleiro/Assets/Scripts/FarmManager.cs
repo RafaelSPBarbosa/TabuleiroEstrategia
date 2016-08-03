@@ -3,9 +3,11 @@ using UnityEngine.Networking;
 using System.Collections;
 using System.Collections.Generic;
 
+//Function for switching the owner faction of a farm
+
 public class FarmManager : NetworkBehaviour {
 
-    public Material Vermelho, Amarelo, Verde, Azul;
+    public Material Vermelho, Amarelo, Verde, Azul; //RED, YELLOW, GREEN, BLUE
 
     public MeshRenderer Flag;
 

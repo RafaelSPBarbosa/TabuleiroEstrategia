@@ -27,3 +27,9 @@ public class ServerData
     public bool in_progress;
     public string ip;
 }
+
+public class SearchData
+{
+    string name;
+    string max_players;
+}
